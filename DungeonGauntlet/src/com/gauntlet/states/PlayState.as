@@ -280,6 +280,8 @@ package com.gauntlet.states
 		 */
 		protected function genNatesRecommendation():void
 		{
+			var n :int = 0;
+			
 			for (var x :int = 1; x < levelMap.widthInTiles - 1; x++)
 			{
 				for (var y :int = 3; y < levelMap.heightInTiles - 2; y+=3)
