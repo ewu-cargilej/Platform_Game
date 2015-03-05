@@ -46,7 +46,7 @@ package com.gauntlet.states
 			
 			levelMap = new FlxTilemap();
 			this.generateRoomTiles(false);
-			
+			establishGroups();
 			
 			this.createTitle();
 		}

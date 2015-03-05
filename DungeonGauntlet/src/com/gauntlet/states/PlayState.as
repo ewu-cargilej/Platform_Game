@@ -44,6 +44,9 @@ package com.gauntlet.states
 		/** Group of all the runes that appear */
 		protected var _runeGroup		:FlxGroup;
 		
+		/** Group of all collidable items */
+		protected var _collectibleGroup	:FlxGroup;
+		
 		/** Show current health. */
 		protected var _txtHealth		:FlxText;
 		
@@ -59,8 +62,6 @@ package com.gauntlet.states
 		/** The upgrade manage for the runes and health*/
 		protected var 	upgrades		:UpgradeManager;
 		
-		//FOR TESTING ONLY
-		private var testCollision:Boolean;
 		
 		/**
 		 * Set up the state.
@@ -73,14 +74,13 @@ package com.gauntlet.states
 			
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
-			this._enemyGroup = new FlxGroup();
-			this._runeGroup = new FlxGroup();
+			
+			establishGroups();
 			
 			add(_enemyGroup);
 			this.upgrades = new UpgradeManager();
 			
 			setupPlayer(32, 640);
-			
 			
 			upgrades.displayButtonSignal.add(add);
 			upgrades.removeButtonSignal.add(remove);
@@ -106,6 +106,17 @@ package com.gauntlet.states
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * establishes all groups so they are non-null
+		 */
+		public function establishGroups():void
+		{
+			this._enemyGroup = new FlxGroup();
+			this._runeGroup = new FlxGroup();
+			this._collectibleGroup = new FlxGroup();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Called every frame.
@@ -121,6 +132,11 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 			}
 			
+			if (_enemyGroup.countLiving() == 0)
+			{
+				this._bLevelComplete = true;
+			}
+			
 			if (this._bLevelComplete)
 			{
 				//open door
@@ -133,14 +149,11 @@ package com.gauntlet.states
 			
 			FlxG.overlap(mcHero, _enemyGroup, collideDamage);
 			
-			if (FlxG.keys.justPressed("T"))
-				testCollision = !testCollision;
+			FlxG.overlap(_runeGroup, _enemyGroup, enemyDamage);
 			
-			if (testCollision && _enemyGroup.length != 0)
-			{
-				FlxG.overlap(_runeGroup, _enemyGroup, enemyDamage);
-				FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
-			}
+			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
+			
+			FlxG.collide(mcHero, _collectibleGroup /*, itemManager.collect*/);
 			
 			if (mcArm.x - 3.5 != mcHero.x)
 			{
@@ -156,7 +169,6 @@ package com.gauntlet.states
 		
 		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
 		{
-			//stubbed out so it runs
 			$enemy.hurt($rune.Damage);
 			$rune.kill();
 		}
