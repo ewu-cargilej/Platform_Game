@@ -4,6 +4,7 @@ package com.gauntlet.runes
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import com.gauntlet.runes.Rune;
+	import org.flixel.FlxSprite;
 	import org.osflash.signals.Signal;
 
 	
@@ -17,8 +18,8 @@ package com.gauntlet.runes
 		
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Health.png')]private static var HealthUpgrade:Class;
 		private var newRune  :Rune;
-		private var runeButton :FlxButton;
-		private var healthButton :FlxButton;
+		private var runeButton :FlxSprite;
+		private var healthButton :FlxSprite;
 		
 		public var displayButtonSignal	:Signal = new Signal;
 		public var removeButtonSignal	:Signal = new Signal;

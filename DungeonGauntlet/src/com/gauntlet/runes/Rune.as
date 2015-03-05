@@ -1,6 +1,7 @@
 package com.gauntlet.runes
 {
 	import flash.display.Sprite;
+	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxU;
@@ -16,6 +17,7 @@ package com.gauntlet.runes
 	{
 		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/testshot.png")] private static var ImgRuneTemp:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Rune.png')]public static var RuneUpgrade:Class;
+		[Embed(source = "../../../../embeded_resources/SFX/Shoot.mp3")] private static var SoundShoot:Class;
 		
 		/** how fast the bullet objects fly  */
 		protected var	nVelocity :Number;
@@ -44,11 +46,17 @@ package com.gauntlet.runes
 			this.loadGraphic(ImgRuneTemp, true, true, 32);
 				
 			if ($parent == null)
-				parseXML(0);
+				fillValues(0);
 			else
 				copyParent($parent);
 				
 			this.health = nMyHealth;
+			
+			//offset
+			this.width = 16;
+			this.height = 16;
+			this.offset.x = 8;
+			this.offset.y = 8;
 		}
 		
 		/**
@@ -57,7 +65,7 @@ package com.gauntlet.runes
 		 * @param	$curLevel	the current level that the player is on. used for potentially modifying weapon's starting stats. 
 		 * @return			Describe the return value here.
 		 */
-		public function parseXML($curLevel:int):void
+		public function fillValues($curLevel:int):void
 		{
 			//not currently used
 			this.nDamage = Math.random() * 40;
@@ -102,6 +110,7 @@ package com.gauntlet.runes
 				this.kill();
 			}
 			this.hurt(FlxU.getDistance(starting, new FlxPoint(this.x, this.y)));
+			
 		if (!this.alive)
 			{
 				this.runeDiedSignal.dispatch(this);
@@ -164,6 +173,11 @@ package com.gauntlet.runes
 			super.reset(X, Y);
 			this.starting.x = X;
 			this.starting.y = Y;
+		}
+		
+		public function playSound():void
+		{
+			FlxG.play(SoundShoot, .7, false);
 		}
 	}
 }

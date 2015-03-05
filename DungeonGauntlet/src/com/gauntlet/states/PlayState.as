@@ -145,7 +145,7 @@ package com.gauntlet.states
 			
 			FlxG.collide(mcHero, levelMap);
 			
-			FlxG.collide(_enemyGroup, levelMap);
+			FlxG.collide(_enemyGroup, levelMap)
 			
 			FlxG.overlap(mcHero, _enemyGroup, collideDamage);
 			
@@ -155,6 +155,16 @@ package com.gauntlet.states
 			
 			FlxG.collide(mcHero, _collectibleGroup /*, itemManager.collect*/);
 			
+			alignArm();
+			
+			wrap();
+		}
+		
+		/**
+		 * updates the arm so that it's in proper alignment with the hero
+		 */
+		private function alignArm():void 
+		{
 			if (mcArm.x - 3.5 != mcHero.x)
 			{
 				mcArm.x  = mcHero.x - 3.5;
@@ -164,7 +174,6 @@ package com.gauntlet.states
 				mcArm.y = mcHero.y + 11;
 			}
 			
-			wrap();
 		}
 		
 		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
@@ -224,6 +233,7 @@ package com.gauntlet.states
 			add($rune);
 			this._runeGroup.add($rune);
 		}
+		
 		/**
 		 * removes a rune from the screen and group
 		 * @param	$rune

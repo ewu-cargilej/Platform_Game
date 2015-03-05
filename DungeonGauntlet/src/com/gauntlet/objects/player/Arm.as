@@ -55,13 +55,11 @@ package com.gauntlet.objects.player
 			canFire = true;
 			runeIndex = 0;
 			rune = new Rune(this.x, this.y);
-			for (var i:uint = 0; i < 10; i++)
+			/*for (var i:uint = 0; i < 10; i++)
 			{
 				runeArray[i] = rune.clone();
-				//runeGroup.add(runeArray[i]);
 				runeArray[i].runeDiedSignal.add(removeRune);
-				//this.addGroupSignal.dispatch(runeArray[i]);
-			}
+			}*/
 		}
 		/**
 		 * removes a rune from the group
@@ -82,14 +80,12 @@ package com.gauntlet.objects.player
 		{
 			this.removeGroupSignal.dispatch();
 			rune = $newRune.clone();
-			for (var i:uint = 0; i < 10; i++)
+		/*	for (var i:uint = 0; i < 10; i++)
 			{
 				runeArray[i] = rune.clone();
-				//this.runeGroup.add(runeArray[i]);
-				//FlxG.play(SoundShoot, .7, false);
 				this.addGroupSignal.dispatch(runeArray[i]);
 			}
-			//rune.runeDiedSignal.add(removeRune);
+		*/
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -118,32 +114,32 @@ package com.gauntlet.objects.player
 			setAimAngle();
 			this.angle = aimAngle;
 			
-			//if (FlxG.mouse.justPressed() && canFire)
-			if (FlxG.keys.justPressed("SPACE") && canFire)
+			if (FlxG.mouse.pressed() && canFire)
 			{
 				fireBullet(this.x, this.y, this.angle);
 				this.canFire = false;
 				shotTimer.start(rune.Rate, 1, changeFire);
-				//FlxG.play(SoundShoot, .7, false);
+				rune.playSound();
 			}
 		}
 		
 		private function fireBullet(x:Number, y:Number, dFireAngle:Number):void
 		{
-			var b:FlxSprite = runeArray[runeIndex];
+			//var b:FlxSprite = runeArray[runeIndex];
+			var b:FlxSprite = rune.clone();
 			var rFireAngle:Number; //create a variable for the angle in radians (required for velocity calculations because they don't work with degrees)
 			b.revive();
-			b.reset(x, y - 15); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
+			b.reset(x, y - 4); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
 			b.angle = dFireAngle; //if your bullet shape doesn't need to be rotated (such as a circle) then remove this line to speed up the rendering
 			rFireAngle = (dFireAngle * (Math.PI / 180)); //convert the fire angle from degrees into radians and apply that value to the radian fire angle variable
 			b.velocity.x = Math.cos(rFireAngle) * rune.myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).
 			b.velocity.y = Math.sin(rFireAngle) * rune.myVelocity; //calculate a velocity along the y axis, ditto.
 			
 			this.addRuneSignal.dispatch(b);
-			runeIndex++;
+		/*	runeIndex++;
 			if (runeIndex > runeArray.length)
 				runeIndex = 0;
-			FlxG.play(SoundShoot, .7, false);
+		*/
 		}
 		
 		public function tileCollision(Object1:FlxObject,Object2:FlxObject):void
