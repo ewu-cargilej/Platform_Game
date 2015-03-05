@@ -28,14 +28,19 @@ package com.gauntlet.objects.player
 		[Embed(source = "../../../../../embeded_resources/Game_Screen/Hero/HeroArmSprite.png")] private static var ImgArmReal:Class;
 		[Embed(source = "../../../../../embeded_resources/SFX/Shoot.mp3")] private static var SoundShoot:Class;
 		public var aimAngle:Number = 0;
-		private var runeIndex:Number = 0;
-		public var runes:Array = new Array();
-		public var runeGroup :FlxGroup;
 		private var rune :Rune;
-		private var angleAdjustX:Number = 0;
-		private var angleAdjustY:Number = 0;
+		
+		private var runeIndex :int;
+		private var runeArray	:Array = new Array();
+		/** Group of all the runes that appear */
+		public var runeGroup		:FlxGroup;
+		
 		public var addRuneSignal :Signal = new Signal();
+		public var removeRuneSignal :Signal = new Signal();
+		public var removeGroupSignal :Signal = new Signal();
+		public var addGroupSignal	:Signal = new Signal();
 		private var shotTimer :FlxTimer = new FlxTimer();
+		
 		private var canFire :Boolean;
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -48,12 +53,22 @@ package com.gauntlet.objects.player
 			super(X - 4.25, Y + 12, SimpleGraphic);
 			this.loadGraphic(ImgArmReal, true, true, 22,6);
 			canFire = true;
+			runeIndex = 0;
+			rune = new Rune(this.x, this.y);
 			for (var i:uint = 0; i < 10; i++)
 			{
-				runes[i] = new Rune(this.x, this.y);
+				runeArray[i] = rune.clone();
+				//runeGroup.add(runeArray[i]);
+				runeArray[i].runeDiedSignal.add(removeRune);
+				//this.addGroupSignal.dispatch(runeArray[i]);
 			}
-			//runeGroup.members = runes;
-			//load up rune array
+		}
+		/**
+		 * removes a rune from the group
+		 */
+		private function removeRune($rune:FlxSprite):void 
+		{
+			this.removeRuneSignal.dispatch($rune);
 		}
 		
 		public function changeFire(Timer:FlxTimer):void
@@ -63,13 +78,20 @@ package com.gauntlet.objects.player
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		public function loadRune(newrune:Rune):void
+		public function loadRune($newRune:Rune):void
 		{
+			this.removeGroupSignal.dispatch();
+			rune = $newRune.clone();
 			for (var i:uint = 0; i < 10; i++)
 			{
-				runes[i] = newrune.clone();
+				runeArray[i] = rune.clone();
+				//this.runeGroup.add(runeArray[i]);
+				//FlxG.play(SoundShoot, .7, false);
+				this.addGroupSignal.dispatch(runeArray[i]);
 			}
+			//rune.runeDiedSignal.add(removeRune);
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -96,31 +118,37 @@ package com.gauntlet.objects.player
 			setAimAngle();
 			this.angle = aimAngle;
 			
-			if (FlxG.mouse.justPressed() && canFire)
+			//if (FlxG.mouse.justPressed() && canFire)
+			if (FlxG.keys.justPressed("SPACE") && canFire)
 			{
 				fireBullet(this.x, this.y, this.angle);
 				this.canFire = false;
-				shotTimer.start(runes[runeIndex].Rate, 1, changeFire);
-				
-				FlxG.play(SoundShoot, .7, false);
+				shotTimer.start(rune.Rate, 1, changeFire);
+				//FlxG.play(SoundShoot, .7, false);
 			}
 		}
 		
 		private function fireBullet(x:Number, y:Number, dFireAngle:Number):void
 		{
-			var b:FlxSprite = runes[runeIndex];	//Figure out which bullet to fire
-			b.revive();
-			//var b:FlxSprite = new Rune(rune.myVelocity, rune.x,rune.y);
+			var b:FlxSprite = runeArray[runeIndex];
 			var rFireAngle:Number; //create a variable for the angle in radians (required for velocity calculations because they don't work with degrees)
-			b.reset(x - 3, y - 8); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
+			b.revive();
+			b.reset(x, y - 15); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
 			b.angle = dFireAngle; //if your bullet shape doesn't need to be rotated (such as a circle) then remove this line to speed up the rendering
 			rFireAngle = (dFireAngle * (Math.PI / 180)); //convert the fire angle from degrees into radians and apply that value to the radian fire angle variable
-			b.velocity.x = Math.cos(rFireAngle) * runes[runeIndex].myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).
-			b.velocity.y = Math.sin(rFireAngle) * runes[runeIndex].myVelocity; //calculate a velocity along the y axis, ditto.
-			runeIndex++;							//Increment our bullet list tracker,
-			addRuneSignal.dispatch(b);
-			if(runeIndex >= runes.length)		//and check to see if we went over,
-				runeIndex = 0;	
+			b.velocity.x = Math.cos(rFireAngle) * rune.myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).
+			b.velocity.y = Math.sin(rFireAngle) * rune.myVelocity; //calculate a velocity along the y axis, ditto.
+			
+			this.addRuneSignal.dispatch(b);
+			runeIndex++;
+			if (runeIndex > runeArray.length)
+				runeIndex = 0;
+			FlxG.play(SoundShoot, .7, false);
+		}
+		
+		public function tileCollision(Object1:FlxObject,Object2:FlxObject):void
+		{
+			Object1.kill();
 		}
 	}
 }

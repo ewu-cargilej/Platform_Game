@@ -4,6 +4,7 @@ package com.gauntlet.runes
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxU;
+	import org.osflash.signals.Signal;
 
 	
 	/**
@@ -27,6 +28,8 @@ package com.gauntlet.runes
 		/** The name of the weapon */
 		protected var	sName	:String;
 		
+		public var		runeDiedSignal	:Signal = new Signal();
+		
 		private var starting :FlxPoint;
 		private var nMyHealth :Number;
 		/* ---------------------------------------------------------------------------------------- */
@@ -39,9 +42,7 @@ package com.gauntlet.runes
 			super(X,Y, SimpleGraphic);
 			starting = new FlxPoint(X, Y);
 			this.loadGraphic(ImgRuneTemp, true, true, 32);
-			
-			
-			
+				
 			if ($parent == null)
 				parseXML(0);
 			else
@@ -74,6 +75,7 @@ package com.gauntlet.runes
 			this.nVelocity = $parent.myVelocity;
 			this.sName = $parent.Name;
 		}
+		
 		public function clone():Rune
 		{
 			var output:Rune = new Rune(this.x, this.y, this);
@@ -85,6 +87,7 @@ package com.gauntlet.runes
 			super.revive();
 			this.health = nMyHealth;
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -99,6 +102,10 @@ package com.gauntlet.runes
 				this.kill();
 			}
 			this.hurt(FlxU.getDistance(starting, new FlxPoint(this.x, this.y)));
+		if (!this.alive)
+			{
+				this.runeDiedSignal.dispatch(this);
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

@@ -41,6 +41,9 @@ package com.gauntlet.states
 		/** All enemies on the screen. */
 		protected var _enemyGroup		:FlxGroup;
 		
+		/** Group of all the runes that appear */
+		protected var _runeGroup		:FlxGroup;
+		
 		/** Show current health. */
 		protected var _txtHealth		:FlxText;
 		
@@ -56,6 +59,9 @@ package com.gauntlet.states
 		/** The upgrade manage for the runes and health*/
 		protected var 	upgrades		:UpgradeManager;
 		
+		//FOR TESTING ONLY
+		private var testCollision:Boolean;
+		
 		/**
 		 * Set up the state.
 		 */
@@ -68,6 +74,7 @@ package com.gauntlet.states
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
 			this._enemyGroup = new FlxGroup();
+			this._runeGroup = new FlxGroup();
 			
 			add(_enemyGroup);
 			this.upgrades = new UpgradeManager();
@@ -126,6 +133,14 @@ package com.gauntlet.states
 			
 			FlxG.overlap(mcHero, _enemyGroup, collideDamage);
 			
+			if (FlxG.keys.justPressed("T"))
+				testCollision = !testCollision;
+			
+			if (testCollision && _enemyGroup.length != 0)
+			{
+				FlxG.overlap(_runeGroup, _enemyGroup, enemyDamage);
+				FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
+			}
 			
 			if (mcArm.x - 3.5 != mcHero.x)
 			{
@@ -137,6 +152,13 @@ package com.gauntlet.states
 			}
 			
 			wrap();
+		}
+		
+		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
+		{
+			//stubbed out so it runs
+			$enemy.hurt($rune.Damage);
+			$rune.kill();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -171,15 +193,34 @@ package com.gauntlet.states
 			
 			add(mcHero);
 			
-			mcArm = new Arm(mcHero.x + 16, mcHero.y);
+			mcArm = new Arm(mcHero.x, mcHero.y);
 			
 			add(mcArm);
 			
-			mcArm.addRuneSignal.add(add);
+			mcArm.addRuneSignal.add(addRune);
+			mcArm.removeRuneSignal.add(removeRune);
 			
 			mcArm.loadRune(new Rune(FlxG.width / 2 - 16, 640));			
 		}
 		
+		/**
+		 * adds a rune to the rune group and the screen
+		 * @param	$rune
+		 */
+		private function addRune($rune:FlxSprite):void 
+		{
+			add($rune);
+			this._runeGroup.add($rune);
+		}
+		/**
+		 * removes a rune from the screen and group
+		 * @param	$rune
+		 */
+		private function removeRune($rune:FlxSprite):void
+		{
+			remove($rune);
+			this._runeGroup.remove($rune);
+		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 		
