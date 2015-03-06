@@ -1,7 +1,7 @@
 package com.gauntlet.objects.enemies
 {
 	import org.flixel.FlxSprite;
-
+	import org.flixel.FlxG;
 	
 	/**
 	 * Base Enemy to extend from.
@@ -43,7 +43,7 @@ package com.gauntlet.objects.enemies
 		 */
 		override public function update():void
 		{
-			
+			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 		}
 		
 		/**

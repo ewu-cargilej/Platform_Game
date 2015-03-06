@@ -91,6 +91,8 @@ package com.gauntlet.objects.player
 			{
 				this.play("run");
 			}
+			
+			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 		}
 		/**
 		 * Damage the hero and check if dead.

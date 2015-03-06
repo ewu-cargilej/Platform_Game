@@ -56,6 +56,9 @@ package com.gauntlet.states
 		/** The upgrade manage for the runes and health*/
 		protected var 	upgrades		:UpgradeManager;
 		
+		/** Location of the exit. */
+		protected var	_nExitHeight	:int;
+		
 		/**
 		 * Set up the state.
 		 */
@@ -117,7 +120,7 @@ package com.gauntlet.states
 			if (this._bLevelComplete)
 			{
 				//open door
-				this.levelMap.setTile(levelMap.widthInTiles - 1, levelMap.heightInTiles - 2, 0);
+				this.levelMap.setTile(levelMap.widthInTiles - 1, this._nExitHeight, 0);
 			}
 			
 			FlxG.collide(mcHero, levelMap);
@@ -220,7 +223,8 @@ package com.gauntlet.states
 					}
 				}
 			}
-				
+			
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -238,13 +242,33 @@ package com.gauntlet.states
 			
 			if ($bMakePlatforms)
 			{
-				var n :Number = Math.random();
+				var n :int = int(Math.random() * 3);
 				
-				if (n < .5)
-					genBasic();
-				else
-					genNatesRecommendation();
+				
+				switch (n)
+				{
+					case 0:
+					{
+						genBasic();
+						break;
+					}
+					
+					case 1:
+					{
+						genHoles();
+						break;
+					}
+				
+					default:
+					{
+						genSlopes();
+					}
+						
+				}
+				
 			}
+			else
+				this._nExitHeight = levelMap.heightInTiles - 2;
 			
 			this._bLevelComplete = false;
 			
@@ -269,28 +293,66 @@ package com.gauntlet.states
 						levelMap.setTile(x, y, int(Math.random() * 4 + 1));
 				}
 			}
+			
+			this._nExitHeight = levelMap.heightInTiles - 2;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * @private
-		 * Generate platforms as recommended from the proto presentation.
+		 * Generate platforms
 		 *
 		 */
-		protected function genNatesRecommendation():void
+		protected function genHoles():void
 		{
-			var n :int = 0;
+			var randomTarget:int = int(Math.random() * 10);
+			
+			for (var x :int = 2; x < levelMap.widthInTiles - 2; x++)
+			{
+				levelMap.setTile(x, 0, 0);
+				levelMap.setTile(x, levelMap.heightInTiles - 1, 0);
+				
+				levelMap.setTile(x, int(Math.random() * levelMap.heightInTiles), int(Math.random() * 4 + 1));
+			}
+			
+			this._nExitHeight = levelMap.heightInTiles - 2;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		
+		/**
+		 * @private
+		 * Generate tall stuff
+		 *
+		 */
+		protected function genSlopes():void
+		{
+			var height :int = levelMap.heightInTiles - mcHero.y / 32;
+			
+			var slopeMod :Number = 1;
+			if (mcHero.y < FlxG.height / 2)
+				slopeMod = 1.5;
+			
 			
 			for (var x :int = 1; x < levelMap.widthInTiles - 1; x++)
 			{
-				for (var y :int = 3; y < levelMap.heightInTiles - 2; y+=3)
+				for (var y :int = 0; y < height; y++)
 				{
-					if(Math.random() * 20 > 5)
-						levelMap.setTile(x, y - 1 + int(Math.random() * 2), int(Math.random() * 4 + 1));
+					levelMap.setTile(x, levelMap.heightInTiles - y, int(Math.random() * 4 + 1));
 				}
+				
+				if(x < levelMap.widthInTiles - 2)
+					height += ((Math.random() * 3 - slopeMod) * 2);
+				
+				if (height < 0)
+					height = 0;
+				if (height > levelMap.heightInTiles - 5)
+					height = levelMap.heightInTiles - 5;
 			}
 			
+			this._nExitHeight = levelMap.heightInTiles - height - 2;
 		}
 		
 		
