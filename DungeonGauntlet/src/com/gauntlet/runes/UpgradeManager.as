@@ -18,6 +18,7 @@ package com.gauntlet.runes
 	{
 		
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Health.png')]private static var HealthUpgradeGraphic:Class;
+		
 		private var newRune  :Rune;
 		private var runeUpgrade :FlxSprite;
 		private var healthUpgrade :FlxSprite;

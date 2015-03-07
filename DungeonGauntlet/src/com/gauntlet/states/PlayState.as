@@ -196,6 +196,10 @@ package com.gauntlet.states
 		{
 			$enemy.hurt($rune.Damage);
 			$rune.kill();
+			if (!$enemy.alive)
+			{
+				_iManager.spawnCollectible($enemy);
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -277,13 +281,10 @@ package com.gauntlet.states
 			remove($obj);
 			this._collectibleGroup.remove($obj);
 			
-			if ($value != -1)
-			{
-				this._numScore += $value;
-				var intScore:int = int(this._numScore);
-				this._txtScore.text = "Score: " + intScore;
-			}
-			
+			this._numScore += $value;
+			var intScore:int = int(this._numScore);
+			this._txtScore.text = "Score: " + intScore;
+			this._txtScore.text = "COIN GRABBED";
 		}
 		
 		private function upgrade(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune = null):void
@@ -355,6 +356,8 @@ package com.gauntlet.states
 						mcGhost.acquireTarget(mcHero);
 					}
 				}
+				this._collectibleGroup.kill();
+				this._collectibleGroup.clear();
 			}
 				
 		}

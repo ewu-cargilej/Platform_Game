@@ -10,28 +10,31 @@ package com.gauntlet.objects.items
 	 */
 	public class Coin extends FlxSprite
 	{
+		[Embed(source = '../../../../../embeded_resources/Game_Screen/Upgrades/FPO_Coin.png')]private static var CoinGraphic:Class;
 		public var LifeTimer	:FlxTimer;
-		private var lifeTime	:Number = 1;
+		private var lifeTime	:Number = 3;
 		//coin graphic
 		public function Coin($enemy:FlxSprite) 
 		{
 			super($enemy.x, $enemy.y);
-			//this.loadGraphic(coinGraphic, true, true, 32);
+			this.loadGraphic(CoinGraphic, true, true, 16);
 			this.health = 5000;
 			LifeTimer = new FlxTimer();
-			LifeTimer.start(lifeTime, 1, kill);
+			LifeTimer.start(lifeTime, 1, timeEnd);
+			this.acceleration.y = 50;
+			this.ID = int(Math.random() * 1000);
 		}
 		
 		override public function update():void 
 		{
 			super.update();
 			this.health = this.health * LifeTimer.timeLeft;
-			if (this.health == 0)
-			{
-				this.kill();
-			}
 		}
 		
+		public function timeEnd(Timer:FlxTimer):void
+		{
+			this.kill();
+		}
 	}
 
 }
