@@ -5,6 +5,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.enemies.Ghost;
 	import com.gauntlet.objects.enemies.Lumberer;
 	import com.gauntlet.objects.enemies.Spider;
+	import com.gauntlet.objects.items.ItemManager;
 	import com.gauntlet.objects.player.Arm;
 	import com.gauntlet.objects.player.Hero;
 	import com.gauntlet.runes.Rune;
@@ -53,15 +54,17 @@ package com.gauntlet.states
 		/**	Show current score. */
 		protected var _txtScore			:FlxText;
 		
+		/** the current score of the game */
+		protected var _numScore			:Number;
+		
 		/**	Show current rune. */
 		protected var _txtRune			:FlxText;
 		
 		/** Current level number. */
 		protected var _nLevelNumber		:int;
 		
-		/** The upgrade manage for the runes and health*/
-		protected var 	upgrades		:UpgradeManager;
-		
+		/** Manages all the items that appear on screen */
+		protected var	_iManager		:ItemManager;
 		
 		/**
 		 * Set up the state.
@@ -78,24 +81,27 @@ package com.gauntlet.states
 			establishGroups();
 			
 			add(_enemyGroup);
-			this.upgrades = new UpgradeManager();
 			
 			setupPlayer(32, 640);
 			
-			upgrades.displayButtonSignal.add(add);
-			upgrades.removeButtonSignal.add(remove);
-			upgrades.newRuneSignal.add(mcArm.loadRune);
+			_iManager.newRuneSignal.add(mcArm.loadRune);
+			_iManager.spawnObjectSignal.add(addCollectible);
+			//_iManager.upgradeHealthSignal.add(mcHero.increaseHealth);
+			_iManager.removeObjectSignal.add(removeCollectible);
+			
 			
 			levelMap = new FlxTilemap();
 			this.generateRoomTiles(true);
 			this.placeEnemies();
 			
+			this._numScore = 0;
+			var intScore:int = int(this._numScore);
 			
 			_txtHealth = new FlxText(64, FlxG.height - 48, 150, "HP: " + this.mcHero.health);
 			_txtHealth.size = 24;
 			add(_txtHealth);
 			
-			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 150, "Score:");
+			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 150, "Score: " + intScore);
 			_txtScore.size = 24;
 			add(_txtScore);
 			
@@ -114,6 +120,7 @@ package com.gauntlet.states
 			this._enemyGroup = new FlxGroup();
 			this._runeGroup = new FlxGroup();
 			this._collectibleGroup = new FlxGroup();
+			_iManager = new ItemManager();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -132,9 +139,11 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 			}
 			
-			if (_enemyGroup.countLiving() == 0)
+			if (_enemyGroup.countLiving() == 0 && !this._bLevelComplete)
 			{
+				this._enemyGroup.clear();
 				this._bLevelComplete = true;
+				_iManager.spawnUpgrade();
 			}
 			
 			if (this._bLevelComplete)
@@ -153,7 +162,7 @@ package com.gauntlet.states
 			
 			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
 			
-			FlxG.collide(mcHero, _collectibleGroup /*, itemManager.collect*/);
+			FlxG.collide(mcHero, _collectibleGroup, _iManager.collect);
 			
 			alignArm();
 			
@@ -242,6 +251,32 @@ package com.gauntlet.states
 		{
 			remove($rune);
 			this._runeGroup.remove($rune);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * adds collectibles to the screen and the group
+		 * @param	$obj
+		 */
+		private function addCollectible($obj:FlxSprite):void 
+		{
+			add($obj);
+			this._collectibleGroup.add($obj);
+		}
+		
+		private function removeCollectible($obj:FlxSprite, $value:Number):void 
+		{
+			remove($obj);
+			this._collectibleGroup.remove($obj);
+			
+			if ($value != -1)
+			{
+				this._numScore += $value;
+				var intScore:int = int(this._numScore);
+				this._txtScore.text = "Score: " + intScore;
+			}
+			
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
