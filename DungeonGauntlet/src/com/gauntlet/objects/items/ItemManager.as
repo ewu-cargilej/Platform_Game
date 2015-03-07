@@ -80,22 +80,23 @@ package com.gauntlet.objects.items
 			var value:Number;
 			if (uManager.isUpgrade(Object2))
 			{
-				value = -1;
+				//we need no signal
 			}
 			else
+			{
 				value = Object2.health;
-				
-			this.removeObjectSignal.dispatch(Object2, value);
+				this.removeObjectSignal.dispatch(Object2, value);
+			}
 		}
 		
-		public function upgradeRune($rune:Rune):void 
+		public function upgradeRune(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune):void 
 		{
-			this.newRuneSignal.dispatch($rune);
+			this.newRuneSignal.dispatch(runeUpgrade,healthUpgrade,newRune);
 		}
 		
-		public function upgradeHealth():void 
+		public function upgradeHealth(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite):void 
 		{
-			this.upgradeHealthSignal.dispatch();
+			this.upgradeHealthSignal.dispatch(runeUpgrade,healthUpgrade);
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		

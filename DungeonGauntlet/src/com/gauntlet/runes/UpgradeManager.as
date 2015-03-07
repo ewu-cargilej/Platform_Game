@@ -17,7 +17,7 @@ package com.gauntlet.runes
 	public class UpgradeManager extends Sprite
 	{
 		
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Health.png')]private static var HealthUpgrade:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Health.png')]private static var HealthUpgradeGraphic:Class;
 		private var newRune  :Rune;
 		private var runeUpgrade :FlxSprite;
 		private var healthUpgrade :FlxSprite;
@@ -42,19 +42,19 @@ package com.gauntlet.runes
 		{
 			//rune upgrade
 			newRune = generateRune($level);
-			runeUpgrade = new FlxSprite(350, 350);
+			runeUpgrade = new FlxSprite(600, 290);
 			runeUpgrade.ID = 10101;
 			runeUpgrade.loadGraphic(Rune.RuneUpgrade);
 			//load text data and display
 			this.displayUpgradeSignal.dispatch(runeUpgrade);
+			newRune.acceleration.y = 50;
 			
 			//health upgrade
-			/*
-			healthUpgrade = new FlxSprite(x, y);
+			healthUpgrade = new FlxSprite(900, 290);
 			healthUpgrade.ID = 20202;
-			healthUpgrade.loadGraphic(health);
+			healthUpgrade.loadGraphic(HealthUpgradeGraphic);
 			this.displayUpgradeSignal.dispatch(healthUpgrade);
-			*/
+			healthUpgrade.acceleration.y = 50;
 		}
 		
 		private function generateRune($level:Number):Rune
@@ -67,13 +67,6 @@ package com.gauntlet.runes
 			
 		}
 		
-		/*private function changeRune():void
-		{
-			//something
-			this.newRuneSignal.dispatch(newRune);
-			this.runeButton.visible = false;
-			this.removeButtonSignal.dispatch(runeButton);
-		}*/
 		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
@@ -89,12 +82,12 @@ package com.gauntlet.runes
 		{
 			if (object2.ID == runeUpgrade.ID)
 			{
-				this.newRuneSignal.dispatch(newRune);
+				this.newRuneSignal.dispatch(runeUpgrade, healthUpgrade, newRune);
 				return true;
 			}
 			else if (object2.ID == healthUpgrade.ID)
 			{
-				this.upgradeHealthSignal.dispatch();
+				this.upgradeHealthSignal.dispatch(runeUpgrade, healthUpgrade);
 				return true;
 			}
 			return false;

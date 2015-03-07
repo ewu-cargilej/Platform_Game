@@ -10,6 +10,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.player.Hero;
 	import com.gauntlet.runes.Rune;
 	import com.gauntlet.runes.UpgradeManager;
+	import flash.events.AVLoadInfoEvent;
 	import org.flixel.*;
 	import org.flixel.system.FlxTile;
 
@@ -48,6 +49,9 @@ package com.gauntlet.states
 		/** Group of all collidable items */
 		protected var _collectibleGroup	:FlxGroup;
 		
+		/** a text of the text added to screen for upgrades*/
+		protected var _onScreenText		:FlxGroup;
+		
 		/** Show current health. */
 		protected var _txtHealth		:FlxText;
 		
@@ -84,9 +88,9 @@ package com.gauntlet.states
 			
 			setupPlayer(32, 640);
 			
-			_iManager.newRuneSignal.add(mcArm.loadRune);
+			_iManager.newRuneSignal.add(upgrade);
 			_iManager.spawnObjectSignal.add(addCollectible);
-			//_iManager.upgradeHealthSignal.add(mcHero.increaseHealth);
+			_iManager.upgradeHealthSignal.add(upgrade);
 			_iManager.removeObjectSignal.add(removeCollectible);
 			
 			
@@ -120,6 +124,7 @@ package com.gauntlet.states
 			this._enemyGroup = new FlxGroup();
 			this._runeGroup = new FlxGroup();
 			this._collectibleGroup = new FlxGroup();
+			this._onScreenText = new FlxGroup();
 			_iManager = new ItemManager();
 		}
 		
@@ -134,13 +139,13 @@ package com.gauntlet.states
 			
 			if (FlxG.keys.justPressed("K"))
 			{
-				this._bLevelComplete = true;
+				//this._bLevelComplete = true;
 				this._enemyGroup.kill();
-				this._enemyGroup.clear();
 			}
 			
 			if (_enemyGroup.countLiving() == 0 && !this._bLevelComplete)
 			{
+				
 				this._enemyGroup.clear();
 				this._bLevelComplete = true;
 				_iManager.spawnUpgrade();
@@ -163,6 +168,8 @@ package com.gauntlet.states
 			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
 			
 			FlxG.collide(mcHero, _collectibleGroup, _iManager.collect);
+			
+			FlxG.collide(_collectibleGroup, levelMap);
 			
 			alignArm();
 			
@@ -277,6 +284,37 @@ package com.gauntlet.states
 				this._txtScore.text = "Score: " + intScore;
 			}
 			
+		}
+		
+		private function upgrade(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune = null):void
+		{
+			if (newRune != null)
+			{
+				mcArm.loadRune(newRune);
+			}
+			else
+			{
+				mcHero.increaseHealth();
+				this._txtHealth.text = "HP: " + this.mcHero.health;
+			}
+			
+			remove(runeUpgrade);
+			remove(healthUpgrade);
+			this._collectibleGroup.remove(runeUpgrade);
+			this._collectibleGroup.remove(healthUpgrade);
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		private function addText($theObject:FlxObject):void
+		{
+			this._onScreenText.add($theObject);
+			add($theObject);
+		}
+		
+		private function removeText():void
+		{
+			this._onScreenText.kill();
+			this._onScreenText.clear();
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		

@@ -33,6 +33,7 @@ package com.gauntlet.objects.player
 			
 			//at the beginning, health is 100
 			this.health = 100;
+			this._nMaxheath = this.health;
 			
 			//bounding box tweaks
 			this.width = 16;
@@ -105,6 +106,12 @@ package com.gauntlet.objects.player
 			{
 				FlxG.switchState(new ResultState());
 			}
+		}
+		
+		public function increaseHealth():void 
+		{
+			this._nMaxheath += 20;
+			this.health = this._nMaxheath;
 		}
 	}
 }

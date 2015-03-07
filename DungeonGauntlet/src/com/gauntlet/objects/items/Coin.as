@@ -26,6 +26,10 @@ package com.gauntlet.objects.items
 		{
 			super.update();
 			this.health = this.health * LifeTimer.timeLeft;
+			if (this.health == 0)
+			{
+				this.kill();
+			}
 		}
 		
 	}
