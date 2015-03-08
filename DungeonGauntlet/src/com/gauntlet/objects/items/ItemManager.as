@@ -4,6 +4,7 @@ package com.gauntlet.objects.items
 	import com.gauntlet.runes.UpgradeManager;
 	import flash.automation.Configuration;
 	import flash.display.Sprite;
+	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	import org.osflash.signals.Signal;
@@ -17,6 +18,7 @@ package com.gauntlet.objects.items
 	public class ItemManager extends Sprite
 	{
 		private var uManager :UpgradeManager;
+		[Embed(source = "../../../../../embeded_resources/SFX/Shoot.mp3")] private static var CollectSound:Class;
 		public var spawnObjectSignal :Signal = new Signal();
 		public var removeObjectSignal	:Signal = new Signal();
 		public var upgradeHealthSignal	:Signal = new Signal();
@@ -85,6 +87,7 @@ package com.gauntlet.objects.items
 			else
 			{
 				value = Object2.health;
+				FlxG.play(CollectSound, .7, false);
 				this.removeObjectSignal.dispatch(Object2, value);
 			}
 		}

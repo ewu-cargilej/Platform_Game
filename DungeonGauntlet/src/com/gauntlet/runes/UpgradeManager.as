@@ -42,30 +42,52 @@ package com.gauntlet.runes
 		public function spawnUpgrade($level:Number):void
 		{
 			//rune upgrade
-			newRune = generateRune($level);
-			runeUpgrade = new FlxSprite(600, 290);
+			generateRune($level);
+			runeUpgrade = new FlxSprite(32 * 30, 32 * 19);
 			runeUpgrade.ID = 10101;
-			runeUpgrade.loadGraphic(Rune.RuneUpgrade);
+			runeUpgrade.loadGraphic(newRune.getUpgradeGraphic());
 			//load text data and display
 			this.displayUpgradeSignal.dispatch(runeUpgrade);
-			newRune.acceleration.y = 50;
+			
+			//rune text
+			//_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 400, "Score: " + intScore);
+			//_txtScore.size = 24;
+			//add(_txtScore);
+			
+			//or graphic
 			
 			//health upgrade
-			healthUpgrade = new FlxSprite(900, 290);
+			healthUpgrade = new FlxSprite(32 * 27, 32 * 19);
 			healthUpgrade.ID = 20202;
 			healthUpgrade.loadGraphic(HealthUpgradeGraphic);
 			this.displayUpgradeSignal.dispatch(healthUpgrade);
-			healthUpgrade.acceleration.y = 50;
 		}
 		
-		private function generateRune($level:Number):Rune
+		private function generateRune($level:Number):void
 		{
-			var runeType:int = 1 + (Math.random() * 3);
-			var newRune :Rune;
-			//switch types
-			newRune = new Rune(0, 0);
-			return newRune;
+			var runeType:Number;
+			runeType = Math.random() * 4;
 			
+			if( 1 > runeType && runeType > 0)
+			{
+				this.newRune = new MagicRune(0, 0);
+			}
+			else if( 2 > runeType && runeType > 1)
+			{
+				this.newRune = new FireRune(0, 0);
+			}
+			else if( 3 > runeType && runeType > 2)
+			{
+				this.newRune = new IceRune(0, 0);
+			}
+			else if( 4 > runeType && runeType > 3)
+			{
+				this.newRune = new LightningRune(0, 0);
+			}
+			else
+			{
+				this.newRune = new Rune(0, 0);
+			}			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		

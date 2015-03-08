@@ -32,8 +32,8 @@ package com.gauntlet.runes
 		
 		public var		runeDiedSignal	:Signal = new Signal();
 		
-		private var starting :FlxPoint;
-		private var nMyHealth :Number;
+		protected var starting :FlxPoint;
+		protected var nMyHealth :Number;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -67,12 +67,11 @@ package com.gauntlet.runes
 		 */
 		public function fillValues($curLevel:int):void
 		{
-			//not currently used
-			this.nDamage = Math.random() * 40;
-			this.nRate = Math.random();
-			nMyHealth = Math.random() * 15000;
-			this.nVelocity = 400 + (Math.random() * 300);
-			this.sName = "tester Rune";
+			this.nDamage = 20;
+			this.nRate = .2;
+			nMyHealth = 10000;
+			this.nVelocity = 400;
+			this.sName = "base Rune";
 		}
 		
 		private function copyParent($parent:Rune):void
@@ -178,6 +177,11 @@ package com.gauntlet.runes
 		public function playSound():void
 		{
 			FlxG.play(SoundShoot, .7, false);
+		}
+		
+		public function getUpgradeGraphic():Class
+		{
+			return RuneUpgrade;
 		}
 	}
 }

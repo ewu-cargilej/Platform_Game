@@ -105,7 +105,7 @@ package com.gauntlet.states
 			_txtHealth.size = 24;
 			add(_txtHealth);
 			
-			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 150, "Score: " + intScore);
+			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 400, "Score: " + intScore);
 			_txtScore.size = 24;
 			add(_txtScore);
 			
@@ -167,7 +167,7 @@ package com.gauntlet.states
 			
 			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
 			
-			FlxG.collide(mcHero, _collectibleGroup, _iManager.collect);
+			FlxG.overlap(mcHero, _collectibleGroup, _iManager.collect);
 			
 			FlxG.collide(_collectibleGroup, levelMap);
 			
@@ -284,7 +284,7 @@ package com.gauntlet.states
 			this._numScore += $value;
 			var intScore:int = int(this._numScore);
 			this._txtScore.text = "Score: " + intScore;
-			this._txtScore.text = "COIN GRABBED";
+			//this._txtScore.text = "COIN GRABBED";
 		}
 		
 		private function upgrade(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune = null):void
@@ -303,6 +303,20 @@ package com.gauntlet.states
 			remove(healthUpgrade);
 			this._collectibleGroup.remove(runeUpgrade);
 			this._collectibleGroup.remove(healthUpgrade);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * clears groups from the screen and ensures that their groups are empty
+		 */
+		private function clearGroups():void
+		{
+			this._collectibleGroup.kill();
+			this._collectibleGroup.clear();
+				
+			this._runeGroup.kill();
+			this._collectibleGroup.clear();
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -340,11 +354,13 @@ package com.gauntlet.states
 					{
 						this.generateRoomTiles(true);
 						this.placeEnemies();
+						this.clearGroups();
 						this._nLevelNumber++;
 					}
 					else
 					{
 						this.generateRoomTiles(false);
+						this.clearGroups();
 						this._nLevelNumber++;
 						
 						FlxG.music.stop();
@@ -356,8 +372,6 @@ package com.gauntlet.states
 						mcGhost.acquireTarget(mcHero);
 					}
 				}
-				this._collectibleGroup.kill();
-				this._collectibleGroup.clear();
 			}
 				
 		}

@@ -78,14 +78,8 @@ package com.gauntlet.objects.player
 		
 		public function loadRune($newRune:Rune):void
 		{
-			this.removeGroupSignal.dispatch();
-			rune = $newRune.clone();
-		/*	for (var i:uint = 0; i < 10; i++)
-			{
-				runeArray[i] = rune.clone();
-				this.addGroupSignal.dispatch(runeArray[i]);
-			}
-		*/
+			//this.removeGroupSignal.dispatch();
+			rune = $newRune;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

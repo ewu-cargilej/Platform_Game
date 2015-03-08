@@ -2,7 +2,6 @@ package com.gauntlet.runes
 
 {
 	import flash.display.Sprite;
-	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 
 	
@@ -11,20 +10,20 @@ package com.gauntlet.runes
 	 * 
 	 * @author Nicholas Valetnine
 	 */
-	public class MagicRune extends Rune
+	public class LightningRune extends Rune
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Magic.png")] private static var MagicBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/MagicUpgradeFPO.png')]public static var MagicUpgrade:Class;
+		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Elec.png")] private static var ElecBlast:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/ElecUpgradeFPO.png')]public static var LightningUpgrade:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Constructs the IamAGun object.
 		 */
-		public function MagicRune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function LightningRune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			this.loadGraphic(MagicBlast, true, true, 32);
+			this.loadGraphic(ElecBlast, true, true, 32);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -49,11 +48,12 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			this.nDamage = Math.random() * 40;
-			this.nRate = Math.random();
-			nMyHealth = Math.random() * 15000;
-			this.nVelocity = 400 + (Math.random() * 300);
-			this.sName = "tester Magic Rune";
+			this.nRate = .5 + Math.random() * .5;
+			nMyHealth = 5000 + Math.random() * 10000;
+			this.nVelocity = 500 + (Math.random() * 200);
+			
+			this.nDamage = 10 + Math.random() * 30;
+			this.sName = "Lightning Rune";
 		}
 		
 		
@@ -70,14 +70,14 @@ package com.gauntlet.runes
 		
 		override public function clone():Rune
 		{
-			var output:Rune = new MagicRune(this.x, this.y, this);
+			var output:Rune = new LightningRune(this.x, this.y, this);
 			return output;
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		override public function getUpgradeGraphic():Class
 		{
-			return MagicUpgrade;
+			return LightningUpgrade;
 		}
+		
 	}
 }
-
