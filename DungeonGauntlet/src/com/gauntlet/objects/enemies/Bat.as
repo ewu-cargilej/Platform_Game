@@ -126,21 +126,15 @@ package com.gauntlet.objects.enemies
 		FlxG.play(Flap,0.5);
         }
 		/**
-		 * Damage the enemy and check if dead.
+		 * kill enemy
 		 * 
-		 * @param	Damage			Number of health to take away.
 		 */
-		override public function hurt(Damage:Number):void
+		override public function kill():void
 		{
-			super.hurt(Damage);
-			
-			if (this.health <= 0)
-			{
-				//dead stuff
-				_tTimer.stop();
-				FlxG.play(Die, 0.75);
-				_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
-			}
+			super.kill();
+			_tTimer.stop();
+			FlxG.play(Die, 0.75);
+			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 		}
 		
 	}

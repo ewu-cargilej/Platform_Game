@@ -224,16 +224,19 @@ package com.gauntlet.objects.enemies
 			if (this.alpha == 1)
 			{
 				super.hurt(Damage);
-			
-				if (this.health <= 0)
-				{
-					//dead stuff
-					FlxG.play(Die, 0.75);
-					_tTimer.stop();
-					_tTimer.removeEventListener(TimerEvent.TIMER, timerHandler);
-					_tTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, completeHandler);
-				}
 			}
+		}
+		/**
+		 * kill enemy
+		 * 
+		 */
+		override public function kill():void
+		{
+			super.kill();
+			FlxG.play(Die, 0.75);
+			_tTimer.stop();
+			_tTimer.removeEventListener(TimerEvent.TIMER, timerHandler);
+			_tTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, completeHandler);
 		}
 	}
 }
