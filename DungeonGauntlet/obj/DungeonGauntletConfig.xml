@@ -32,12 +32,20 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
+<<<<<<< HEAD
       <path-element>C:\Users\Chelsea\Documents\Platform_Game\DungeonGauntlet\src</path-element>
+=======
+      <path-element>C:\Users\Casey\Documents\SourceTree\sphericalpenguin\Game\DungeonGauntlet\src</path-element>
+>>>>>>> Pause_Functionality
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
+<<<<<<< HEAD
     <path-element>C:\Users\Chelsea\Documents\Platform_Game\DungeonGauntlet\src\Main.as</path-element>
+=======
+    <path-element>C:\Users\Casey\Documents\SourceTree\sphericalpenguin\Game\DungeonGauntlet\src\Main.as</path-element>
+>>>>>>> Pause_Functionality
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>30</default-frame-rate>

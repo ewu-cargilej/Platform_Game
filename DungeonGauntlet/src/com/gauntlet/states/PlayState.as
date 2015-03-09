@@ -158,13 +158,27 @@ package com.gauntlet.states
 		{
 			super.update();
 			
+			if (FlxG.keys.justPressed("P"))
+			{
+				if (!FlxG.paused)
+				{
+					FlxG.timeScale = 0;
+					FlxG.paused = true;
+				}
+				else
+				{
+					FlxG.timeScale = 1;
+					FlxG.paused = false;
+				}
+			}
+			
 			if (FlxG.keys.justPressed("K"))
 			{
 				this._enemyGroup.kill();
 				this._enemyGroupFly.kill();
 			}
 			
-			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete)
+			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete && !(this is TitleState))
 			{
 				FlxG.play(EnemiesDefeated, 1, false);
 				
@@ -175,6 +189,13 @@ package com.gauntlet.states
 					_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
 				//this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
 
+			}
+			
+			if (!this.mcHero.alive)
+			{
+				this._enemyGroup.kill();
+				this._enemyGroupFly.kill();
+				FlxG.switchState(new ResultState(false));
 			}
 			
 			if (this._bLevelComplete)

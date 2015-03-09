@@ -60,41 +60,43 @@ package com.gauntlet.objects.player
 		 */
 		override public function update():void
 		{
-			//input for movement
-			this.acceleration.x = 0;
-			
-			if(FlxG.keys.A)
+			if (!FlxG.paused)
 			{
-				this.facing = FlxObject.LEFT;
-				this.acceleration.x -= this.drag.x;
+				this.acceleration.x = 0;
+				
+				if(FlxG.keys.A)
+				{
+					this.facing = FlxObject.LEFT;
+					this.acceleration.x -= this.drag.x;
+				}
+				else if(FlxG.keys.D)
+				{
+					this.facing = FlxObject.RIGHT;
+					this.acceleration.x += this.drag.x;
+				}
+				if(FlxG.keys.justPressed("W") && this.velocity.y == 0)
+				{
+					this.y -= 1;
+					this.velocity.y = -350;
+					FlxG.play(SoundJump, .5, false);
+				}
+				
+				//animate based on movement
+				if(this.velocity.y != 0)
+				{
+					this.play("jump");
+				}
+				else if(this.velocity.x == 0)
+				{
+					this.play("idle");
+				}
+				else
+				{
+					this.play("run");
+				}
+				
+				this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 			}
-			else if(FlxG.keys.D)
-			{
-				this.facing = FlxObject.RIGHT;
-				this.acceleration.x += this.drag.x;
-			}
-			if(FlxG.keys.justPressed("W") && this.velocity.y == 0)
-			{
-				this.y -= 1;
-				this.velocity.y = -350;
-				FlxG.play(SoundJump, .5, false);
-			}
-			
-			//animate based on movement
-			if(this.velocity.y != 0)
-			{
-				this.play("jump");
-			}
-			else if(this.velocity.x == 0)
-			{
-				this.play("idle");
-			}
-			else
-			{
-				this.play("run");
-			}
-			
-			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 		}
 		/**
 		 * Damage the hero and check if dead.
@@ -106,10 +108,7 @@ package com.gauntlet.objects.player
 			super.hurt(Damage);
 			FlxG.play(HeroHit, .5, false);
 			
-			if (this.health <= 0)
-			{
-				FlxG.switchState(new ResultState(false));
-			}
+			//maybe add extra stuff later
 		}
 		
 		public function increaseHealth():void 

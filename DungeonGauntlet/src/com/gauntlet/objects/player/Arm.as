@@ -100,16 +100,19 @@ package com.gauntlet.objects.player
 		 */
 		override public function update():void
 		{
-			super.update();
-			setAimAngle();
-			this.angle = aimAngle;
-			
-			if (FlxG.mouse.pressed() && canFire)
+			if (!FlxG.paused)
 			{
-				fireBullet(this.x, this.y, this.angle);
-				this.canFire = false;
-				shotTimer.start(rune.Rate, 1, changeFire);
-				rune.playSound();
+				super.update();
+				setAimAngle();
+				this.angle = aimAngle;
+				
+				if (FlxG.mouse.pressed() && canFire)
+				{
+					fireBullet(this.x, this.y, this.angle);
+					this.canFire = false;
+					shotTimer.start(rune.Rate, 1, changeFire);
+					rune.playSound();
+				}
 			}
 		}
 		
