@@ -166,7 +166,7 @@ package com.gauntlet.states
 			
 			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete)
 			{
-				FlxG.play(EnemiesDefeated, 1d, false);
+				FlxG.play(EnemiesDefeated, 1, false);
 				
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();
