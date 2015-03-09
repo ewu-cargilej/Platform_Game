@@ -5,10 +5,12 @@ package com.gauntlet.states
 	import com.gauntlet.objects.enemies.Ghost;
 	import com.gauntlet.objects.enemies.Lumberer;
 	import com.gauntlet.objects.enemies.Spider;
+	import com.gauntlet.objects.items.ItemManager;
 	import com.gauntlet.objects.player.Arm;
 	import com.gauntlet.objects.player.Hero;
 	import com.gauntlet.runes.Rune;
 	import com.gauntlet.runes.UpgradeManager;
+	import flash.events.AVLoadInfoEvent;
 	import org.flixel.*;
 	import org.flixel.system.FlxTile;
 
@@ -41,20 +43,35 @@ package com.gauntlet.states
 		/** All enemies on the screen. */
 		protected var _enemyGroup		:FlxGroup;
 		
+		/** Group of all the runes that appear */
+		protected var _runeGroup		:FlxGroup;
+		
+		/** Group of all collidable items */
+		protected var _collectibleGroup	:FlxGroup;
+		
+		/** a text of the text added to screen for upgrades*/
+		protected var _onScreenIdentify		:FlxGroup;
+		
 		/** Show current health. */
 		protected var _txtHealth		:FlxText;
 		
 		/**	Show current score. */
 		protected var _txtScore			:FlxText;
 		
+		/** the current score of the game */
+		protected var _numScore			:Number;
+		
 		/**	Show current rune. */
 		protected var _txtRune			:FlxText;
+		
+		/** grapic of the current rune*/
+		protected var _currRune			:FlxSprite;
 		
 		/** Current level number. */
 		protected var _nLevelNumber		:int;
 		
-		/** The upgrade manage for the runes and health*/
-		protected var 	upgrades		:UpgradeManager;
+		/** Manages all the items that appear on screen */
+		protected var	_iManager		:ItemManager;
 		
 		/** Location of the exit. */
 		protected var	_nExitHeight	:int;
@@ -70,28 +87,32 @@ package com.gauntlet.states
 			
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
-			this._enemyGroup = new FlxGroup();
+			
+			establishGroups();
 			
 			add(_enemyGroup);
-			this.upgrades = new UpgradeManager();
 			
 			setupPlayer(32, 640);
 			
+			_iManager.newRuneSignal.add(upgrade);
+			_iManager.spawnObjectSignal.add(addCollectible);
+			_iManager.upgradeHealthSignal.add(upgrade);
+			_iManager.removeObjectSignal.add(removeCollectible);
+			_iManager.addStatSignal.add(addStats);
 			
-			upgrades.displayButtonSignal.add(add);
-			upgrades.removeButtonSignal.add(remove);
-			upgrades.newRuneSignal.add(mcArm.loadRune);
 			
 			levelMap = new FlxTilemap();
 			this.generateRoomTiles(true);
 			this.placeEnemies();
 			
+			this._numScore = 0;
+			var intScore:int = int(this._numScore);
 			
 			_txtHealth = new FlxText(64, FlxG.height - 48, 150, "HP: " + this.mcHero.health);
 			_txtHealth.size = 24;
 			add(_txtHealth);
 			
-			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 150, "Score:");
+			_txtScore = new FlxText(FlxG.width/2 - 64, FlxG.height - 48, 400, "Score: " + intScore);
 			_txtScore.size = 24;
 			add(_txtScore);
 			
@@ -102,6 +123,19 @@ package com.gauntlet.states
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * establishes all groups so they are non-null
+		 */
+		public function establishGroups():void
+		{
+			this._enemyGroup = new FlxGroup();
+			this._runeGroup = new FlxGroup();
+			this._collectibleGroup = new FlxGroup();
+			this._onScreenIdentify = new FlxGroup();
+			_iManager = new ItemManager();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Called every frame.
@@ -112,9 +146,15 @@ package com.gauntlet.states
 			
 			if (FlxG.keys.justPressed("K"))
 			{
-				this._bLevelComplete = true;
 				this._enemyGroup.kill();
+			}
+			
+			if (_enemyGroup.countLiving() == 0 && !this._bLevelComplete)
+			{
+				
 				this._enemyGroup.clear();
+				this._bLevelComplete = true;
+				_iManager.spawnUpgrade(mcArm.myRune);
 			}
 			
 			if (this._bLevelComplete)
@@ -125,11 +165,28 @@ package com.gauntlet.states
 			
 			FlxG.collide(mcHero, levelMap);
 			
-			FlxG.collide(_enemyGroup, levelMap);
+			FlxG.collide(_enemyGroup, levelMap)
 			
 			FlxG.overlap(mcHero, _enemyGroup, collideDamage);
 			
+			FlxG.overlap(_runeGroup, _enemyGroup, enemyDamage);
 			
+			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
+			
+			FlxG.overlap(mcHero, _collectibleGroup, _iManager.collect);
+			
+			FlxG.collide(_collectibleGroup, levelMap);
+			
+			alignArm();
+			
+			wrap();
+		}
+		
+		/**
+		 * updates the arm so that it's in proper alignment with the hero
+		 */
+		private function alignArm():void 
+		{
 			if (mcArm.x - 3.5 != mcHero.x)
 			{
 				mcArm.x  = mcHero.x - 3.5;
@@ -139,7 +196,16 @@ package com.gauntlet.states
 				mcArm.y = mcHero.y + 11;
 			}
 			
-			wrap();
+		}
+		
+		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
+		{
+			$enemy.hurt($rune.Damage);
+			$rune.kill();
+			if (!$enemy.alive)
+			{
+				_iManager.spawnCollectible($enemy);
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -174,15 +240,104 @@ package com.gauntlet.states
 			
 			add(mcHero);
 			
-			mcArm = new Arm(mcHero.x + 16, mcHero.y);
+			mcArm = new Arm(mcHero.x, mcHero.y);
 			
 			add(mcArm);
 			
-			mcArm.addRuneSignal.add(add);
-			
-			mcArm.loadRune(new Rune(FlxG.width / 2 - 16, 640));			
+			mcArm.addRuneSignal.add(addRune);
+			mcArm.removeRuneSignal.add(removeRune);		
 		}
 		
+		/**
+		 * adds a rune to the rune group and the screen
+		 * @param	$rune
+		 */
+		private function addRune($rune:FlxSprite):void 
+		{
+			add($rune);
+			this._runeGroup.add($rune);
+		}
+		
+		/**
+		 * removes a rune from the screen and group
+		 * @param	$rune
+		 */
+		private function removeRune($rune:FlxSprite):void
+		{
+			remove($rune);
+			this._runeGroup.remove($rune);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * adds collectibles to the screen and the group
+		 * @param	$obj
+		 */
+		private function addCollectible($obj:FlxSprite):void 
+		{
+			add($obj);
+			this._collectibleGroup.add($obj);
+		}
+		
+		private function removeCollectible($obj:FlxSprite, $value:Number):void 
+		{
+			remove($obj);
+			this._collectibleGroup.remove($obj);
+			
+			this._numScore += $value;
+			var intScore:int = int(this._numScore);
+			this._txtScore.text = "Score: " + intScore;
+		}
+		
+		private function upgrade(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune = null):void
+		{
+			if (newRune != null)
+			{
+				mcArm.loadRune(newRune);
+				this._currRune = new FlxSprite(FlxG.width - 142, FlxG.width - 142);
+				this._currRune.loadGraphic(newRune.getUpgradeGraphic(), false, false, 32);
+				add(_currRune);
+			}
+			else
+			{
+				mcHero.increaseHealth();
+				this._txtHealth.text = "HP: " + this.mcHero.health;
+			}
+			
+			remove(runeUpgrade);
+			remove(healthUpgrade);
+			this._collectibleGroup.remove(runeUpgrade);
+			this._collectibleGroup.remove(healthUpgrade);
+			this.removeStats();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * clears groups from the screen and ensures that their groups are empty
+		 */
+		private function clearGroups():void
+		{
+			this._collectibleGroup.kill();
+			this._collectibleGroup.clear();
+				
+			this._runeGroup.kill();
+			this._collectibleGroup.clear();
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		private function addStats($theObject:FlxSprite):void
+		{
+			this._onScreenIdentify.add($theObject);
+			add($theObject);
+		}
+		
+		private function removeStats():void
+		{
+			this._onScreenIdentify.kill();
+			this._onScreenIdentify.clear();
+		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 		
@@ -207,10 +362,11 @@ package com.gauntlet.states
 						this._nLevelNumber++;
 						this.generateRoomTiles(true);
 						this.placeEnemies();
-						//this._txtScore.text = this._nLevelNumber + "";
 					}
 					else
 					{
+						this.generateRoomTiles(false);
+						this.clearGroups();
 						this._nLevelNumber++;
 						this.generateRoomTiles(false);
 						

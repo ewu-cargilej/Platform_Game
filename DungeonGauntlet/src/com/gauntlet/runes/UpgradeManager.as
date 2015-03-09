@@ -1,9 +1,12 @@
 package com.gauntlet.runes
 {
 	import flash.display.Sprite;
+	import org.flixel.FlxBasic;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import com.gauntlet.runes.Rune;
+	import org.flixel.FlxObject;
+	import org.flixel.FlxSprite;
 	import org.osflash.signals.Signal;
 
 	
@@ -14,13 +17,32 @@ package com.gauntlet.runes
 	 */
 	public class UpgradeManager extends Sprite
 	{
-		
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Health.png')]private static var HealthUpgrade:Class;
+		//Graphic for the Health Upgrade
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/HealthUpgrade.png')]private static var HealthUpgradeGraphic:Class;
+		//Graphic for stats
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/UpgradeStats.png')]private static var StatsGraphic:Class;
+		//Graphics for Pluses
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/PlusTop.png')]private static var PlusT:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/PlusUpperMiddle.png')]private static var PlusUM:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/PlusLowerMiddle.png')]private static var PlusLM:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/PlusBottom.png')]private static var PlusB:Class;
+		//Graphics for Minuses
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/MinusTop.png')]private static var MinusT:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/MinusUpperMiddle.png')]private static var MinusUM:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/MinusLowerMiddle.png')]private static var MinusLM:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/Plus_And_Minus/MinusBottom.png')]private static var MinusB:Class;
+		//Sounds for upgrades
+		[Embed(source = "../../../../embeded_resources/SFX/Rune_Upgrade.mp3")] private static var RuneUpgradeSound:Class;
+		[Embed(source = "../../../../embeded_resources/SFX/Health_Upgrade.mp3")] private static var HealthUpgradeSound:Class;
 		private var newRune  :Rune;
-		private var runeButton :FlxButton;
-		private var healthButton :FlxButton;
+		private var runeUpgrade :FlxSprite = new FlxSprite();
+		private var healthUpgrade :FlxSprite = new FlxSprite();
+		private var pluses			:Array = new Array;
+		private var minuses			:Array = new Array;
+		private var UpgradeStats	:FlxSprite;
 		
-		public var displayButtonSignal	:Signal = new Signal;
+		public var displayUpgradeSignal	:Signal = new Signal;
+		public var displayDataSignal	:Signal = new Signal;
 		public var removeButtonSignal	:Signal = new Signal;
 		public var upgradeHealthSignal	:Signal = new Signal;
 		public var newRuneSignal		:Signal = new Signal;
@@ -32,43 +54,114 @@ package com.gauntlet.runes
 		public function UpgradeManager()
 		{
 			super();
-					
+			UpgradeStats = new FlxSprite(32 * 31, 32 * 19);
+			UpgradeStats.loadGraphic(StatsGraphic);
 			
+			pluses[0] = new FlxSprite(32 * 30, 32 * 19);
+			pluses[0].loadGraphic(PlusT);
+			pluses[1] = new FlxSprite(32 * 30, 32 * 19);
+			pluses[1].loadGraphic(PlusUM);
+			pluses[2] = new FlxSprite(32 * 30, 32 * 19);
+			pluses[2].loadGraphic(PlusLM);
+			pluses[3] = new FlxSprite(32 * 30, 32 * 19);
+			pluses[3].loadGraphic(PlusB);
+			
+			minuses[0] = new FlxSprite(32 * 30, 32 * 19);
+			minuses[0].loadGraphic(MinusT);
+			minuses[1] = new FlxSprite(32 * 30, 32 * 19);
+			minuses[1].loadGraphic(MinusUM);
+			minuses[2] = new FlxSprite(32 * 30, 32 * 19);
+			minuses[2].loadGraphic(MinusLM);
+			minuses[3] = new FlxSprite(32 * 30, 32 * 19);
+			minuses[3].loadGraphic(MinusB);
+			
+			runeUpgrade.ID = 10101;
+			healthUpgrade.ID = 20202;
 		}
 		
-		public function spawnUpgrade($level:Number):void
+		public function spawnUpgrade($currRune:Rune):void
 		{
+			reviveStats();
 			//rune upgrade
-			newRune = generateRune($level);
-			runeButton = new FlxButton(FlxG.width - 350, FlxG.height / 2, "",changeRune);
-			runeButton.loadGraphic(Rune.RuneUpgrade);
-			this.displayButtonSignal.dispatch(runeButton);
+			generateRune(0);
+			runeUpgrade = new FlxSprite(32 * 30, 32 * 19);
+			runeUpgrade.ID = 10101;
+			runeUpgrade.loadGraphic(newRune.getUpgradeGraphic());
+			//load text data and display
+			this.displayUpgradeSignal.dispatch(runeUpgrade);
+			
+			compareRunes($currRune);
 			
 			//health upgrade
-			/*
-			healthButton = new FlxButton(60, FlxG.height / 2, "");
-			healthButton.loadGraphic(CreditsButton);
-			add(tmpButton);
-			*/
+			healthUpgrade = new FlxSprite(32 * 27, 32 * 19);
+			healthUpgrade.ID = 20202;
+			healthUpgrade.loadGraphic(HealthUpgradeGraphic);
+			this.displayUpgradeSignal.dispatch(healthUpgrade);
 		}
 		
-		private function generateRune($level:Number):Rune
+		private function reviveStats():void 
 		{
-			var runeType:int = 1 + (Math.random() * 3);
-			var newRune :Rune;
-			//switch types
-			newRune = new Rune(0, 0);
-			return newRune;
+			for (var i:uint = 0; i < 4; i++)
+			{
+				pluses[i].revive();
+				minuses[i].revive();
+			}
+			UpgradeStats.revive();
+		}
+		
+		private function compareRunes($currRune:Rune):void 
+		{
+			//compare the stats of the two runes and display the proper graphic
+			this.displayDataSignal.dispatch(UpgradeStats);
 			
+			if (this.newRune.myVelocity > $currRune.myVelocity)
+				this.displayDataSignal.dispatch(pluses[0]);
+			else
+				this.displayDataSignal.dispatch(minuses[0]);
+				
+			if (this.newRune.Range > $currRune.Range)
+				this.displayDataSignal.dispatch(pluses[1]);
+			else
+				this.displayDataSignal.dispatch(minuses[1]);
+			
+			if (this.newRune.Rate < $currRune.Rate)
+				this.displayDataSignal.dispatch(pluses[2]);
+			else
+				this.displayDataSignal.dispatch(minuses[2]);
+				
+			if (this.newRune.Damage > $currRune.Damage)
+				this.displayDataSignal.dispatch(pluses[3]);
+			else
+				this.displayDataSignal.dispatch(minuses[3]);
 		}
 		
-		private function changeRune():void
+		private function generateRune($level:Number):void
 		{
-			//something
-			this.newRuneSignal.dispatch(newRune);
-			this.runeButton.visible = false;
-			this.removeButtonSignal.dispatch(runeButton);
+			var runeType:Number;
+			runeType = Math.random() * 4;
+			
+			if( 1 > runeType && runeType > 0)
+			{
+				this.newRune = new MagicRune(0, 0);
+			}
+			else if( 2 > runeType && runeType > 1)
+			{
+				this.newRune = new FireRune(0, 0);
+			}
+			else if( 3 > runeType && runeType > 2)
+			{
+				this.newRune = new IceRune(0, 0);
+			}
+			else if( 4 > runeType && runeType > 3)
+			{
+				this.newRune = new LightningRune(0, 0);
+			}
+			else
+			{
+				this.newRune = new Rune(0, 0);
+			}			
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
@@ -78,6 +171,23 @@ package com.gauntlet.runes
 		{
 			while (this.numChildren > 0)
 				this.removeChildAt(0);
+		}
+		
+		public function isUpgrade(object2:FlxObject):Boolean 
+		{
+			if (object2.ID == runeUpgrade.ID)
+			{
+				this.newRuneSignal.dispatch(runeUpgrade, healthUpgrade, newRune);
+				FlxG.play(RuneUpgradeSound, .7, false);
+				return true;
+			}
+			else if (object2.ID == healthUpgrade.ID)
+			{
+				this.upgradeHealthSignal.dispatch(runeUpgrade, healthUpgrade);
+				FlxG.play(HealthUpgradeSound, .7, false);
+				return true;
+			}
+			return false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
