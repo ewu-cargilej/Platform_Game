@@ -3,6 +3,8 @@ package com.gauntlet.objects.enemies
 	import flash.utils.Timer;
 	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
+	import flash.utils.Timer;
+    import flash.events.TimerEvent;
 	/**
 	 * Bat enemy.
 	 * 
@@ -11,12 +13,14 @@ package com.gauntlet.objects.enemies
 	public class Bat extends BaseEnemy
 	{
 		[Embed(source = "../../../../../embeded_resources/Game_Screen/Enemies/Bat.png")] private static var ImgBat:Class;
-		
+		[Embed(source = "../../../../../embeded_resources/SFX/BatDie.mp3")] private static var Die:Class;
+		[Embed(source = "../../../../../embeded_resources/SFX/BatFlap.mp3")] private static var Flap:Class;
 		/** Counts the number of frames. */
 		protected var	_nFrame: int = 60;
 		/** Stores a random number from 0-100, used for bat movement. */
 		protected var	_nMoveValue: int = 0;
-		
+		/** Timer used for sounds. */
+		protected var _tTimer: Timer = new Timer(1000);
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -28,6 +32,9 @@ package com.gauntlet.objects.enemies
 		public function Bat(X:Number=0,Y:Number=0)
 		{
 			super(X, Y, 40, 20, 1);
+			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+			_tTimer.start();
+			_tTimer.delay = int((Math.random() * 3000) + 3000);
 			
 			this.loadGraphic(ImgBat, true, true, 64, 32);
 			
@@ -45,7 +52,7 @@ package com.gauntlet.objects.enemies
 			this.drag.y = 2000;
 			
 			//animations
-			this.addAnimation("idle", [0]);
+			this.addAnimation("fly", [0,1],4);
 		}
 		
 		/**
@@ -57,7 +64,7 @@ package com.gauntlet.objects.enemies
 			super.update();
 			this.acceleration.x = 0;
 			this.acceleration.y = 0;
-			this.play("idle");
+			this.play("fly");
 			_nFrame++;
 			if (_nFrame >= 15)//every 15 frames get a new move value
 			{
@@ -109,7 +116,32 @@ package com.gauntlet.objects.enemies
 				}
 			}
 		}
-		
+		/* ---------------------------------------------------------------------------------------- */
+		/**
+		 * 
+		 * plays sound
+		 */
+		private function timerHandler(e:TimerEvent):void
+		{
+		FlxG.play(Flap,0.5);
+        }
+		/**
+		 * Damage the enemy and check if dead.
+		 * 
+		 * @param	Damage			Number of health to take away.
+		 */
+		override public function hurt(Damage:Number):void
+		{
+			super.hurt(Damage);
+			
+			if (this.health <= 0)
+			{
+				//dead stuff
+				_tTimer.stop();
+				FlxG.play(Die, 0.75);
+				_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+			}
+		}
 		
 	}
 }

@@ -1,7 +1,7 @@
 package com.gauntlet.objects.enemies
 {
 	import org.flixel.FlxSprite;
-	import org.flixel.FlxG;
+
 	
 	/**
 	 * Base Enemy to extend from.
@@ -43,7 +43,7 @@ package com.gauntlet.objects.enemies
 		 */
 		override public function update():void
 		{
-			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
+			
 		}
 		
 		/**
@@ -57,7 +57,7 @@ package com.gauntlet.objects.enemies
 			
 			if (this.health <= 0)
 			{
-				//die
+				//die stuff
 			}
 		}
 		/**
@@ -67,6 +67,14 @@ package com.gauntlet.objects.enemies
 		public function getContact():int
 		{
 		return this._nContactDamage;
+		}
+		/**
+		 * 
+		 * Sets the contact damage value
+		 */
+		public function setContact(Damage:int):void
+		{
+		this._nContactDamage = Damage;
 		}
 	}
 }

@@ -43,6 +43,9 @@ package com.gauntlet.states
 		/** All enemies on the screen. */
 		protected var _enemyGroup		:FlxGroup;
 		
+		/** All flying enemies on the screen. */
+		protected var _enemyGroupFly		:FlxGroup;//////////////////////////added
+		
 		/** Group of all the runes that appear */
 		protected var _runeGroup		:FlxGroup;
 		
@@ -91,6 +94,7 @@ package com.gauntlet.states
 			establishGroups();
 			
 			add(_enemyGroup);
+			add(_enemyGroupFly);///////////////////////////////////////added
 			
 			setupPlayer(32, 640);
 			
@@ -129,6 +133,7 @@ package com.gauntlet.states
 		public function establishGroups():void
 		{
 			this._enemyGroup = new FlxGroup();
+			this._enemyGroupFly = new FlxGroup();//////////////////////////////////added
 			this._runeGroup = new FlxGroup();
 			this._collectibleGroup = new FlxGroup();
 			this._onScreenIdentify = new FlxGroup();
@@ -147,14 +152,17 @@ package com.gauntlet.states
 			if (FlxG.keys.justPressed("K"))
 			{
 				this._enemyGroup.kill();
+				this._enemyGroupFly.kill();///////////////////////////////////////////////////////////////////changed
 			}
 			
-			if (_enemyGroup.countLiving() == 0 && !this._bLevelComplete)
+			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete)///////////////////////////////////////////////////////////////////changed
 			{
 				
 				this._enemyGroup.clear();
+				this._enemyGroupFly.clear();///////////////////////////////////////////////////////////////////changed
 				this._bLevelComplete = true;
 				_iManager.spawnUpgrade(mcArm.myRune);
+				this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
 			}
 			
 			if (this._bLevelComplete)
@@ -169,7 +177,11 @@ package com.gauntlet.states
 			
 			FlxG.overlap(mcHero, _enemyGroup, collideDamage);
 			
+			FlxG.overlap(mcHero, _enemyGroupFly, collideDamage);///////////////////////////////////////////////////////////////////changed
+			
 			FlxG.overlap(_runeGroup, _enemyGroup, enemyDamage);
+			
+			FlxG.overlap(_runeGroup, _enemyGroupFly, enemyDamage);///////////////////////////////////////////////////////////////////changed
 			
 			FlxG.collide(_runeGroup, levelMap, mcArm.tileCollision);
 			
@@ -373,8 +385,8 @@ package com.gauntlet.states
 						FlxG.music.stop();
 						FlxG.playMusic(MusicBoss, .5);
 						
-						var mcGhost :Ghost = new Ghost(FlxG.width/2, FlxG.height - 192);
-						this._enemyGroup.add(mcGhost);
+						var mcGhost :Ghost = new Ghost(FlxG.width/300, FlxG.height/4);///////////////////////////////////////////////////////////////////changed
+						this._enemyGroupFly.add(mcGhost);///////////////////////////////////////////////////////////////////changed
 						add(mcGhost);
 						mcGhost.acquireTarget(mcHero);
 					}
@@ -538,7 +550,7 @@ package com.gauntlet.states
 								var mcLumberer :Lumberer = new Lumberer(x * 32, y * 32);
 								this._enemyGroup.add(mcLumberer);
 								add(mcLumberer);
-								mcLumberer.acquireTarget(mcHero);
+								mcLumberer.acquireTarget(mcHero,levelMap);///////////////////////////////////////////////////////////////////changed
 								enemyPoints -= 5;
 							}
 							else if (enemyPoints >= 3)
@@ -546,13 +558,13 @@ package com.gauntlet.states
 								var mcSpider :Spider = new Spider(x * 32, y * 32);
 								this._enemyGroup.add(mcSpider);
 								add(mcSpider);
-								mcSpider.acquireTarget(mcHero);
+								mcSpider.acquireTarget(mcHero,levelMap);///////////////////////////////////////////////////////////////////changed
 								enemyPoints -= 3;
 							}
 							else
 							{
 								var mcBat :Bat = new Bat(x * 32, y * 32);
-								this._enemyGroup.add(mcBat);
+								this._enemyGroupFly.add(mcBat);///////////////////////////////////////////////////////////////////changed
 								add(mcBat);
 								enemyPoints -= 1;
 							}
