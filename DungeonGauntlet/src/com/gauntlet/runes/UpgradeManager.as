@@ -144,6 +144,8 @@ package com.gauntlet.runes
 			var runeType:Number;
 			runeType = Math.random() * 4;
 			
+			//this.newRune = new RupeeRune(0, 0);
+		
 			if( 1 > runeType && runeType > 0)
 			{
 				this.newRune = new MagicRune(0, 0);
@@ -163,7 +165,7 @@ package com.gauntlet.runes
 			else
 			{
 				this.newRune = new Rune(0, 0);
-			}			
+			}	
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		

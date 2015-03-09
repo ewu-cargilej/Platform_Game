@@ -52,7 +52,7 @@ package com.gauntlet.runes
 			nMyHealth = 300 + Math.random() * 9000;
 			this.nVelocity = 400 + (Math.random() * 300);
 			
-			this.nDamage = 10 + Math.random() * 30;
+			this.nDamage = 10 + Math.random() * 10;
 			this.sName = "Ice Rune";
 		}
 		
