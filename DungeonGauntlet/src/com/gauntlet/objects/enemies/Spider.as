@@ -161,7 +161,7 @@ package com.gauntlet.objects.enemies
 			super.kill();
 			FlxG.play(Die, 0.75);
 			_tTimer.stop();
-			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+			_tTimer.removeEventListener(TimerEvent.TIMER, timerHandler);
 		}
 	}
 }
