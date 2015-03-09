@@ -123,6 +123,10 @@ package com.gauntlet.states
 			_txtRune = new FlxText(FlxG.width - 192, FlxG.height - 48, 150, "Rune:");
 			_txtRune.size = 24;
 			add(_txtRune);
+			
+			this._currRune = new FlxSprite(32 * 29 ,32 * 22.5);
+			this._currRune.loadGraphic(mcArm.myRune.getUpgradeGraphic(), false, false, 32);
+			add(_currRune);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -257,7 +261,7 @@ package com.gauntlet.states
 			add(mcArm);
 			
 			mcArm.addRuneSignal.add(addRune);
-			mcArm.removeRuneSignal.add(removeRune);		
+			mcArm.removeRuneSignal.add(removeRune);
 		}
 		
 		/**
@@ -307,7 +311,7 @@ package com.gauntlet.states
 			if (newRune != null)
 			{
 				mcArm.loadRune(newRune);
-				this._currRune = new FlxSprite(FlxG.width - 142, FlxG.width - 142);
+				this._currRune = new FlxSprite(32 * 29 ,32 * 22);
 				this._currRune.loadGraphic(newRune.getUpgradeGraphic(), false, false, 32);
 				add(_currRune);
 			}
