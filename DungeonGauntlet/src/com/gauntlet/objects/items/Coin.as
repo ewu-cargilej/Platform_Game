@@ -10,7 +10,7 @@ package com.gauntlet.objects.items
 	 */
 	public class Coin extends FlxSprite
 	{
-		[Embed(source = '../../../../../embeded_resources/Game_Screen/Upgrades/FPO_Coin.png')]private static var CoinGraphic:Class;
+		[Embed(source = '../../../../../embeded_resources/Game_Screen/Upgrades/Coin.png')]private static var CoinGraphic:Class;
 		public var LifeTimer	:FlxTimer;
 		private var lifeTime	:Number = 3;
 		//coin graphic

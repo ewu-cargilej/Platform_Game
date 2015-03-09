@@ -74,6 +74,9 @@ package com.gauntlet.runes
 			minuses[2].loadGraphic(MinusLM);
 			minuses[3] = new FlxSprite(32 * 30, 32 * 19);
 			minuses[3].loadGraphic(MinusB);
+			
+			runeUpgrade.ID = 10101;
+			healthUpgrade.ID = 20202;
 		}
 		
 		public function spawnUpgrade($currRune:Rune):void
