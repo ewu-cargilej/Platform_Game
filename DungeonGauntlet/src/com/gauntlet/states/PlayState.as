@@ -311,7 +311,7 @@ package com.gauntlet.states
 			if (newRune != null)
 			{
 				mcArm.loadRune(newRune);
-				this._currRune = new FlxSprite(32 * 29 ,32 * 22);
+				this._currRune = new FlxSprite(32 * 29 ,32 * 22.5);
 				this._currRune.loadGraphic(newRune.getUpgradeGraphic(), false, false, 32);
 				add(_currRune);
 			}
