@@ -53,13 +53,9 @@ package com.gauntlet.objects.player
 			super(X - 4.25, Y + 12, SimpleGraphic);
 			this.loadGraphic(ImgArmReal, true, true, 22,6);
 			canFire = true;
-			runeIndex = 0;
 			rune = new Rune(this.x, this.y);
-			/*for (var i:uint = 0; i < 10; i++)
-			{
-				runeArray[i] = rune.clone();
-				runeArray[i].runeDiedSignal.add(removeRune);
-			}*/
+			
+			rune = new MagicRune(rune.x, rune.y, rune);
 		}
 		/**
 		 * removes a rune from the group
@@ -120,7 +116,7 @@ package com.gauntlet.objects.player
 		private function fireBullet(x:Number, y:Number, dFireAngle:Number):void
 		{
 			//var b:FlxSprite = runeArray[runeIndex];
-			var b:FlxSprite = rune.clone();
+			var b:Rune = rune.clone();
 			var rFireAngle:Number; //create a variable for the angle in radians (required for velocity calculations because they don't work with degrees)
 			b.revive();
 			b.reset(x, y - 4); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
@@ -128,7 +124,7 @@ package com.gauntlet.objects.player
 			rFireAngle = (dFireAngle * (Math.PI / 180)); //convert the fire angle from degrees into radians and apply that value to the radian fire angle variable
 			b.velocity.x = Math.cos(rFireAngle) * rune.myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).
 			b.velocity.y = Math.sin(rFireAngle) * rune.myVelocity; //calculate a velocity along the y axis, ditto.
-			
+			b.triggerAnimation();
 			this.addRuneSignal.dispatch(b);
 		/*	runeIndex++;
 			if (runeIndex > runeArray.length)
@@ -139,6 +135,11 @@ package com.gauntlet.objects.player
 		public function tileCollision(Object1:FlxObject,Object2:FlxObject):void
 		{
 			Object1.kill();
+		}
+		
+		public function get myRune():Rune
+		{
+			return this.rune;
 		}
 	}
 }

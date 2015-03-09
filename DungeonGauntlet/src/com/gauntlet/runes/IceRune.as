@@ -12,8 +12,8 @@ package com.gauntlet.runes
 	 */
 	public class IceRune extends Rune
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_ice.png")] private static var IceBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/IceUpgradeFPO.png')]public static var IceUpgrade:Class;
+		//[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_ice.png")] private static var IceBlast:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Ice_Upgrade.png')]public static var IceUpgrade:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -23,7 +23,7 @@ package com.gauntlet.runes
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			this.loadGraphic(IceBlast, true, true, 32);
+			//this.loadGraphic(IceBlast, true, true, 32);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -79,5 +79,9 @@ package com.gauntlet.runes
 			return IceUpgrade;
 		}
 		
+		override public function triggerAnimation():void
+		{
+			this.play("Ice");
+		}
 	}
 }

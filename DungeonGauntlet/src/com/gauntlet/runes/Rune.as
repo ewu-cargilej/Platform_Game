@@ -15,7 +15,7 @@ package com.gauntlet.runes
 	 */
 	public class Rune extends FlxSprite
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/testshot.png")] private static var ImgRuneTemp:Class;
+		[Embed(source = "../../../../embeded_resources/Game_Screen/Runes/RuneAttacks_SpriteSheet.png")] public static var SpriteSheet:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Rune.png')]public static var RuneUpgrade:Class;
 		[Embed(source = "../../../../embeded_resources/SFX/Shoot.mp3")] private static var SoundShoot:Class;
 		
@@ -43,7 +43,7 @@ package com.gauntlet.runes
 		{
 			super(X,Y, SimpleGraphic);
 			starting = new FlxPoint(X, Y);
-			this.loadGraphic(ImgRuneTemp, true, true, 32);
+			this.loadGraphic(SpriteSheet, true, true, 64, 32);
 				
 			if ($parent == null)
 				fillValues(0);
@@ -51,6 +51,12 @@ package com.gauntlet.runes
 				copyParent($parent);
 				
 			this.health = nMyHealth;
+			
+			//animations
+			this.addAnimation("Magic", [1]);
+			this.addAnimation("Elec", [2]);
+			this.addAnimation("Ice", [3, 4, 5], 12);
+			this.addAnimation("Fire", [6, 7, 8], 12);
 			
 			//offset
 			this.width = 16;
@@ -182,6 +188,11 @@ package com.gauntlet.runes
 		public function getUpgradeGraphic():Class
 		{
 			return RuneUpgrade;
+		}
+		
+		public function triggerAnimation():void
+		{
+			//this one does nothing
 		}
 	}
 }

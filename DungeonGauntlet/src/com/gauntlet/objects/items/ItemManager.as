@@ -18,11 +18,12 @@ package com.gauntlet.objects.items
 	public class ItemManager extends Sprite
 	{
 		private var uManager :UpgradeManager;
-		[Embed(source = "../../../../../embeded_resources/SFX/Shoot.mp3")] private static var CollectSound:Class;
+		[Embed(source = "../../../../../embeded_resources/SFX/Pickup_Coin.mp3")] private static var CollectSound:Class;
 		public var spawnObjectSignal :Signal = new Signal();
 		public var removeObjectSignal	:Signal = new Signal();
 		public var upgradeHealthSignal	:Signal = new Signal();
 		public var newRuneSignal		:Signal = new Signal();
+		public var addStatSignal		:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -36,6 +37,7 @@ package com.gauntlet.objects.items
 			uManager.upgradeHealthSignal.add(upgradeHealth);
 			uManager.newRuneSignal.add(upgradeRune);
 			uManager.displayUpgradeSignal.add(addItem);
+			uManager.displayDataSignal.add(addStat);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -56,6 +58,11 @@ package com.gauntlet.objects.items
 		{
 			this.spawnObjectSignal.dispatch($object);
 		}
+		
+		public function addStat($stat:FlxSprite):void
+		{
+			this.addStatSignal.dispatch($stat);
+		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -64,9 +71,9 @@ package com.gauntlet.objects.items
 		 * @param	$param1	Describe param1 here.
 		 * @return			Describe the return value here.
 		 */
-		public function spawnUpgrade():void
+		public function spawnUpgrade($curRune:Rune):void
 		{
-			uManager.spawnUpgrade(0);
+			uManager.spawnUpgrade($curRune);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

@@ -12,8 +12,8 @@ package com.gauntlet.runes
 	 */
 	public class FireRune extends Rune
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Fire.png")] private static var FireBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FireUpgradeFPO.png')]public static var FireUpgrade:Class;
+		//[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Fire.png")] private static var FireBlast:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Fire_Upgrade.png')]public static var FireUpgrade:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -23,7 +23,7 @@ package com.gauntlet.runes
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			this.loadGraphic(FireBlast, true, true, 32);
+			//this.loadGraphic(FireBlast, true, true, 32);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -79,5 +79,9 @@ package com.gauntlet.runes
 			return FireUpgrade;
 		}
 		
+		override public function triggerAnimation():void
+		{
+			this.play("Fire");
+		}
 	}
 }

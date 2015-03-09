@@ -50,7 +50,7 @@ package com.gauntlet.states
 		protected var _collectibleGroup	:FlxGroup;
 		
 		/** a text of the text added to screen for upgrades*/
-		protected var _onScreenText		:FlxGroup;
+		protected var _onScreenIdentify		:FlxGroup;
 		
 		/** Show current health. */
 		protected var _txtHealth		:FlxText;
@@ -63,6 +63,9 @@ package com.gauntlet.states
 		
 		/**	Show current rune. */
 		protected var _txtRune			:FlxText;
+		
+		/** grapic of the current rune*/
+		protected var _currRune			:FlxSprite;
 		
 		/** Current level number. */
 		protected var _nLevelNumber		:int;
@@ -92,6 +95,7 @@ package com.gauntlet.states
 			_iManager.spawnObjectSignal.add(addCollectible);
 			_iManager.upgradeHealthSignal.add(upgrade);
 			_iManager.removeObjectSignal.add(removeCollectible);
+			_iManager.addStatSignal.add(addStats);
 			
 			
 			levelMap = new FlxTilemap();
@@ -124,7 +128,7 @@ package com.gauntlet.states
 			this._enemyGroup = new FlxGroup();
 			this._runeGroup = new FlxGroup();
 			this._collectibleGroup = new FlxGroup();
-			this._onScreenText = new FlxGroup();
+			this._onScreenIdentify = new FlxGroup();
 			_iManager = new ItemManager();
 		}
 		
@@ -139,7 +143,6 @@ package com.gauntlet.states
 			
 			if (FlxG.keys.justPressed("K"))
 			{
-				//this._bLevelComplete = true;
 				this._enemyGroup.kill();
 			}
 			
@@ -148,7 +151,7 @@ package com.gauntlet.states
 				
 				this._enemyGroup.clear();
 				this._bLevelComplete = true;
-				_iManager.spawnUpgrade();
+				_iManager.spawnUpgrade(mcArm.myRune);
 			}
 			
 			if (this._bLevelComplete)
@@ -239,9 +242,7 @@ package com.gauntlet.states
 			add(mcArm);
 			
 			mcArm.addRuneSignal.add(addRune);
-			mcArm.removeRuneSignal.add(removeRune);
-			
-			mcArm.loadRune(new Rune(FlxG.width / 2 - 16, 640));			
+			mcArm.removeRuneSignal.add(removeRune);		
 		}
 		
 		/**
@@ -284,7 +285,6 @@ package com.gauntlet.states
 			this._numScore += $value;
 			var intScore:int = int(this._numScore);
 			this._txtScore.text = "Score: " + intScore;
-			//this._txtScore.text = "COIN GRABBED";
 		}
 		
 		private function upgrade(runeUpgrade:FlxSprite, healthUpgrade:FlxSprite, newRune:Rune = null):void
@@ -292,6 +292,9 @@ package com.gauntlet.states
 			if (newRune != null)
 			{
 				mcArm.loadRune(newRune);
+				this._currRune = new FlxSprite(FlxG.width - 142, FlxG.width - 142);
+				this._currRune.loadGraphic(newRune.getUpgradeGraphic(), false, false, 32);
+				add(_currRune);
 			}
 			else
 			{
@@ -303,6 +306,7 @@ package com.gauntlet.states
 			remove(healthUpgrade);
 			this._collectibleGroup.remove(runeUpgrade);
 			this._collectibleGroup.remove(healthUpgrade);
+			this.removeStats();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -320,16 +324,16 @@ package com.gauntlet.states
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
-		private function addText($theObject:FlxObject):void
+		private function addStats($theObject:FlxSprite):void
 		{
-			this._onScreenText.add($theObject);
+			this._onScreenIdentify.add($theObject);
 			add($theObject);
 		}
 		
-		private function removeText():void
+		private function removeStats():void
 		{
-			this._onScreenText.kill();
-			this._onScreenText.clear();
+			this._onScreenIdentify.kill();
+			this._onScreenIdentify.clear();
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		

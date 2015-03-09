@@ -12,7 +12,7 @@ package com.gauntlet.objects.items
 	{
 		[Embed(source = '../../../../../embeded_resources/Game_Screen/Upgrades/FPO_Coin.png')]private static var CoinGraphic:Class;
 		public var LifeTimer	:FlxTimer;
-		private var lifeTime	:Number = 1;
+		private var lifeTime	:Number = 3;
 		//coin graphic
 		public function Coin($enemy:FlxSprite) 
 		{
@@ -20,7 +20,7 @@ package com.gauntlet.objects.items
 			this.loadGraphic(CoinGraphic, true, true, 16);
 			this.health = 5000;
 			LifeTimer = new FlxTimer();
-			//LifeTimer.start(lifeTime, 1, timeEnd);
+			LifeTimer.start(lifeTime, 1, timeEnd);
 			this.acceleration.y = 50;
 			//this.ID = int(Math.random() * 1000);
 		}

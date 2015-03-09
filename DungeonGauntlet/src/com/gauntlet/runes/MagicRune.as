@@ -13,8 +13,8 @@ package com.gauntlet.runes
 	 */
 	public class MagicRune extends Rune
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Magic.png")] private static var MagicBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/MagicUpgradeFPO.png')]public static var MagicUpgrade:Class;
+		//[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Magic.png")] private static var MagicBlast:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Magic_Upgrade.png')]public static var MagicUpgrade:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -24,7 +24,7 @@ package com.gauntlet.runes
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			this.loadGraphic(MagicBlast, true, true, 32);
+			//this.loadGraphic(MagicBlast, true, true, 32);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -77,6 +77,11 @@ package com.gauntlet.runes
 		override public function getUpgradeGraphic():Class
 		{
 			return MagicUpgrade;
+		}
+		
+		override public function triggerAnimation():void
+		{
+			this.play("Magic");
 		}
 	}
 }

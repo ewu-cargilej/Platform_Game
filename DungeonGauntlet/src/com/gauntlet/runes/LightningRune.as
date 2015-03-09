@@ -12,8 +12,8 @@ package com.gauntlet.runes
 	 */
 	public class LightningRune extends Rune
 	{
-		[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Elec.png")] private static var ElecBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/ElecUpgradeFPO.png')]public static var LightningUpgrade:Class;
+		//[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Elec.png")] private static var ElecBlast:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Elec_Upgrade.png')]public static var LightningUpgrade:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -23,7 +23,7 @@ package com.gauntlet.runes
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			this.loadGraphic(ElecBlast, true, true, 32);
+			//this.loadGraphic(ElecBlast, true, true, 32);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -79,5 +79,9 @@ package com.gauntlet.runes
 			return LightningUpgrade;
 		}
 		
+		override public function triggerAnimation():void
+		{
+			this.play("Elec");
+		}
 	}
 }
