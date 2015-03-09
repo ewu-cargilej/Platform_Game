@@ -73,9 +73,9 @@ package com.gauntlet.runes
 		 */
 		public function fillValues($curLevel:int):void
 		{
-			this.nDamage = 20;
-			this.nRate = .2;
-			nMyHealth = 10000;
+			this.nDamage = 10;
+			this.nRate = .6;
+			nMyHealth = 8000;
 			this.nVelocity = 400;
 			this.sName = "base Rune";
 		}

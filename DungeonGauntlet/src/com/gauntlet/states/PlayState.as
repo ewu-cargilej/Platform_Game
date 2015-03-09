@@ -171,8 +171,10 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();
 				this._bLevelComplete = true;
-				_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
-				this._bLevelComplete = true;
+				if (this._nLevelNumber != 11)
+					_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
+				//this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
+
 			}
 			
 			if (this._bLevelComplete)
