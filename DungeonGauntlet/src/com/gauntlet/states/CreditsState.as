@@ -9,22 +9,21 @@ package com.gauntlet.states
 	 */
 	public class CreditsState extends FlxState
 	{
+		[Embed(source = '../../../../embeded_resources/Credits_Screen/Credits.png')]private static var ImgCredits:Class;
+		
 		/**
 		 * Set up the state.
 		 */
 		override public function create():void
 		{
-			var t:FlxText;
-			t = new FlxText(0, FlxG.height / 2 - 32, FlxG.width, "Credits");
-			t.size = 64;
-			t.alignment = "center";
-			add(t);
+			var image :FlxSprite = new FlxSprite(0, 0, ImgCredits);
+			add(image);
 			
-			
-			t = new FlxText(FlxG.width/2-100,FlxG.height-100,200,"click to exit");
-			t.size = 24;
-			t.alignment = "center";
-			add(t);
+			var text:FlxText;
+			text = new FlxText(FlxG.width/2-100,FlxG.height-100,200,"click to exit");
+			text.size = 24;
+			text.alignment = "center";
+			add(text);
 			
 			FlxG.mouse.show();
 		}
