@@ -23,6 +23,7 @@ package com.gauntlet.states
 	public class PlayState extends FlxState
 	{
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/Tiles.png')]private static var Tiles:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/GameScreen_Background.png')]protected static var ImgBackground:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Maps/empty_map.txt', mimeType = 'application/octet-stream')]private static var EmptyMap:Class;
 		
 		[Embed(source = '../../../../embeded_resources/Music/Play.mp3')]private static var MusicPlay:Class;
@@ -84,12 +85,15 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicPlay, .5);
+			FlxG.playMusic(MusicPlay, .7);
 			
 			FlxG.mouse.show();
 			
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
+			
+			var background:FlxSprite = new FlxSprite(0, 0, ImgBackground);
+			add(background);
 			
 			establishGroups();
 			
@@ -103,7 +107,6 @@ package com.gauntlet.states
 			_iManager.upgradeHealthSignal.add(upgrade);
 			_iManager.removeObjectSignal.add(removeCollectible);
 			_iManager.addStatSignal.add(addStats);
-			
 			
 			levelMap = new FlxTilemap();
 			this.generateRoomTiles(true);
@@ -366,7 +369,7 @@ package com.gauntlet.states
 				this.mcHero.x = 32;
 				
 				if (this._nLevelNumber == 11)
-					FlxG.switchState(new ResultState());
+					FlxG.switchState(new ResultState(true));
 				else
 				{
 					if (this._nLevelNumber < 10)
@@ -383,7 +386,7 @@ package com.gauntlet.states
 						this.generateRoomTiles(false);
 						
 						FlxG.music.stop();
-						FlxG.playMusic(MusicBoss, .5);
+						FlxG.playMusic(MusicBoss, .7);
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width/300, FlxG.height/4);
 						this._enemyGroupFly.add(mcGhost);

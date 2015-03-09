@@ -34,13 +34,16 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicTitle, .5);
+			FlxG.playMusic(MusicTitle, .7);
 			
 			FlxG.mouse.show();
 			
 			this._bLevelComplete = false;
 			this._nLevelNumber = 0;
 			this._aTitleStuff = new Array();
+			
+			var background:FlxSprite = new FlxSprite(0, 0, ImgBackground);
+			add(background);
 			
 			setupPlayer(FlxG.width/2 - 16, 640);
 			

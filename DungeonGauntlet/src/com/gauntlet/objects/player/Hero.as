@@ -106,7 +106,7 @@ package com.gauntlet.objects.player
 			
 			if (this.health <= 0)
 			{
-				FlxG.switchState(new ResultState());
+				FlxG.switchState(new ResultState(false));
 			}
 		}
 		
