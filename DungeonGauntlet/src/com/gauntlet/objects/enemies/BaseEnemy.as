@@ -43,7 +43,8 @@ package com.gauntlet.objects.enemies
 		 */
 		override public function update():void
 		{
-			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
+			if(this is Lumberer || this is Spider)
+				this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 		}
 		
 		/**
