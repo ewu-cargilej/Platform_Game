@@ -161,8 +161,8 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();///////////////////////////////////////////////////////////////////changed
 				this._bLevelComplete = true;
-				_iManager.spawnUpgrade(mcArm.myRune);
-				this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
+				_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
+				//this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
 			}
 			
 			if (this._bLevelComplete)
@@ -333,7 +333,9 @@ package com.gauntlet.states
 		{
 			this._collectibleGroup.kill();
 			this._collectibleGroup.clear();
-				
+			
+			this.removeStats();
+			
 			this._runeGroup.kill();
 			this._collectibleGroup.clear();
 		}
@@ -374,6 +376,7 @@ package com.gauntlet.states
 						this._nLevelNumber++;
 						this.generateRoomTiles(true);
 						this.placeEnemies();
+						this.clearGroups();
 					}
 					else
 					{
