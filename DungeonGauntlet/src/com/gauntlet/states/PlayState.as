@@ -123,6 +123,10 @@ package com.gauntlet.states
 			_txtRune = new FlxText(FlxG.width - 192, FlxG.height - 48, 150, "Rune:");
 			_txtRune.size = 24;
 			add(_txtRune);
+			
+			this._currRune = new FlxSprite(32 * 29 ,32 * 22.5);
+			this._currRune.loadGraphic(mcArm.myRune.getUpgradeGraphic(), false, false, 32);
+			add(_currRune);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -161,7 +165,7 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();
 				this._bLevelComplete = true;
-				_iManager.spawnUpgrade(mcArm.myRune);
+				_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
 				this._bLevelComplete = true;
 			}
 			
@@ -307,7 +311,7 @@ package com.gauntlet.states
 			if (newRune != null)
 			{
 				mcArm.loadRune(newRune);
-				this._currRune = new FlxSprite(FlxG.width - 142, FlxG.width - 142);
+				this._currRune = new FlxSprite(32 * 29 ,32 * 22.5);
 				this._currRune.loadGraphic(newRune.getUpgradeGraphic(), false, false, 32);
 				add(_currRune);
 			}
@@ -333,6 +337,8 @@ package com.gauntlet.states
 		{
 			this._collectibleGroup.kill();
 			this._collectibleGroup.clear();
+			
+			this.removeStats();
 				
 			this._runeGroup.kill();
 			this._collectibleGroup.clear();
@@ -374,6 +380,7 @@ package com.gauntlet.states
 						this._nLevelNumber++;
 						this.generateRoomTiles(true);
 						this.placeEnemies();
+						this.clearGroups();
 					}
 					else
 					{

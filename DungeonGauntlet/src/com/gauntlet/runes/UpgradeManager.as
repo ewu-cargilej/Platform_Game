@@ -53,38 +53,18 @@ package com.gauntlet.runes
 		 */
 		public function UpgradeManager()
 		{
-			super();
-			UpgradeStats = new FlxSprite(32 * 31, 32 * 19);
-			UpgradeStats.loadGraphic(StatsGraphic);
-			
-			pluses[0] = new FlxSprite(32 * 30, 32 * 19);
-			pluses[0].loadGraphic(PlusT);
-			pluses[1] = new FlxSprite(32 * 30, 32 * 19);
-			pluses[1].loadGraphic(PlusUM);
-			pluses[2] = new FlxSprite(32 * 30, 32 * 19);
-			pluses[2].loadGraphic(PlusLM);
-			pluses[3] = new FlxSprite(32 * 30, 32 * 19);
-			pluses[3].loadGraphic(PlusB);
-			
-			minuses[0] = new FlxSprite(32 * 30, 32 * 19);
-			minuses[0].loadGraphic(MinusT);
-			minuses[1] = new FlxSprite(32 * 30, 32 * 19);
-			minuses[1].loadGraphic(MinusUM);
-			minuses[2] = new FlxSprite(32 * 30, 32 * 19);
-			minuses[2].loadGraphic(MinusLM);
-			minuses[3] = new FlxSprite(32 * 30, 32 * 19);
-			minuses[3].loadGraphic(MinusB);
-			
+			super();			
 			runeUpgrade.ID = 10101;
 			healthUpgrade.ID = 20202;
 		}
 		
-		public function spawnUpgrade($currRune:Rune):void
+		public function spawnUpgrade($currRune:Rune, $X:Number, $Y:Number):void
 		{
-			reviveStats();
+			//reviveStats();
+			plusMinusSet($X, $Y);
 			//rune upgrade
 			generateRune(0);
-			runeUpgrade = new FlxSprite(32 * 30, 32 * 19);
+			runeUpgrade = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
 			runeUpgrade.ID = 10101;
 			runeUpgrade.loadGraphic(newRune.getUpgradeGraphic());
 			//load text data and display
@@ -93,10 +73,34 @@ package com.gauntlet.runes
 			compareRunes($currRune);
 			
 			//health upgrade
-			healthUpgrade = new FlxSprite(32 * 27, 32 * 19);
+			healthUpgrade = new FlxSprite(32 * ($X - 3), 32 * ($Y - 1));
 			healthUpgrade.ID = 20202;
 			healthUpgrade.loadGraphic(HealthUpgradeGraphic);
 			this.displayUpgradeSignal.dispatch(healthUpgrade);
+		}
+		
+		private function plusMinusSet($X:Number, $Y:Number):void
+		{
+			UpgradeStats = new FlxSprite(32 * $X, 32 * ($Y - 1));
+			UpgradeStats.loadGraphic(StatsGraphic);
+			
+			pluses[0] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			pluses[0].loadGraphic(PlusT);
+			pluses[1] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			pluses[1].loadGraphic(PlusUM);
+			pluses[2] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			pluses[2].loadGraphic(PlusLM);
+			pluses[3] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			pluses[3].loadGraphic(PlusB);
+			
+			minuses[0] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			minuses[0].loadGraphic(MinusT);
+			minuses[1] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			minuses[1].loadGraphic(MinusUM);
+			minuses[2] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			minuses[2].loadGraphic(MinusLM);
+			minuses[3] = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			minuses[3].loadGraphic(MinusB);
 		}
 		
 		private function reviveStats():void 
