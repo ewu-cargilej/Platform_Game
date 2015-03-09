@@ -32,12 +32,12 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Juice\git\Platform_Game\DungeonGauntlet\src</path-element>
+      <path-element>C:\Users\Chelsea\Documents\Platform_Game\DungeonGauntlet\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Juice\git\Platform_Game\DungeonGauntlet\src\Main.as</path-element>
+    <path-element>C:\Users\Chelsea\Documents\Platform_Game\DungeonGauntlet\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>30</default-frame-rate>

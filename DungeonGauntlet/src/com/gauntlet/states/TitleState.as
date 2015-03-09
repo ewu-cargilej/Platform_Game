@@ -25,6 +25,7 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Title_Screen/Icon_Pause.png')]private static var ImgPause:Class;
 		
 		[Embed(source = '../../../../embeded_resources/Music/Title.mp3')]private static var MusicTitle:Class;
+		[Embed(source = '../../../../embeded_resources/SFX/Button_Click.mp3')]private static var ButtonClick:Class;
 		
 		/** Holder for Title components */
 		protected var	_aTitleStuff	:Array;
@@ -119,6 +120,8 @@ package com.gauntlet.states
 		 */
 		protected function removeTitle():void
 		{
+			FlxG.play(ButtonClick, 1, false);
+			
 			this._bLevelComplete = true;
 			
 			var tmpObj: FlxObject;
@@ -141,6 +144,7 @@ package com.gauntlet.states
 		 */
 		protected function goToCredits():void
 		{
+			FlxG.play(ButtonClick, 1, false);
 			FlxG.switchState(new CreditsState());
 		}
 	}

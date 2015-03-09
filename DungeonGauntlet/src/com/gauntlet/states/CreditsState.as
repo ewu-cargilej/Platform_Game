@@ -10,6 +10,7 @@ package com.gauntlet.states
 	public class CreditsState extends FlxState
 	{
 		[Embed(source = '../../../../embeded_resources/Credits_Screen/Credits.png')]private static var ImgCredits:Class;
+		[Embed(source = '../../../../embeded_resources/SFX/Button_Click.mp3')]private static var ButtonClick:Class;
 		
 		/**
 		 * Set up the state.
@@ -39,8 +40,11 @@ package com.gauntlet.states
 		{
 			super.update();
 
-			if(FlxG.mouse.justPressed())
+			if (FlxG.mouse.justPressed())
+			{
+				FlxG.play(ButtonClick, 1, false);
 				FlxG.switchState(new TitleState());
+			}
 		}
 	}
 }

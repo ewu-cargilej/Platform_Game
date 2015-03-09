@@ -29,6 +29,8 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Music/Play.mp3')]private static var MusicPlay:Class;
 		[Embed(source = '../../../../embeded_resources/Music/Boss.mp3')]private static var MusicBoss:Class;
 		
+		[Embed(source = '../../../../embeded_resources/SFX/EnemiesDefeated.mp3')]private static var EnemiesDefeated:Class;
+		
 		/** Level Complete flag. */
 		protected var	_bLevelComplete	:Boolean;
 		
@@ -164,6 +166,7 @@ package com.gauntlet.states
 			
 			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete)
 			{
+				FlxG.play(EnemiesDefeated, 1d, false);
 				
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();

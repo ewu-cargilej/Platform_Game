@@ -15,6 +15,7 @@ package com.gauntlet.objects.player
 	{
 		[Embed(source = "../../../../../embeded_resources/Game_Screen/Hero/Hero.png")] private static var ImgHero:Class;
 		[Embed(source = "../../../../../embeded_resources/SFX/Jump.mp3")] private static var SoundJump:Class;
+		[Embed(source = "../../../../../embeded_resources/SFX/Hero_Hit.mp3")] private static var HeroHit:Class;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		/** The hero's current maximum upgraded health. */
@@ -103,6 +104,7 @@ package com.gauntlet.objects.player
 		override public function hurt(Damage:Number):void
 		{
 			super.hurt(Damage);
+			FlxG.play(HeroHit, .5, false);
 			
 			if (this.health <= 0)
 			{
