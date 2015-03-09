@@ -102,7 +102,7 @@ package com.gauntlet.objects.player
 				this.canFire = false;
 				shotTimer.start(runes[runeIndex].Rate, 1, changeFire);
 				
-				FlxG.play(SoundShoot, .7, false);
+				FlxG.play(SoundShoot, .5, false);
 			}
 		}
 		

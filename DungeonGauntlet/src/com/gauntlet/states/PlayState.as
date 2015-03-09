@@ -64,7 +64,7 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicPlay);
+			FlxG.playMusic(MusicPlay, .5);
 			
 			FlxG.mouse.show();
 			
@@ -204,17 +204,18 @@ package com.gauntlet.states
 				{
 					if (this._nLevelNumber < 10)
 					{
+						this._nLevelNumber++;
 						this.generateRoomTiles(true);
 						this.placeEnemies();
-						this._nLevelNumber++;
+						//this._txtScore.text = this._nLevelNumber + "";
 					}
 					else
 					{
-						this.generateRoomTiles(false);
 						this._nLevelNumber++;
+						this.generateRoomTiles(false);
 						
 						FlxG.music.stop();
-						FlxG.playMusic(MusicBoss);
+						FlxG.playMusic(MusicBoss, .5);
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width/2, FlxG.height - 192);
 						this._enemyGroup.add(mcGhost);
@@ -289,12 +290,12 @@ package com.gauntlet.states
 			{
 				for (var y :int = 3; y < levelMap.heightInTiles - 2; y+=3)
 				{
-					if(Math.random() * 20 > 5)
+					if((Math.random() * 20 > 10 && x < levelMap.widthInTiles - 3 - y/3) || x > levelMap.widthInTiles - 2 - y/3)
 						levelMap.setTile(x, y, int(Math.random() * 4 + 1));
 				}
 			}
 			
-			this._nExitHeight = levelMap.heightInTiles - 2;
+			this._nExitHeight = levelMap.heightInTiles - 2 - int(Math.random() * 5)*3;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -364,35 +365,44 @@ package com.gauntlet.states
 		 */
 		protected function placeEnemies():void
 		{
-			for (var x :int = 7; x < levelMap.widthInTiles - 2; x++)
+			var enemyPoints :int = this._nLevelNumber;
+			
+			while (enemyPoints > 0)
 			{
-				for (var y :int = 2; y < levelMap.heightInTiles - 2; y+=3)
+				for (var x :int = 10; x < levelMap.widthInTiles - 2; x++)
 				{
-					if (levelMap.getTile(x,y) == 0 && Math.random() * 20 > 19)
+					for (var y :int = levelMap.heightInTiles - 3; y > 2; y-=3)
 					{
-						var n :int = int(Math.random() * 3);
-						
-						if (n == 0)
+						if (enemyPoints > 0 && Math.random() * 20 > 19 && levelMap.getTile(x,y) == 0 && levelMap.getTile(x-1,y) == 0 && levelMap.getTile(x+1,y) == 0)
 						{
-							var mcBat :Bat = new Bat(x * 32, y * 32);
-							this._enemyGroup.add(mcBat);
-							add(mcBat);
+							var n :int = int(Math.random() * 3);
+							
+							if (enemyPoints >= 5)
+							{
+								var mcLumberer :Lumberer = new Lumberer(x * 32, y * 32);
+								this._enemyGroup.add(mcLumberer);
+								add(mcLumberer);
+								mcLumberer.acquireTarget(mcHero);
+								enemyPoints -= 5;
+							}
+							else if (enemyPoints >= 3)
+							{
+								var mcSpider :Spider = new Spider(x * 32, y * 32);
+								this._enemyGroup.add(mcSpider);
+								add(mcSpider);
+								mcSpider.acquireTarget(mcHero);
+								enemyPoints -= 3;
+							}
+							else
+							{
+								var mcBat :Bat = new Bat(x * 32, y * 32);
+								this._enemyGroup.add(mcBat);
+								add(mcBat);
+								enemyPoints -= 1;
+							}
+							
+							x += 5;//place them farther apart
 						}
-						else if (n == 1)
-						{
-							var mcSpider :Spider = new Spider(x * 32, y * 32);
-							this._enemyGroup.add(mcSpider);
-							add(mcSpider);
-							mcSpider.acquireTarget(mcHero);
-						}
-						else
-						{
-							var mcLumberer :Lumberer = new Lumberer(x * 32, y * 32);
-							this._enemyGroup.add(mcLumberer);
-							add(mcLumberer);
-							mcLumberer.acquireTarget(mcHero);
-						}
-						
 					}
 				}
 			}

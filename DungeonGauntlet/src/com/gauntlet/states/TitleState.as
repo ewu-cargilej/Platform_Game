@@ -34,7 +34,7 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicTitle);
+			FlxG.playMusic(MusicTitle, .5);
 			
 			FlxG.mouse.show();
 			

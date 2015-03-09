@@ -75,7 +75,7 @@ package com.gauntlet.objects.player
 			{
 				this.y -= 1;
 				this.velocity.y = -350;
-				FlxG.play(SoundJump, .7, false);
+				FlxG.play(SoundJump, .5, false);
 			}
 			
 			//animate based on movement
