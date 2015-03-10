@@ -45,9 +45,12 @@ package com.gauntlet.states
 			tmpSprite = new FlxSprite(0, 0, ImgBackground);
 			add(tmpSprite);
 			
+			tmpSprite = new FlxSprite(FlxG.width / 2 - 137, FlxG.height - 150, ImgPlayAgain);
+			add(tmpSprite);
+			
 			if (this._bWin)
 			{
-				FlxG.playMusic(MusicVictory, .7);
+				FlxG.playMusic(MusicVictory, .8);
 				
 				tmpSprite = new FlxSprite(0, 0, ImgTreasure);
 				add(tmpSprite);
@@ -65,12 +68,6 @@ package com.gauntlet.states
 				tmpSprite = new FlxSprite(0, 0, ImgDefeat);
 				add(tmpSprite);
 			}
-			
-			var t:FlxText;
-			t = new FlxText(FlxG.width/2-100,FlxG.height-100,200,"click to go back to title");
-			t.size = 24;
-			t.alignment = "center";
-			add(t);
 			
 			FlxG.mouse.show();
 		}

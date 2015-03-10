@@ -82,6 +82,9 @@ package com.gauntlet.states
 		/** Location of the exit. */
 		protected var	_nExitHeight	:int;
 		
+		/** Level number for the Boss. */
+		protected var	_nBossLevel	:int;
+		
 		/**
 		 * Set up the state.
 		 */
@@ -93,6 +96,7 @@ package com.gauntlet.states
 			
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
+			this._nBossLevel = 11;
 			
 			var background:FlxSprite = new FlxSprite(0, 0, ImgBackground);
 			add(background);
@@ -171,6 +175,13 @@ package com.gauntlet.states
 					FlxG.paused = false;
 				}
 			}
+			if (FlxG.keys.justPressed("B"))
+			{
+				this._nLevelNumber = 10;
+			}
+			
+			
+			
 			
 			if (FlxG.keys.justPressed("K"))
 			{
@@ -185,9 +196,8 @@ package com.gauntlet.states
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();
 				this._bLevelComplete = true;
-				if (this._nLevelNumber != 11)
+				if (this._nLevelNumber != this._nBossLevel)
 					_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
-				//this._nLevelNumber = 10;////////////////////////////////////////////////////////testing ghost toggle
 
 			}
 			
@@ -400,11 +410,11 @@ package com.gauntlet.states
 			{
 				this.mcHero.x = 32;
 				
-				if (this._nLevelNumber == 11)
+				if (this._nLevelNumber == this._nBossLevel)
 					FlxG.switchState(new ResultState(true));
 				else
 				{
-					if (this._nLevelNumber < 10)
+					if (this._nLevelNumber < this._nBossLevel - 1)
 					{
 						this._nLevelNumber++;
 						this.generateRoomTiles(true);
@@ -413,10 +423,10 @@ package com.gauntlet.states
 					}
 					else
 					{
-						this.generateRoomTiles(false);
-						this.clearGroups();
+						
 						this._nLevelNumber++;
-						this.generateRoomTiles(false);
+						this.generateRoomTiles(true);
+						this.clearGroups();
 						
 						FlxG.music.stop();
 						FlxG.playMusic(MusicBoss, .7);
@@ -447,7 +457,13 @@ package com.gauntlet.states
 			
 			if ($bMakePlatforms)
 			{
-				var n :int = int(Math.random() * 3);
+				if (this._nLevelNumber == this._nBossLevel)
+				{
+					genBoss();
+				}
+				else
+				{
+					var n :int = int(Math.random() * 3);
 				
 				
 				switch (n)
@@ -470,6 +486,8 @@ package com.gauntlet.states
 					}
 						
 				}
+				}
+				
 				
 			}
 			else
@@ -492,14 +510,14 @@ package com.gauntlet.states
 		{
 			for (var x :int = 1; x < levelMap.widthInTiles - 1; x++)
 			{
-				for (var y :int = 3; y < levelMap.heightInTiles - 2; y+=3)
+				for (var y :int = 6; y < levelMap.heightInTiles - 2; y+=3)
 				{
 					if((Math.random() * 20 > 10 && x < levelMap.widthInTiles - 3 - y/3) || x > levelMap.widthInTiles - 2 - y/3)
 						levelMap.setTile(x, y, int(Math.random() * 4 + 1));
 				}
 			}
 			
-			this._nExitHeight = levelMap.heightInTiles - 2 - int(Math.random() * 5)*3;
+			this._nExitHeight = levelMap.heightInTiles - 2 - int(Math.random() * 5) * 3;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -510,10 +528,8 @@ package com.gauntlet.states
 		 *
 		 */
 		protected function genHoles():void
-		{
-			var randomTarget:int = int(Math.random() * 10);
-			
-			for (var x :int = 2; x < levelMap.widthInTiles - 2; x++)
+		{			
+			for (var x :int = 2; x < levelMap.widthInTiles - 5; x++)
 			{
 				levelMap.setTile(x, 0, 0);
 				levelMap.setTile(x, levelMap.heightInTiles - 1, 0);
@@ -548,13 +564,59 @@ package com.gauntlet.states
 					levelMap.setTile(x, levelMap.heightInTiles - y, int(Math.random() * 4 + 1));
 				}
 				
-				if(x < levelMap.widthInTiles - 2)
+				if(x < levelMap.widthInTiles - 5)
 					height += ((Math.random() * 3 - slopeMod) * 2);
 				
 				if (height < 0)
 					height = 0;
 				if (height > levelMap.heightInTiles - 5)
 					height = levelMap.heightInTiles - 5;
+			}
+			
+			this._nExitHeight = levelMap.heightInTiles - height - 2;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		
+		/**
+		 * @private
+		 * Generate boss level
+		 *
+		 */
+		protected function genBoss():void
+		{
+			for (var x :int = 2; x < levelMap.widthInTiles - 5; x++)
+			{
+				levelMap.setTile(x, 0, 0);
+				levelMap.setTile(x, levelMap.heightInTiles - 1, 0);
+				
+				levelMap.setTile(x, int(Math.random() * levelMap.heightInTiles), int(Math.random() * 4 + 1));
+			}
+			
+			
+			
+			var height :int = levelMap.heightInTiles - mcHero.y / 32;
+			
+			var slopeMod :Number = 1;
+			if (mcHero.y < FlxG.height / 2)
+				slopeMod = 1.5;
+			
+			
+			for (x = 1; x < levelMap.widthInTiles - 1; x++)
+			{
+				for (var y :int = 0; y < height; y++)
+				{
+					levelMap.setTile(x, levelMap.heightInTiles - y, int(Math.random() * 4 + 1));
+				}
+				
+				if(x < levelMap.widthInTiles - 5)
+					height += ((Math.random() * 3 - slopeMod) * 2);
+				
+				if (height < 0)
+					height = 0;
+				if (height > levelMap.heightInTiles - 15)
+					height = levelMap.heightInTiles - 15;
 			}
 			
 			this._nExitHeight = levelMap.heightInTiles - height - 2;
