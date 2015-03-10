@@ -10,6 +10,8 @@ package com.gauntlet.states
 	public class CreditsState extends FlxState
 	{
 		[Embed(source = '../../../../embeded_resources/Credits_Screen/Credits.png')]private static var ImgCredits:Class;
+		[Embed(source = '../../../../embeded_resources/Credits_Screen/CreditsScreen_ReturnButton.png')]private static var ImgReturnButton:Class;
+		
 		[Embed(source = '../../../../embeded_resources/SFX/Button_Click.mp3')]private static var ButtonClick:Class;
 		
 		/**
@@ -17,14 +19,11 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			var image :FlxSprite = new FlxSprite(0, 0, ImgCredits);
-			add(image);
+			var tmpSprite :FlxSprite = new FlxSprite(0, 0, ImgCredits);
+			add(tmpSprite);
 			
-			var text:FlxText;
-			text = new FlxText(FlxG.width/2-100,FlxG.height-100,200,"click to exit");
-			text.size = 24;
-			text.alignment = "center";
-			add(text);
+			tmpSprite = new FlxSprite(FlxG.width / 2 - 141, FlxG.height - 150, ImgReturnButton);
+			add(tmpSprite);
 			
 			FlxG.mouse.show();
 		}

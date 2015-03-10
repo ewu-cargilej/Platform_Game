@@ -55,7 +55,7 @@ package com.gauntlet.states
 				tmpSprite = new FlxSprite(0, 0, ImgTreasure);
 				add(tmpSprite);
 				
-				tmpSprite = new FlxSprite(0, 0, ImgVictory);
+				tmpSprite = new FlxSprite(FlxG.width/2 - 255, 100, ImgVictory);
 				add(tmpSprite);
 			}
 			else
@@ -65,7 +65,7 @@ package com.gauntlet.states
 				tmpSprite = new FlxSprite(0, 0, ImgBones);
 				add(tmpSprite);
 				
-				tmpSprite = new FlxSprite(0, 0, ImgDefeat);
+				tmpSprite = new FlxSprite(FlxG.width/2 - 255, 100, ImgDefeat);
 				add(tmpSprite);
 			}
 			

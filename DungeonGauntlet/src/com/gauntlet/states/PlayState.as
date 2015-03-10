@@ -175,15 +175,12 @@ package com.gauntlet.states
 					FlxG.paused = false;
 				}
 			}
-			if (FlxG.keys.justPressed("B"))
+			
+			if (FlxG.keys.justPressed("B") && FlxG.keys.pressed("SHIFT"))
 			{
 				this._nLevelNumber = 10;
 			}
-			
-			
-			
-			
-			if (FlxG.keys.justPressed("K"))
+			if (FlxG.keys.justPressed("K") && FlxG.keys.pressed("SHIFT"))
 			{
 				this._enemyGroup.kill();
 				this._enemyGroupFly.kill();
