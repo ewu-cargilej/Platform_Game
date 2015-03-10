@@ -564,7 +564,7 @@ package com.gauntlet.states
 								var mcLumberer :Lumberer = new Lumberer(x * 32, y * 32);
 								this._enemyGroup.add(mcLumberer);
 								add(mcLumberer);
-								mcLumberer.acquireTarget(mcHero,levelMap);
+								mcLumberer.acquireTarget(mcHero, levelMap);
 								enemyPoints -= 5;
 							}
 							else if (enemyPoints >= 3)
@@ -572,7 +572,7 @@ package com.gauntlet.states
 								var mcSpider :Spider = new Spider(x * 32, y * 32);
 								this._enemyGroup.add(mcSpider);
 								add(mcSpider);
-								mcSpider.acquireTarget(mcHero,levelMap);
+								mcSpider.acquireTarget(mcHero, levelMap);
 								enemyPoints -= 3;
 							}
 							else

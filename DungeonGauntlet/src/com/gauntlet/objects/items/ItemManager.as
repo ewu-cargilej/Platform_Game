@@ -89,7 +89,7 @@ package com.gauntlet.objects.items
 		 */
 		public function spawnUpgrade($curRune:Rune, $X:Number, $Y:Number):void
 		{
-			uManager.spawnUpgrade($curRune,$X,$Y );
+			uManager.spawnUpgrade($curRune,$X, $Y );
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
