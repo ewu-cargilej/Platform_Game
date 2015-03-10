@@ -253,7 +253,8 @@ package com.gauntlet.states
 		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
 		{
 			$enemy.hurt($rune.Damage);
-			$rune.kill();
+			if($enemy.alpha == 1)
+				$rune.kill();
 			if (!$enemy.alive)
 			{
 				_iManager.spawnCollectible($enemy);
@@ -430,6 +431,7 @@ package com.gauntlet.states
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width/300, FlxG.height/4);
 						this._enemyGroupFly.add(mcGhost);
+						mcGhost.ID = 999;
 						add(mcGhost);
 						mcGhost.acquireTarget(mcHero);
 					}

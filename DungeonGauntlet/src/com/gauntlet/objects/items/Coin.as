@@ -14,14 +14,29 @@ package com.gauntlet.objects.items
 		public var LifeTimer	:FlxTimer;
 		private var lifeTime	:Number = 3;
 		//coin graphic
-		public function Coin($enemy:FlxSprite) 
+		public function Coin($enemy:FlxSprite, $isBoss:Boolean = false) 
 		{
 			super($enemy.x, $enemy.y);
 			this.loadGraphic(CoinGraphic, true, true, 16);
 			this.health = 5000;
 			LifeTimer = new FlxTimer();
-			LifeTimer.start(lifeTime, 1, timeEnd);
-			this.acceleration.y = 50;
+			if ($isBoss)
+			{
+				var bossTimer:int = lifeTime + (Math.random() * 10);
+				LifeTimer.start(bossTimer, 1, timeEnd);
+				this.acceleration.y = 300;
+				this.velocity.y = -200 - Math.random() * -300;
+				this.velocity.x = 100 - Math.random() * 200;
+				this.elasticity = .7;
+			}
+			else
+			{
+				LifeTimer.start(lifeTime, 1, timeEnd);
+				this.acceleration.y = 150;
+				this.velocity.y = -50 - Math.random() * -150;
+				this.velocity.x = 20 - Math.random() * 40;
+				this.elasticity = .55;
+			}
 			//this.ID = int(Math.random() * 1000);
 		}
 		
