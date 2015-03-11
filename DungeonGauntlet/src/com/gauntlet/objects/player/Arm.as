@@ -55,7 +55,7 @@ package com.gauntlet.objects.player
 			canFire = true;
 			rune = new Rune(this.x, this.y);
 			
-			rune = new MagicRune(rune.x, rune.y, rune);
+			rune = new MagicRune(0, rune.x, rune.y, rune);
 		}
 		/**
 		 * removes a rune from the group

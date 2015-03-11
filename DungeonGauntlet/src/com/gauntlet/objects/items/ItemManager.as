@@ -50,7 +50,13 @@ package com.gauntlet.objects.items
 		 */
 		public function spawnCollectible($enemy:FlxSprite):void
 		{
-			if ($enemy.ID != 999)
+			for (var i:int = 0; i < $enemy.ID; i++)
+			{
+				var tempCoin:Coin = new Coin($enemy, $enemy.ID == 30);
+				addItem(tempCoin);
+			}
+			
+			/*if ($enemy.ID != 999)
 			{
 				var tempCoin:Coin = new Coin($enemy);
 				addItem(tempCoin);
@@ -58,16 +64,12 @@ package com.gauntlet.objects.items
 			else
 			{
 				this.bossSpawn($enemy);
-			}
+			}*/
 		}
 		
 		private function bossSpawn($enemy:FlxSprite):void 
 		{
-			for (var i:int = 0; i < 30; i++)
-			{
-				var tempCoin:Coin = new Coin($enemy, true);
-				addItem(tempCoin);
-			}
+			
 		}
 		
 		public function addItem($object:FlxSprite):void
@@ -87,9 +89,9 @@ package com.gauntlet.objects.items
 		 * @param	$param1	Describe param1 here.
 		 * @return			Describe the return value here.
 		 */
-		public function spawnUpgrade($curRune:Rune, $X:Number, $Y:Number):void
+		public function spawnUpgrade($level:Number,$curRune:Rune, $X:Number, $Y:Number):void
 		{
-			uManager.spawnUpgrade($curRune,$X,$Y );
+			uManager.spawnUpgrade($level,$curRune,$X,$Y );
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

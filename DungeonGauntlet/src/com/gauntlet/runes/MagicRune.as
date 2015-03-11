@@ -20,7 +20,7 @@ package com.gauntlet.runes
 		/**
 		 * Constructs the IamAGun object.
 		 */
-		public function MagicRune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function MagicRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
@@ -28,7 +28,7 @@ package com.gauntlet.runes
 			
 			this.allowCollisions
 			if ($parent == null)
-				fillValues(0);
+				fillValues($level);
 			else
 				copyParent($parent);
 				
@@ -49,10 +49,11 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			this.nDamage = Math.random() * 40;
+			//this.nDamage = Math.random() * 40;
 			this.nRate = Math.random();
 			nMyHealth = Math.random() * 15000;
 			this.nVelocity = 400 + (Math.random() * 300);
+			calcDamage();
 			this.sName = "tester Magic Rune";
 		}
 		
@@ -70,7 +71,7 @@ package com.gauntlet.runes
 		
 		override public function clone():Rune
 		{
-			var output:Rune = new MagicRune(this.x, this.y, this);
+			var output:Rune = new MagicRune(0,this.x, this.y, this);
 			return output;
 		}
 		/* ---------------------------------------------------------------------------------------- */

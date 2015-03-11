@@ -58,13 +58,13 @@ package com.gauntlet.runes
 			healthUpgrade.ID = 20202;
 		}
 		
-		public function spawnUpgrade($currRune:Rune, $X:Number, $Y:Number):void
+		public function spawnUpgrade($level:Number, $currRune:Rune, $X:Number, $Y:Number):void
 		{
 			//reviveStats();
-			plusMinusSet($X, $Y);
+			plusMinusSet($X, $Y - .5);
 			//rune upgrade
-			generateRune(0);
-			runeUpgrade = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1));
+			generateRune($level);
+			runeUpgrade = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1.5));
 			runeUpgrade.ID = 10101;
 			runeUpgrade.loadGraphic(newRune.getUpgradeGraphic());
 			//load text data and display
@@ -73,7 +73,7 @@ package com.gauntlet.runes
 			compareRunes($currRune);
 			
 			//health upgrade
-			healthUpgrade = new FlxSprite(32 * ($X - 3), 32 * ($Y - 1));
+			healthUpgrade = new FlxSprite(32 * ($X - 3), 32 * ($Y - 1.5));
 			healthUpgrade.ID = 20202;
 			healthUpgrade.loadGraphic(HealthUpgradeGraphic);
 			this.displayUpgradeSignal.dispatch(healthUpgrade);
@@ -148,19 +148,19 @@ package com.gauntlet.runes
 		
 			if( 1 > runeType && runeType > 0)
 			{
-				this.newRune = new MagicRune(0, 0);
+				this.newRune = new MagicRune($level, 0, 0);
 			}
 			else if( 2 > runeType && runeType > 1)
 			{
-				this.newRune = new FireRune(0, 0);
+				this.newRune = new FireRune($level, 0, 0);
 			}
 			else if( 3 > runeType && runeType > 2)
 			{
-				this.newRune = new IceRune(0, 0);
+				this.newRune = new IceRune($level, 0, 0);
 			}
 			else if( 4 > runeType && runeType > 3)
 			{
-				this.newRune = new LightningRune(0, 0);
+				this.newRune = new LightningRune($level, 0, 0);
 			}
 			else
 			{

@@ -19,7 +19,7 @@ package com.gauntlet.runes
 		/**
 		 * Constructs the rune object.
 		 */
-		public function FireRune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function FireRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
@@ -27,7 +27,7 @@ package com.gauntlet.runes
 			
 			this.allowCollisions
 			if ($parent == null)
-				fillValues(0);
+				fillValues($level);
 			else
 				copyParent($parent);
 				
@@ -52,7 +52,8 @@ package com.gauntlet.runes
 			nMyHealth = 300 + Math.random() * 12000;
 			this.nVelocity = 400 + (Math.random() * 100);
 			
-			this.nDamage = 10 + Math.random() * 50;
+			//this.nDamage = 10 + Math.random() * 50;
+			calcDamage();
 			this.sName = "Fire Rune";
 		}
 		
@@ -70,7 +71,7 @@ package com.gauntlet.runes
 		
 		override public function clone():Rune
 		{
-			var output:Rune = new FireRune(this.x, this.y, this);
+			var output:Rune = new FireRune(0,this.x, this.y, this);
 			return output;
 		}
 		/* ---------------------------------------------------------------------------------------- */

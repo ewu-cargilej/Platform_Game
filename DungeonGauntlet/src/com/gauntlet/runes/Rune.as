@@ -73,13 +73,18 @@ package com.gauntlet.runes
 		 */
 		public function fillValues($curLevel:int):void
 		{
-			this.nDamage = 10;
-			this.nRate = .6;
-			nMyHealth = 8000;
+			this.nRate = 1;
+			nMyHealth = 6000;
 			this.nVelocity = 400;
 			this.sName = "base Rune";
+			this.nDamage = 20;
+			//calcDamage();
 		}
 		
+		public function calcDamage():void
+		{
+			this.nDamage = (21 * this.nRate) + ((1 / 2900) * this.nMyHealth) + ((1 / 80) * this.nVelocity);
+		}
 		private function copyParent($parent:Rune):void
 		{
 			this.nDamage = $parent.Damage;

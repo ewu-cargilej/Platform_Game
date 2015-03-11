@@ -194,7 +194,7 @@ package com.gauntlet.states
 				this._enemyGroupFly.clear();
 				this._bLevelComplete = true;
 				if (this._nLevelNumber != this._nBossLevel)
-					_iManager.spawnUpgrade(mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
+					_iManager.spawnUpgrade(this._nLevelNumber, mcArm.myRune, levelMap.widthInTiles - 1, this._nExitHeight);
 
 			}
 			
@@ -431,7 +431,7 @@ package com.gauntlet.states
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width/300, FlxG.height/4);
 						this._enemyGroupFly.add(mcGhost);
-						mcGhost.ID = 999;
+						mcGhost.ID = 30;
 						add(mcGhost);
 						mcGhost.acquireTarget(mcHero);
 					}
@@ -647,6 +647,7 @@ package com.gauntlet.states
 								var mcLumberer :Lumberer = new Lumberer(x * 32, y * 32);
 								this._enemyGroup.add(mcLumberer);
 								add(mcLumberer);
+								mcLumberer.ID = 3;
 								mcLumberer.acquireTarget(mcHero,levelMap);
 								enemyPoints -= 5;
 							}
@@ -655,6 +656,7 @@ package com.gauntlet.states
 								var mcSpider :Spider = new Spider(x * 32, y * 32);
 								this._enemyGroup.add(mcSpider);
 								add(mcSpider);
+								mcSpider.ID = 2;
 								mcSpider.acquireTarget(mcHero,levelMap);
 								enemyPoints -= 3;
 							}
@@ -662,6 +664,7 @@ package com.gauntlet.states
 							{
 								var mcBat :Bat = new Bat(x * 32, y * 32);
 								this._enemyGroupFly.add(mcBat);
+								mcBat.ID = 1;
 								add(mcBat);
 								enemyPoints -= 1;
 							}

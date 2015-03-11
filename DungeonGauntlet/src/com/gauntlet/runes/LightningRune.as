@@ -19,7 +19,7 @@ package com.gauntlet.runes
 		/**
 		 * Constructs the IamAGun object.
 		 */
-		public function LightningRune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function LightningRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
@@ -27,7 +27,7 @@ package com.gauntlet.runes
 			
 			this.allowCollisions
 			if ($parent == null)
-				fillValues(0);
+				fillValues($level);
 			else
 				copyParent($parent);
 				
@@ -48,11 +48,12 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			this.nRate = .5 + Math.random() * .5;
-			nMyHealth = 5000 + Math.random() * 10000;
-			this.nVelocity = 500 + (Math.random() * 200);
+			this.nRate = .4 + Math.random() * .6;
+			nMyHealth = 500 + Math.random() * 14500;
+			this.nVelocity = 300 + (Math.random() * 400);
 			
-			this.nDamage = 10 + Math.random() * 30;
+			//this.nDamage = 10 + Math.random() * 30;
+			calcDamage();
 			this.sName = "Lightning Rune";
 		}
 		
@@ -70,7 +71,7 @@ package com.gauntlet.runes
 		
 		override public function clone():Rune
 		{
-			var output:Rune = new LightningRune(this.x, this.y, this);
+			var output:Rune = new LightningRune(0,this.x, this.y, this);
 			return output;
 		}
 		/* ---------------------------------------------------------------------------------------- */

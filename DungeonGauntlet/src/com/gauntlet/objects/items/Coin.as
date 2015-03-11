@@ -22,22 +22,21 @@ package com.gauntlet.objects.items
 			LifeTimer = new FlxTimer();
 			if ($isBoss)
 			{
-				var bossTimer:int = lifeTime + (Math.random() * 10);
+				var bossTimer:int = lifeTime + (Math.random() * 13);
 				LifeTimer.start(bossTimer, 1, timeEnd);
-				this.acceleration.y = 300;
-				this.velocity.y = -200 - Math.random() * -300;
-				this.velocity.x = 100 - Math.random() * 200;
+				this.acceleration.y = 200;
+				this.velocity.y = -500 - Math.random() * -200;
+				this.velocity.x = 100 - Math.random() * 300;
 				this.elasticity = .7;
 			}
 			else
 			{
 				LifeTimer.start(lifeTime, 1, timeEnd);
 				this.acceleration.y = 150;
-				this.velocity.y = -50 - Math.random() * -150;
-				this.velocity.x = 20 - Math.random() * 40;
+				this.velocity.y = -120 - Math.random() * -150;
+				this.velocity.x = 80 - Math.random() * 160;
 				this.elasticity = .55;
 			}
-			//this.ID = int(Math.random() * 1000);
 		}
 		
 		override public function update():void 
