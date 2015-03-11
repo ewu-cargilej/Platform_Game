@@ -122,7 +122,7 @@ package com.gauntlet.objects.player
 			var b:Rune = rune.clone();
 			var rFireAngle:Number; //create a variable for the angle in radians (required for velocity calculations because they don't work with degrees)
 			b.revive();
-			b.reset(x, y - 4); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
+			b.reset(x, y); //this puts the bullets in the middle of the PlayerUpper sprite, but you may not want the shots to originate from here (or change it depending on the angle, much like the animations above)
 			b.angle = dFireAngle; //if your bullet shape doesn't need to be rotated (such as a circle) then remove this line to speed up the rendering
 			rFireAngle = (dFireAngle * (Math.PI / 180)); //convert the fire angle from degrees into radians and apply that value to the radian fire angle variable
 			b.velocity.x = Math.cos(rFireAngle) * rune.myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).

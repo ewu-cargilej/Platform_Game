@@ -81,9 +81,9 @@ package com.gauntlet.runes
 			//calcDamage();
 		}
 		
-		public function calcDamage():void
+		public function calcDamage($curLevel:Number):void
 		{
-			this.nDamage = (21 * this.nRate) + ((1 / 2900) * this.nMyHealth) + ((1 / 80) * this.nVelocity);
+			this.nDamage = (21 * this.nRate) + ((1 / 2900) * this.nMyHealth) + ((1 / 80) * this.nVelocity) + $curLevel + 7;
 		}
 		private function copyParent($parent:Rune):void
 		{

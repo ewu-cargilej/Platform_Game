@@ -34,10 +34,10 @@ package com.gauntlet.runes
 				
 			this.health = nMyHealth;
 			
-			this.width = 16;
-			this.height = 16;
-			this.offset.x = 8;
-			this.offset.y = 8;
+			this.width = 7;
+			this.height = 7;
+			this.offset.x = 20;
+			this.offset.y = 15;
 		}
 		
 		
@@ -49,12 +49,16 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			//this.nDamage = Math.random() * 40;
-			this.nRate = Math.random();
-			nMyHealth = Math.random() * 15000;
+			if ($curLevel < 50)
+				this.nRate = ((40 - $curLevel) + Math.random() * (60 - $curLevel)) * .01;
+			else
+				this.nRate = .1;
+			
+			nMyHealth = 500 + Math.random() * (10000 + ($curLevel * 10));
 			this.nVelocity = 400 + (Math.random() * 300);
-			calcDamage();
-			this.sName = "tester Magic Rune";
+			
+			calcDamage($curLevel);
+			this.sName = "Magic Rune";
 		}
 		
 		

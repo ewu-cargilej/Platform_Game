@@ -33,10 +33,10 @@ package com.gauntlet.runes
 				
 			this.health = nMyHealth;
 			
-			this.width = 16;
-			this.height = 16;
-			this.offset.x = 8;
-			this.offset.y = 8;
+			this.width = 18;
+			this.height = 6;
+			this.offset.x = 16;
+			this.offset.y = 16;
 		}
 		
 		
@@ -48,12 +48,15 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			this.nRate = .4 + Math.random() * .6;
-			nMyHealth = 500 + Math.random() * 14500;
-			this.nVelocity = 300 + (Math.random() * 400);
+			if ($curLevel < 50)
+				this.nRate = ((40 - $curLevel) + Math.random() * (60 - $curLevel)) * .01;
+			else
+				this.nRate = .1;
 			
-			//this.nDamage = 10 + Math.random() * 30;
-			calcDamage();
+			nMyHealth = 500 + Math.random() * (10000 + ($curLevel * 10));
+			this.nVelocity = 400 + (Math.random() * 300);
+			
+			calcDamage($curLevel);
 			this.sName = "Lightning Rune";
 		}
 		
