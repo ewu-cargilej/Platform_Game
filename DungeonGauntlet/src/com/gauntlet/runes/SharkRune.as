@@ -1,6 +1,7 @@
 package com.gauntlet.runes
 
 {
+	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 
 	
@@ -9,20 +10,21 @@ package com.gauntlet.runes
 	 * 
 	 * @author Nicholas Valetnine
 	 */
-	public class FireRune extends Rune
+	public class SharkRune extends Rune
 	{
-		//[Embed(source = "../../../../embeded_resources/Game_Screen/Upgrades/FPO_Fire.png")] private static var FireBlast:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Fire_Upgrade.png')]public static var FireUpgrade:Class;
+		[Embed(source = "../../../../embeded_resources/Game_Screen/Runes/Shark_Rune_Attack.png")] private static var SharkAttack:Class;
+		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Shark_Upgrade.png')]public static var SharkUpgrade:Class;
+		[Embed(source = "../../../../embeded_resources/SFX/Shark_Bite.mp3")] private static var SharkShoot:Class;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Constructs the rune object.
+		 * Constructs the IamAGun object.
 		 */
-		public function FireRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function SharkRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
 			super(X,Y);
 			this.starting = new FlxPoint(X, Y);
-			//this.loadGraphic(FireBlast, true, true, 32);
+			this.loadGraphic(SharkAttack, true, true, 64,22);
 			
 			this.allowCollisions
 			if ($parent == null)
@@ -32,10 +34,10 @@ package com.gauntlet.runes
 				
 			this.health = nMyHealth;
 			
-			this.width = 20;
-			this.height = 10;
-			this.offset.x = 16;
-			this.offset.y = 16;
+			//this.width = 7;
+			this.height = 7;
+			//this.offset.x = 20;
+			//this.offset.y = 11;
 		}
 		
 		
@@ -47,16 +49,13 @@ package com.gauntlet.runes
 		 */
 		override public function fillValues($curLevel:int):void
 		{
-			if ($curLevel < 50)
-				this.nRate = ((40 - $curLevel) + Math.random() * (60 - $curLevel)) * .01;
-			else
-				this.nRate = .1;
+			this.nRate = .5;
 			
-			nMyHealth = 500 + Math.random() * (10000 + ($curLevel * 10));
+			nMyHealth = 15000;
 			this.nVelocity = 400 + (Math.random() * 300);
 			
 			calcDamage($curLevel);
-			this.sName = "Fire Rune";
+			this.sName = "Shark Rune";
 		}
 		
 		
@@ -73,18 +72,25 @@ package com.gauntlet.runes
 		
 		override public function clone():Rune
 		{
-			var output:Rune = new FireRune(0,this.x, this.y, this);
+			var output:Rune = new SharkRune(0,this.x, this.y, this);
 			return output;
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		override public function getUpgradeGraphic():Class
 		{
-			return FireUpgrade;
+			return SharkUpgrade;
 		}
 		
 		override public function triggerAnimation():void
 		{
-			this.play("Fire");
+			//this.play("Magic");
+		}
+		
+		override public function kill():void
+		{
+			super.kill();
+			FlxG.play(SharkShoot, .7, false);
 		}
 	}
 }
+

@@ -1,10 +1,8 @@
 package com.gauntlet.objects.player
 {
-	import flash.display.Sprite;
-	import org.flixel.FlxSprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
-	import com.gauntlet.states.ResultState;
+	import org.flixel.FlxSprite;
 	
 	/**
 	 * The hero for the game.

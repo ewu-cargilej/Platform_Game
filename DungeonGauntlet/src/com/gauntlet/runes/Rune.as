@@ -1,6 +1,5 @@
 package com.gauntlet.runes
 {
-	import flash.display.Sprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
@@ -21,6 +20,8 @@ package com.gauntlet.runes
 		
 		/** how fast the bullet objects fly  */
 		protected var	nVelocity :Number;
+		public var  	nVelocityX	:Number;
+		public var	nVelocityY	:Number;
 		/** the damage the gun deals */
 		protected var	nDamage	:Number;
 		/** the range of the weapon */
@@ -114,19 +115,34 @@ package com.gauntlet.runes
 		 */
 		override public function update():void
 		{
-			super.update();
-			if (!this.onScreen())
+			if (!FlxG.paused)
 			{
-				this.kill();
-			}
-			this.hurt(FlxU.getDistance(starting, new FlxPoint(this.x, this.y)));
-			
-		if (!this.alive)
-			{
-				this.runeDiedSignal.dispatch(this);
+				super.update();
+				if (!this.onScreen())
+				{
+					this.kill();
+				}
+				this.hurt(FlxU.getDistance(starting, new FlxPoint(this.x, this.y)));
+				
+				this.alpha = (this.health / this.nMyHealth);
+				if (this.alpha == 0)
+					this.kill();
+				
+				if (!this.alive)
+					{
+						this.runeDiedSignal.dispatch(this);
+					}
+				this.velocity.x = nVelocityX;
+				this.velocity.y = nVelocityY;
 			}
 		}
 		
+/*		override public function hurt(Damage:Number):void 
+		{
+			this.health = this.nMyHealth - Damage;
+			if (this.health <= 0)
+				this.kill();
+		}*/
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

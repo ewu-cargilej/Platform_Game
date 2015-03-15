@@ -2,7 +2,6 @@ package com.gauntlet.objects.items
 {
 	import com.gauntlet.runes.Rune;
 	import com.gauntlet.runes.UpgradeManager;
-	import flash.automation.Configuration;
 	import flash.display.Sprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxObject;

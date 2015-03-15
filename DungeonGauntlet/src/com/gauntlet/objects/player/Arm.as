@@ -2,17 +2,11 @@ package com.gauntlet.objects.player
 {
 	import com.gauntlet.runes.MagicRune;
 	import com.gauntlet.runes.Rune;
-	import flash.display.Sprite;
+	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
-	import org.flixel.FlxG;
-	import org.flixel.FlxObject;
-	import flash.events.MouseEvent;
-	import flash.ui.Mouse;
-	import flash.ui.MouseCursor
-	import flash.automation.MouseAutomationAction;
-	import flash.display.DisplayObject;
 	import org.flixel.FlxTimer;
 	import org.flixel.FlxU;
 	import org.osflash.signals.Signal;
@@ -127,6 +121,9 @@ package com.gauntlet.objects.player
 			rFireAngle = (dFireAngle * (Math.PI / 180)); //convert the fire angle from degrees into radians and apply that value to the radian fire angle variable
 			b.velocity.x = Math.cos(rFireAngle) * rune.myVelocity; //calculate a velocity along the x axis, multiply the result by our diagonalVelocity (just 100 here).
 			b.velocity.y = Math.sin(rFireAngle) * rune.myVelocity; //calculate a velocity along the y axis, ditto.
+			b.nVelocityX = b.velocity.x;
+			b.nVelocityY = b.velocity.y;
+			
 			b.triggerAnimation();
 			this.addRuneSignal.dispatch(b);
 		/*	runeIndex++;

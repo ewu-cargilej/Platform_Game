@@ -9,10 +9,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.player.Arm;
 	import com.gauntlet.objects.player.Hero;
 	import com.gauntlet.runes.Rune;
-	import com.gauntlet.runes.UpgradeManager;
-	import flash.events.AVLoadInfoEvent;
 	import org.flixel.*;
-	import org.flixel.system.FlxTile;
 
 	/**
 	 * Play state.

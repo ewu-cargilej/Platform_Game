@@ -1,7 +1,6 @@
 package com.gauntlet.runes
 
 {
-	import flash.display.Sprite;
 	import org.flixel.FlxPoint;
 
 	

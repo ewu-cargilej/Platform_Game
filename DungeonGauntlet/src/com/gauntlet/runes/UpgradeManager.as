@@ -1,10 +1,8 @@
 package com.gauntlet.runes
 {
-	import flash.display.Sprite;
-	import org.flixel.FlxBasic;
-	import org.flixel.FlxButton;
-	import org.flixel.FlxG;
 	import com.gauntlet.runes.Rune;
+	import flash.display.Sprite;
+	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	import org.osflash.signals.Signal;

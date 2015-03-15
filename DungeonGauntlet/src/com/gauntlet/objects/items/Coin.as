@@ -1,6 +1,5 @@
 package com.gauntlet.objects.items 
 {
-	import flash.utils.Timer;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxTimer;
 	
