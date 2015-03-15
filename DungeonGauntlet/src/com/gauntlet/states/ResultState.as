@@ -128,39 +128,69 @@ package com.gauntlet.states
 			
 			scores = scores.sort(compare);
 			
+			//score 1
 			tempInt = scores.pop();
 			_saveData.data.score1 = tempInt;
-			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 150, 100, "" + tempInt);
+			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 150, 300, "" + tempInt);
 			tempText.size = 20;
-			tempText.alignment = "center";
+			if (tempInt == currentScore)
+			{
+				tempText.text = "This Run ->  " + tempText.text;
+				tempText.color = uint(0xFF0000);
+			}
+			tempText.alignment = "right";
 			add(tempText);
 			
+			//score 2
 			tempInt = scores.pop();
 			_saveData.data.score2 = tempInt;
-			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 200, 100, "" + tempInt);
+			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 200, 300, "" + tempInt);
 			tempText.size = 20;
-			tempText.alignment = "center";
+			if (tempInt == currentScore)
+			{
+				tempText.text = "This Run ->  " + tempText.text;
+				tempText.color = uint(0xFF0000);
+			}
+			tempText.alignment = "right";
 			add(tempText);
 			
+			//score 3
 			tempInt = scores.pop();
 			_saveData.data.score3 = tempInt;
-			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 250, 100, "" + tempInt);
+			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 250, 300, "" + tempInt);
 			tempText.size = 20;
-			tempText.alignment = "center";
+			if (tempInt == currentScore)
+			{
+				tempText.text = "This Run ->  " + tempText.text;
+				tempText.color = uint(0xFF0000);
+			}
+			tempText.alignment = "right";
 			add(tempText);
 			
+			//score 4
 			tempInt = scores.pop();
 			_saveData.data.score4 = tempInt;
-			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 300, 100, "" + tempInt);
+			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 300, 300, "" + tempInt);
 			tempText.size = 20;
-			tempText.alignment = "center";
+			if (tempInt == currentScore)
+			{
+				tempText.text = "This Run ->  " + tempText.text;
+				tempText.color = uint(0xFF0000);
+			}
+			tempText.alignment = "right";
 			add(tempText);
 			
+			//score 5
 			tempInt = scores.pop();
 			_saveData.data.score5 = tempInt;
-			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 350, 100, "" + tempInt);
+			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 350, 300, "" + tempInt);
 			tempText.size = 20;
-			tempText.alignment = "center";
+			if (tempInt == currentScore)
+			{
+				tempText.text = "This Run ->  " + tempText.text;
+				tempText.color = uint(0xFF0000);
+			}
+			tempText.alignment = "right";
 			add(tempText);
 		}
 		
