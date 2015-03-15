@@ -65,7 +65,7 @@ package com.gauntlet.states
 		protected var _txtScore			:FlxText;
 		
 		/** the current score of the game */
-		protected var _numScore			:Number;
+		protected var _nScore			:Number;
 		
 		/**	Show current rune. */
 		protected var _txtRune			:FlxText;
@@ -88,6 +88,9 @@ package com.gauntlet.states
 		/** Level number for the Boss. */
 		protected var	_nBossLevel	:int;
 		
+		/** FlxSave object to store the current score. */
+		protected var	_saveData	:FlxSave;
+		
 		/**
 		 * Set up the state.
 		 */
@@ -100,6 +103,9 @@ package com.gauntlet.states
 			this._bLevelComplete = false;
 			this._nLevelNumber = 1;
 			this._nBossLevel = 11;
+			
+			this._saveData = new FlxSave();
+			this._saveData.bind("scoreData");
 			
 			var background:FlxSprite = new FlxSprite(0, 0, ImgBackground);
 			add(background);
@@ -121,8 +127,8 @@ package com.gauntlet.states
 			this.generateRoomTiles(true);
 			this.placeEnemies();
 			
-			this._numScore = 0;
-			var intScore:int = int(this._numScore);
+			this._nScore = 0;
+			var intScore:int = int(this._nScore);
 			
 			_txtHealth = new FlxText(64, FlxG.height - 48, 150, "HP: " + this.mcHero.health);
 			_txtHealth.size = 24;
@@ -212,6 +218,9 @@ package com.gauntlet.states
 			{
 				this._enemyGroup.kill();
 				this._enemyGroupFly.kill();
+				
+				this._saveData.data.currentScore = this._nScore;
+				
 				FlxG.switchState(new ResultState(false));
 			}
 			
@@ -348,8 +357,8 @@ package com.gauntlet.states
 			remove($obj);
 			this._collectibleGroup.remove($obj);
 			
-			this._numScore += $value;
-			var intScore:int = int(this._numScore);
+			this._nScore += $value;
+			var intScore:int = int(this._nScore);
 			this._txtScore.text = "Score: " + intScore;
 		}
 		
@@ -419,7 +428,11 @@ package com.gauntlet.states
 				this.mcHero.x = 32;
 				
 				if (this._nLevelNumber == this._nBossLevel)
+				{
+					this._saveData.data.currentScore = this._nScore;
+					
 					FlxG.switchState(new ResultState(true));
+				}
 				else
 				{
 					if (this._nLevelNumber < this._nBossLevel - 1)
@@ -475,26 +488,26 @@ package com.gauntlet.states
 					var n :int = int(Math.random() * 3);
 				
 				
-				switch (n)
-				{
-					case 0:
+					switch (n)
 					{
-						genBasic();
-						break;
-					}
-					
-					case 1:
-					{
-						genHoles();
-						break;
-					}
-				
-					default:
-					{
-						genSlopes();
-					}
+						case 0:
+						{
+							genBasic();
+							break;
+						}
 						
-				}
+						case 1:
+						{
+							genHoles();
+							break;
+						}
+					
+						default:
+						{
+							genSlopes();
+						}
+							
+					}
 				}
 				
 				
@@ -512,7 +525,7 @@ package com.gauntlet.states
 		
 		/**
 		 * @private
-		 * Generate platforms, basic platforms.
+		 * Generate basic platforms.
 		 *
 		 */
 		protected function genBasic():void
@@ -521,7 +534,7 @@ package com.gauntlet.states
 			{
 				for (var y :int = 6; y < levelMap.heightInTiles - 2; y+=3)
 				{
-					if((Math.random() * 20 > 10 && x < levelMap.widthInTiles - 3 - y/3) || x > levelMap.widthInTiles - 2 - y/3)
+					if((Math.random() * 20 > 10 && x < levelMap.widthInTiles - 4 - y/3) || x > levelMap.widthInTiles - 3 - y/3)
 						levelMap.setTile(x, y, int(Math.random() * 4 + 1));
 				}
 			}
@@ -533,7 +546,7 @@ package com.gauntlet.states
 		
 		/**
 		 * @private
-		 * Generate platforms
+		 * Generate platforms with vertical wrapping
 		 *
 		 */
 		protected function genHoles():void

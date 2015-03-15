@@ -24,6 +24,9 @@ package com.gauntlet.states
 		/** Whether or not the player won or lost. */
 		protected var	_bWin	:Boolean;
 		
+		/** FlxSave object to store score and retrieve data. */
+		protected var	_saveData	:FlxSave;
+		
 		/**
 		 * Constructor
 		 * 
@@ -39,13 +42,17 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			
+			this._saveData = new FlxSave();
+			this._saveData.bind("scoreData");
 			
 			var tmpSprite:FlxSprite;
 			tmpSprite = new FlxSprite(0, 0, ImgBackground);
 			add(tmpSprite);
 			
 			tmpSprite = new FlxSprite(FlxG.width / 2 - 137, FlxG.height - 150, ImgPlayAgain);
+			add(tmpSprite);
+			
+			tmpSprite = new FlxSprite(FlxG.width / 4 * 3 - 111, 75, ImgTopScores);
 			add(tmpSprite);
 			
 			if (this._bWin)
@@ -55,7 +62,7 @@ package com.gauntlet.states
 				tmpSprite = new FlxSprite(0, 0, ImgTreasure);
 				add(tmpSprite);
 				
-				tmpSprite = new FlxSprite(FlxG.width/2 - 255, 100, ImgVictory);
+				tmpSprite = new FlxSprite(FlxG.width/2 - 455, 50, ImgVictory);
 				add(tmpSprite);
 			}
 			else
@@ -65,9 +72,11 @@ package com.gauntlet.states
 				tmpSprite = new FlxSprite(0, 0, ImgBones);
 				add(tmpSprite);
 				
-				tmpSprite = new FlxSprite(FlxG.width/2 - 255, 100, ImgDefeat);
+				tmpSprite = new FlxSprite(FlxG.width/2 - 455, 50, ImgDefeat);
 				add(tmpSprite);
 			}
+			
+			setUpLeaderboard();
 			
 			FlxG.mouse.show();
 		}
@@ -82,6 +91,93 @@ package com.gauntlet.states
 
 			if(FlxG.mouse.justPressed())
 				FlxG.switchState(new TitleState());
+		}
+		
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * @private
+		 * Show the top 5 scores.
+		 *
+		 */
+		protected function setUpLeaderboard():void
+		{
+			var currentScore :int = this._saveData.data.currentScore;
+			var scores :Vector.<int> = new Vector.<int>();
+			var tempText :FlxText;
+			var tempInt :int;
+			
+			if (_saveData.data.score1 == null)
+				_saveData.data.score1 = 130000;
+			if (_saveData.data.score2 == null)
+				_saveData.data.score2 = 100000;
+			if (_saveData.data.score3 == null)
+				_saveData.data.score3 = 70000;
+			if (_saveData.data.score4 == null)
+				_saveData.data.score4 = 50000;
+			if (_saveData.data.score5 == null)
+				_saveData.data.score5 = 30000;
+			
+			scores.push(_saveData.data.score1);
+			scores.push(_saveData.data.score2);
+			scores.push(_saveData.data.score3);
+			scores.push(_saveData.data.score4);
+			scores.push(_saveData.data.score5);
+			scores.push(currentScore);
+			
+			scores = scores.sort(compare);
+			
+			tempInt = scores.pop();
+			_saveData.data.score1 = tempInt;
+			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 150, 100, "" + tempInt);
+			tempText.size = 20;
+			tempText.alignment = "center";
+			add(tempText);
+			
+			tempInt = scores.pop();
+			_saveData.data.score2 = tempInt;
+			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 200, 100, "" + tempInt);
+			tempText.size = 20;
+			tempText.alignment = "center";
+			add(tempText);
+			
+			tempInt = scores.pop();
+			_saveData.data.score3 = tempInt;
+			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 250, 100, "" + tempInt);
+			tempText.size = 20;
+			tempText.alignment = "center";
+			add(tempText);
+			
+			tempInt = scores.pop();
+			_saveData.data.score4 = tempInt;
+			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 300, 100, "" + tempInt);
+			tempText.size = 20;
+			tempText.alignment = "center";
+			add(tempText);
+			
+			tempInt = scores.pop();
+			_saveData.data.score5 = tempInt;
+			tempText = new FlxText(FlxG.width / 4 * 3 - 50, 350, 100, "" + tempInt);
+			tempText.size = 20;
+			tempText.alignment = "center";
+			add(tempText);
+		}
+		
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * @private
+		 * Used to sort a vector of type int.
+		 *
+		 * @param	$x		First number.
+		 * @param	$y		Second number.
+		 * @return			The difference between the twon numbers.
+		 */
+		protected function compare($x:int, $y:int):Number
+		{
+			return $x - $y;
 		}
 	}
 }
