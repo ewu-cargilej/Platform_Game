@@ -5,6 +5,7 @@ package com.gauntlet.objects.enemies
 	import org.flixel.FlxObject;
 	import flash.utils.Timer;
     import flash.events.TimerEvent;
+	import com.gauntlet.objects.player.Hero;
 	/**
 	 * Bat enemy.
 	 * 
@@ -21,6 +22,8 @@ package com.gauntlet.objects.enemies
 		protected var	_nMoveValue: int = 0;
 		/** Timer used for sounds. */
 		protected var _tTimer: Timer = new Timer(1000);
+		/** Reference to the hero. */
+		private var _mcHero:	Hero;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -31,7 +34,7 @@ package com.gauntlet.objects.enemies
 		 */
 		public function Bat(X:Number=0,Y:Number=0)
 		{
-			super(X, Y, 40, 20, 1);
+			super(X, Y, 50, 20, 1);
 			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 			_tTimer.start();
 			_tTimer.delay = int((Math.random() * 3000) + 3000);
@@ -45,11 +48,11 @@ package com.gauntlet.objects.enemies
 			this.offset.y = 1;
 			
 			//basic player physics
-			this.drag.x = 2000;
+			this.drag.x = 60;
 			this.acceleration.y = 0;
 			this.maxVelocity.x = 60;
 			this.maxVelocity.y = 30;
-			this.drag.y = 2000;
+			this.drag.y = 30;
 			
 			//animations
 			this.addAnimation("fly", [0,1],4);
@@ -66,12 +69,12 @@ package com.gauntlet.objects.enemies
 			this.acceleration.y = 0;
 			this.play("fly");
 			_nFrame++;
-			if (_nFrame >= 15)//every 15 frames get a new move value
+			if (_nFrame >= 20)//every 20 frames get a new move value
 			{
 			_nFrame = 0;
 			_nMoveValue = int(Math.random() * 100);
 			}
-			if (_nMoveValue>=0 && _nMoveValue<25)//move left
+			if (_nMoveValue>=0 && _nMoveValue<10)//move left
 			{
 				if (this.x<=32)//dont go off screen
 				{
@@ -82,7 +85,7 @@ package com.gauntlet.objects.enemies
 				this.acceleration.x -= this.drag.x;	
 				}
 			}
-			if (_nMoveValue>=25 && _nMoveValue<50)//move right
+			if (_nMoveValue>=10 && _nMoveValue<20)//move right
 			{
 				if (this.x>=(FlxG.width-32-this.width))//dont go off screen
 				{
@@ -93,7 +96,7 @@ package com.gauntlet.objects.enemies
 				this.acceleration.x += this.drag.x;	
 				}
 			}
-			if (_nMoveValue>=50 && _nMoveValue<75)//move up
+			if (_nMoveValue>=20 && _nMoveValue<30)//move up
 			{
 				if (this.y<=32)//dont go off screen
 				{
@@ -104,7 +107,7 @@ package com.gauntlet.objects.enemies
 				this.acceleration.y -= this.drag.y;	
 				}	
 			}
-			if (_nMoveValue>=75 && _nMoveValue<100)//move down
+			if (_nMoveValue>=30 && _nMoveValue<40)//move down
 			{
 				if (this.y>=(FlxG.height-96-this.height))//dont go off screen
 				{
@@ -115,6 +118,161 @@ package com.gauntlet.objects.enemies
 				this.acceleration.y += this.drag.y;		
 				}
 			}
+			if (_nMoveValue>=40 && _nMoveValue<50)//move up right
+			{
+				if ((this.x>=(FlxG.width-32-this.width)) || (_nMoveValue>=20 && _nMoveValue<30))//dont go off screen
+				{
+				this.acceleration.x -= this.drag.x;	
+				this.acceleration.y += this.drag.y;
+				}
+				else
+				{
+				this.acceleration.x += this.drag.x;	
+				this.acceleration.y -= this.drag.y;	
+				}
+			}
+			if (_nMoveValue>=50 && _nMoveValue<60)//move down right
+			{
+				if ((this.x>=(FlxG.width-32-this.width)) || (this.y>=(FlxG.height-96-this.height)))//dont go off screen
+				{
+				this.acceleration.x -= this.drag.x;	
+				this.acceleration.y -= this.drag.y;
+				}
+				else
+				{
+				this.acceleration.x += this.drag.x;	
+				this.acceleration.y += this.drag.y;	
+				}
+			}
+			if (_nMoveValue>=60 && _nMoveValue<70)//move up left
+			{
+				if ((_nMoveValue>=0 && _nMoveValue<10) || (_nMoveValue>=20 && _nMoveValue<30))//dont go off screen
+				{
+				this.acceleration.x += this.drag.x;	
+				this.acceleration.y += this.drag.y;	
+				}
+				else
+				{
+				this.acceleration.x -= this.drag.x;	
+				this.acceleration.y -= this.drag.y;	
+				}
+			}
+			if (_nMoveValue>=70 && _nMoveValue<80)//move down left
+			{
+				if ((_nMoveValue>=0 && _nMoveValue<10) || (this.y>=(FlxG.height-96-this.height)))//dont go off screen
+				{
+				this.acceleration.x += this.drag.x;	
+				this.acceleration.y -= this.drag.y;
+				}
+				else
+				{
+				this.acceleration.x -= this.drag.x;	
+				this.acceleration.y += this.drag.y;	
+				}
+			}
+			if (_nMoveValue>=80 && _nMoveValue<90)//move same direction
+			{
+				if (this.acceleration.x < 0)//going left
+				{
+					if (this.x<=32)//dont go off screen
+					{
+					this.acceleration.x += this.drag.x;
+					}
+					else
+					{
+					this.acceleration.x -= this.drag.x;	
+					}	
+				}
+				if (this.acceleration.x > 0)//going right
+				{
+					if (this.x>=(FlxG.width-32-this.width))//dont go off screen
+					{
+					this.acceleration.x -= this.drag.x;	
+					}
+					else
+					{
+					this.acceleration.x += this.drag.x;	
+					}
+				}
+				if (this.acceleration.y < 0)//going up
+				{
+					if (this.y<=32)//dont go off screen
+					{
+					this.acceleration.y += this.drag.y;	
+					}
+					else
+					{
+					this.acceleration.y -= this.drag.y;	
+					}	
+				}
+				if (this.acceleration.y > 0)//going down
+				{
+					if (this.y>=(FlxG.height-96-this.height))//dont go off screen
+					{
+					this.acceleration.y -= this.drag.y;		
+					}
+					else
+					{
+					this.acceleration.y += this.drag.y;		
+					}
+				}
+			}
+			if (_nMoveValue >= 90 && _nMoveValue < 100)//move towards player
+			{
+				if (_mcHero.x - this.x < 0)//player left
+				{
+					if (this.x<=32)//dont go off screen
+					{
+					this.acceleration.x += this.drag.x;
+					}
+					else
+					{
+					this.acceleration.x -= this.drag.x;	
+					}
+				}
+				if (_mcHero.x - this.x > 0)//player right
+				{
+					if (this.x>=(FlxG.width-32-this.width))//dont go off screen
+					{
+					this.acceleration.x -= this.drag.x;	
+					}
+					else
+					{
+					this.acceleration.x += this.drag.x;	
+					}
+				}
+				if (_mcHero.y - this.y < 0)//player up
+				{
+					if (this.y<=32)//dont go off screen
+					{
+					this.acceleration.y += this.drag.y;	
+					}
+					else
+					{
+					this.acceleration.y -= this.drag.y;	
+					}				
+				}
+				if (_mcHero.y - this.y > 0)//player down
+				{
+					if (this.y>=(FlxG.height-96-this.height))//dont go off screen
+					{
+					this.acceleration.y -= this.drag.y;		
+					}
+					else
+					{
+					this.acceleration.y += this.drag.y;		
+					}
+				}
+			}
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		/**
+		 * 
+		 * gets the hero to target, and the map to check position
+		 */
+		public function acquireTarget(hero:Hero):void 
+		{
+			_mcHero = hero;
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		/**
@@ -123,7 +281,10 @@ package com.gauntlet.objects.enemies
 		 */
 		private function timerHandler(e:TimerEvent):void
 		{
-		FlxG.play(Flap,0.5);
+			if (FlxG.paused == false)
+			{
+				FlxG.play(Flap, 0.5);
+			}
         }
 		/**
 		 * kill enemy
