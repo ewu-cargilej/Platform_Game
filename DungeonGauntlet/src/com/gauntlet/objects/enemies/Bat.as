@@ -76,7 +76,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=0 && _nMoveValue<10)//move left
 			{
-				if (this.x<=32)//dont go off screen
+				if (this.x<=64)//dont go off screen
 				{
 				this.acceleration.x += this.drag.x;
 				}
@@ -87,7 +87,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=10 && _nMoveValue<20)//move right
 			{
-				if (this.x>=(FlxG.width-32-this.width))//dont go off screen
+				if (this.x>=(FlxG.width-64-this.width))//dont go off screen
 				{
 				this.acceleration.x -= this.drag.x;	
 				}
@@ -98,7 +98,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=20 && _nMoveValue<30)//move up
 			{
-				if (this.y<=32)//dont go off screen
+				if (this.y<=64)//dont go off screen
 				{
 				this.acceleration.y += this.drag.y;	
 				}
@@ -109,7 +109,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=30 && _nMoveValue<40)//move down
 			{
-				if (this.y>=(FlxG.height-96-this.height))//dont go off screen
+				if (this.y>=(FlxG.height-128-this.height))//dont go off screen
 				{
 				this.acceleration.y -= this.drag.y;		
 				}
@@ -120,7 +120,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=40 && _nMoveValue<50)//move up right
 			{
-				if ((this.x>=(FlxG.width-32-this.width)) || (_nMoveValue>=20 && _nMoveValue<30))//dont go off screen
+				if ((this.x>=(FlxG.width-64-this.width)) || (this.y<=64))//dont go off screen
 				{
 				this.acceleration.x -= this.drag.x;	
 				this.acceleration.y += this.drag.y;
@@ -133,7 +133,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=50 && _nMoveValue<60)//move down right
 			{
-				if ((this.x>=(FlxG.width-32-this.width)) || (this.y>=(FlxG.height-96-this.height)))//dont go off screen
+				if ((this.x>=(FlxG.width-64-this.width)) || (this.y>=(FlxG.height-128-this.height)))//dont go off screen
 				{
 				this.acceleration.x -= this.drag.x;	
 				this.acceleration.y -= this.drag.y;
@@ -146,7 +146,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=60 && _nMoveValue<70)//move up left
 			{
-				if ((_nMoveValue>=0 && _nMoveValue<10) || (_nMoveValue>=20 && _nMoveValue<30))//dont go off screen
+				if ((this.y<=64) || (this.x<=64))//dont go off screen
 				{
 				this.acceleration.x += this.drag.x;	
 				this.acceleration.y += this.drag.y;	
@@ -159,7 +159,7 @@ package com.gauntlet.objects.enemies
 			}
 			if (_nMoveValue>=70 && _nMoveValue<80)//move down left
 			{
-				if ((_nMoveValue>=0 && _nMoveValue<10) || (this.y>=(FlxG.height-96-this.height)))//dont go off screen
+				if ((this.x<=64) || (this.y>=(FlxG.height-128-this.height)))//dont go off screen
 				{
 				this.acceleration.x += this.drag.x;	
 				this.acceleration.y -= this.drag.y;
@@ -174,7 +174,7 @@ package com.gauntlet.objects.enemies
 			{
 				if (this.acceleration.x < 0)//going left
 				{
-					if (this.x<=32)//dont go off screen
+					if (this.x<=64)//dont go off screen
 					{
 					this.acceleration.x += this.drag.x;
 					}
@@ -185,7 +185,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (this.acceleration.x > 0)//going right
 				{
-					if (this.x>=(FlxG.width-32-this.width))//dont go off screen
+					if (this.x>=(FlxG.width-64-this.width))//dont go off screen
 					{
 					this.acceleration.x -= this.drag.x;	
 					}
@@ -196,7 +196,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (this.acceleration.y < 0)//going up
 				{
-					if (this.y<=32)//dont go off screen
+					if (this.y<=64)//dont go off screen
 					{
 					this.acceleration.y += this.drag.y;	
 					}
@@ -207,7 +207,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (this.acceleration.y > 0)//going down
 				{
-					if (this.y>=(FlxG.height-96-this.height))//dont go off screen
+					if (this.y>=(FlxG.height-128-this.height))//dont go off screen
 					{
 					this.acceleration.y -= this.drag.y;		
 					}
@@ -221,7 +221,7 @@ package com.gauntlet.objects.enemies
 			{
 				if (_mcHero.x - this.x < 0)//player left
 				{
-					if (this.x<=32)//dont go off screen
+					if (this.x<=64)//dont go off screen
 					{
 					this.acceleration.x += this.drag.x;
 					}
@@ -232,7 +232,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (_mcHero.x - this.x > 0)//player right
 				{
-					if (this.x>=(FlxG.width-32-this.width))//dont go off screen
+					if (this.x>=(FlxG.width-64-this.width))//dont go off screen
 					{
 					this.acceleration.x -= this.drag.x;	
 					}
@@ -243,7 +243,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (_mcHero.y - this.y < 0)//player up
 				{
-					if (this.y<=32)//dont go off screen
+					if (this.y<=64)//dont go off screen
 					{
 					this.acceleration.y += this.drag.y;	
 					}
@@ -254,7 +254,7 @@ package com.gauntlet.objects.enemies
 				}
 				if (_mcHero.y - this.y > 0)//player down
 				{
-					if (this.y>=(FlxG.height-96-this.height))//dont go off screen
+					if (this.y>=(FlxG.height-128-this.height))//dont go off screen
 					{
 					this.acceleration.y -= this.drag.y;		
 					}
