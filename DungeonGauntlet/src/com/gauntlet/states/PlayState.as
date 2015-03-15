@@ -70,6 +70,9 @@ package com.gauntlet.states
 		/**	Show current rune. */
 		protected var _txtRune			:FlxText;
 		
+		/** Text to show that the game is paused. */
+		protected var	_txtPause	:FlxText;
+		
 		/** grapic of the current rune*/
 		protected var _currRune			:FlxSprite;
 		
@@ -133,6 +136,11 @@ package com.gauntlet.states
 			_txtRune.size = 24;
 			add(_txtRune);
 			
+			_txtPause = new FlxText(FlxG.width / 2 - 50, FlxG.height / 2, 100, "Pause");
+			_txtPause.size = 24;
+			add(_txtPause);
+			_txtPause.visible = false;
+			
 			this._currRune = new FlxSprite(32 * 29 ,32 * 22.5);
 			this._currRune.loadGraphic(mcArm.myRune.getUpgradeGraphic(), false, false, 32);
 			add(_currRune);
@@ -168,11 +176,13 @@ package com.gauntlet.states
 				{
 					FlxG.timeScale = 0;
 					FlxG.paused = true;
+					this._txtPause.visible = true;
 				}
 				else
 				{
 					FlxG.timeScale = 1;
 					FlxG.paused = false;
+					this._txtPause.visible = false;
 				}
 			}
 			
