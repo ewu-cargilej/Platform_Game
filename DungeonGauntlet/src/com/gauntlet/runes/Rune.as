@@ -40,7 +40,7 @@ package com.gauntlet.runes
 		/**
 		 * Constructs the rune object.
 		 */
-		public function Rune(X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function Rune($level:Number, X:Number, Y:Number, $parent:Rune = null, $isParent:Boolean = true, SimpleGraphic:Class = null)
 		{
 			super(X,Y, SimpleGraphic);
 			starting = new FlxPoint(X, Y);
@@ -48,8 +48,10 @@ package com.gauntlet.runes
 				
 			if ($parent == null)
 				fillValues(0);
-			else
+			else if ($isParent)
 				copyParent($parent);
+			else
+				beatPrior($level, $parent);
 				
 			this.health = nMyHealth;
 			
@@ -64,6 +66,54 @@ package com.gauntlet.runes
 			this.height = 16;
 			this.offset.x = 8;
 			this.offset.y = 8;
+		}
+		
+		protected function beatPrior($curLevel:Number, $parent:Rune):void 
+		{
+			fillValues($curLevel);
+			var diff: int = compareValues(this, $parent);
+			while (diff >= 2)
+			{
+				var change :int = 1
+				switch(change)
+				{
+					case 1: 
+						if (this.nRate > $parent.nRate)
+						{
+							this.nRate = Math.min((((40 - $curLevel) + Math.random() * (60 - $curLevel)) * .01), $parent.nRate);
+							break;
+						}
+					case 2: 
+						if (this.nMyHealth < $parent.nMyHealth)
+						{
+							nMyHealth = Math.max((500 + Math.random() * (10000 + ($curLevel * 10))), $parent.nMyHealth);
+							break;
+						}
+					case 3: 
+						if (this.nVelocity < $parent.nVelocity)
+						{
+							this.nVelocity = Math.max((400 + (Math.random() * 300)), $parent.nVelocity);
+							break;
+						}
+				}
+				calcDamage($curLevel);
+				diff = compareValues(this, $parent);
+			}
+			
+		}
+		
+		private static function compareValues(self:Rune, $parent:Rune):int
+		{
+			var diffCount:int = 0;
+			if (self.nRate > $parent.nRate)
+				diffCount++;
+			if (self.nRange < $parent.nRange)
+				diffCount++;
+			if (self.nVelocity < $parent.nVelocity)
+				diffCount++;
+			if (self.nDamage < $parent.nDamage)
+				diffCount++;
+			return diffCount;
 		}
 		
 		/**
@@ -97,7 +147,7 @@ package com.gauntlet.runes
 		
 		public function clone():Rune
 		{
-			var output:Rune = new Rune(this.x, this.y, this);
+			var output:Rune = new Rune(0, this.x, this.y, this);
 			return output;
 		}
 		

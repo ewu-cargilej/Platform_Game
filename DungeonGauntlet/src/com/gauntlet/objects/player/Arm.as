@@ -47,7 +47,7 @@ package com.gauntlet.objects.player
 			super(X - 4.25, Y + 12, SimpleGraphic);
 			this.loadGraphic(ImgArmReal, true, true, 22,6);
 			canFire = true;
-			rune = new Rune(this.x, this.y);
+			rune = new Rune(0, this.x, this.y);
 			
 			rune = new MagicRune(0, rune.x, rune.y, rune);
 		}

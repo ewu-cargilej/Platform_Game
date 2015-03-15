@@ -18,17 +18,17 @@ package com.gauntlet.runes
 		/**
 		 * Constructs the IamAGun object.
 		 */
-		public function IceRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
+		public function IceRune($level:Number, X:Number, Y:Number, $parent:Rune = null, $isParent:Boolean = true, SimpleGraphic:Class=null)
 		{
-			super(X,Y);
+			super(0, X, Y);
 			this.starting = new FlxPoint(X, Y);
-			//this.loadGraphic(IceBlast, true, true, 32);
 			
-			this.allowCollisions
 			if ($parent == null)
-				fillValues($level);
-			else
+				fillValues(0);
+			else if ($isParent)
 				copyParent($parent);
+			else
+				beatPrior($level, $parent);
 				
 			this.health = nMyHealth;
 			

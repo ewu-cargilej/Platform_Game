@@ -61,7 +61,7 @@ package com.gauntlet.runes
 			//reviveStats();
 			plusMinusSet($X, $Y - .5);
 			//rune upgrade
-			generateRune($level);
+			generateRune($level, $currRune);
 			runeUpgrade = new FlxSprite(32 * ($X - 1), 32 * ($Y - 1.5));
 			runeUpgrade.ID = 10101;
 			runeUpgrade.loadGraphic(newRune.getUpgradeGraphic());
@@ -116,28 +116,28 @@ package com.gauntlet.runes
 			//compare the stats of the two runes and display the proper graphic
 			this.displayDataSignal.dispatch(UpgradeStats);
 			
-			if (this.newRune.myVelocity > $currRune.myVelocity)
+			if (this.newRune.myVelocity >= $currRune.myVelocity)
 				this.displayDataSignal.dispatch(pluses[0]);
 			else
 				this.displayDataSignal.dispatch(minuses[0]);
 				
-			if (this.newRune.Range > $currRune.Range)
+			if (this.newRune.Range >= $currRune.Range)
 				this.displayDataSignal.dispatch(pluses[1]);
 			else
 				this.displayDataSignal.dispatch(minuses[1]);
 			
-			if (this.newRune.Rate < $currRune.Rate)
+			if (this.newRune.Rate <= $currRune.Rate)
 				this.displayDataSignal.dispatch(pluses[2]);
 			else
 				this.displayDataSignal.dispatch(minuses[2]);
 				
-			if (this.newRune.Damage > $currRune.Damage)
+			if (this.newRune.Damage >= $currRune.Damage)
 				this.displayDataSignal.dispatch(pluses[3]);
 			else
 				this.displayDataSignal.dispatch(minuses[3]);
 		}
 		
-		private function generateRune($level:Number):void
+		private function generateRune($level:Number, $currRune:Rune):void
 		{
 			var runeType:Number;
 			runeType = Math.random() * 4;
@@ -146,23 +146,23 @@ package com.gauntlet.runes
 		
 			if( 1 > runeType && runeType > 0)
 			{
-				this.newRune = new MagicRune($level, 0, 0);
+				this.newRune = new MagicRune($level, 0, 0, $currRune, false);
 			}
 			else if( 2 > runeType && runeType > 1)
 			{
-				this.newRune = new FireRune($level, 0, 0);
+				this.newRune = new FireRune($level, 0, 0, $currRune, false);
 			}
 			else if( 3 > runeType && runeType > 2)
 			{
-				this.newRune = new IceRune($level, 0, 0);
+				this.newRune = new IceRune($level, 0, 0, $currRune, false);
 			}
 			else if( 4 > runeType && runeType > 3)
 			{
-				this.newRune = new LightningRune($level, 0, 0);
+				this.newRune = new LightningRune($level, 0, 0, $currRune, false);
 			}
 			else
 			{
-				this.newRune = new Rune(0, 0);
+				this.newRune = new Rune(0, 0, 0);
 			}	
 		}
 		
