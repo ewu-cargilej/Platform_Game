@@ -33,7 +33,7 @@ package com.gauntlet.objects.enemies
 		 */
 		public function Spider(X:Number=0,Y:Number=0)
 		{
-			super(X, Y, 60, 20, 3);
+			super(X, Y, 80, 20, 3);
 			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 			_tTimer.start();
 			_tTimer.delay = int((Math.random() * 3000) + 3000);
@@ -48,7 +48,7 @@ package com.gauntlet.objects.enemies
 			
 			//basic player physics
 			this.drag.x = 2000;
-			this.acceleration.y = 130;
+			this.acceleration.y = 90;
 			this.maxVelocity.x = 90;
 			this.maxVelocity.y = 130;
 			
@@ -150,7 +150,10 @@ package com.gauntlet.objects.enemies
 		 */
 		private function timerHandler(e:TimerEvent):void
 		{
-		FlxG.play(Scuttle,0.5);
+			if (FlxG.paused == false)
+			{
+			FlxG.play(Scuttle, 0.5);
+			}
         }
 		/**
 		 * kill enemy

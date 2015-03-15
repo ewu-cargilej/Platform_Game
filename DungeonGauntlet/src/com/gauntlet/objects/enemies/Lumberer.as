@@ -20,6 +20,8 @@ package com.gauntlet.objects.enemies
 		protected var	_nAttackDamage	:int;
 		/** Counts the number of frames for attack cooldown. */
 		protected var	_nFrames: int = 0;
+		/** Counts the number of frames for jumping down. */
+		protected var	_nDownFrames: int = 0;
 		/** Timer used for sounds. */		
 		protected var _tTimer: Timer = new Timer(1000);
 		/* ---------------------------------------------------------------------------------------- */
@@ -35,7 +37,7 @@ package com.gauntlet.objects.enemies
 		 */
 		public function Lumberer(X:Number=0,Y:Number=0)
 		{
-			super(X, Y, 90, 25, 5);
+			super(X, Y, 120, 25, 5);
 			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 			_tTimer.start();
 			_tTimer.delay = int((Math.random() * 3000) + 3000);
@@ -68,6 +70,9 @@ package com.gauntlet.objects.enemies
 		override public function update():void
 		{
 			super.update();
+			
+			if (FlxG.paused == false)
+			{
 			if (_nFrames >= -30 && _nFrames <= 0)
 			{
 			this.play("idle");
@@ -77,7 +82,7 @@ package com.gauntlet.objects.enemies
 			{
 			this.play("walk");	
 			}
-			this.acceleration.x = 0;
+			//this.acceleration.x = 0;
 			_nFrames++;
 			if (_nFrames >= 60)
 			{
@@ -85,7 +90,7 @@ package com.gauntlet.objects.enemies
 			}	
 			if ((_mcHero.x - this.x) <= -16)//if the player is on the left
 			{
-				this.acceleration.x -= this.drag.x;
+				this.acceleration.x = (-1 * this.drag.x);
 				this.facing = FlxObject.RIGHT;
 				jump();
 				if ((_mcHero.x - this.x) >= -48 && ((this.y- _mcHero.y) <= 0 && (this.y- _mcHero.y) >= -33) && _nFrames >= 0)//if the player is on the left and ready to be attacked
@@ -98,7 +103,7 @@ package com.gauntlet.objects.enemies
 			}
 			if ((_mcHero.x - this.x) >= 60)//if the player is on the right
 			{
-				this.acceleration.x += this.drag.x;
+				this.acceleration.x = this.drag.x;
 				this.facing = FlxObject.LEFT;
 				jump();
 				if ((_mcHero.x - this.x) <= 92 && ((this.y- _mcHero.y) <= 0 && (this.y- _mcHero.y) >= -33) && _nFrames >= 0)//if the player is on the right and ready to be attacked
@@ -112,6 +117,15 @@ package com.gauntlet.objects.enemies
 			if (((_mcHero.x - this.x) >= -32 && (_mcHero.x - this.x) <= 76) || ((_mcHero.x - this.x) >= 96 || (_mcHero.x - this.x) <= -52))//make sure the swing speed doesn't last forever
 			{
 				this.maxVelocity.x = 45;
+			}
+			if ((((_mcHero.x - this.x) >= -16) && ((_mcHero.x - this.x) <= 60)) && (_mcHero.y - this.y) > 32)//unstick the lumberer or jump down to hero
+			{
+				this.immovable = true;
+			}
+			else
+			{
+				this.immovable = false;
+			}
 			}
 		}
 		/* ---------------------------------------------------------------------------------------- */
@@ -133,13 +147,24 @@ package com.gauntlet.objects.enemies
 		{
 			var tileX:uint = this.x / 32;
 			var tileY:uint = this.y / 32;
+			var tileY2:uint = (this.y + 32) / 32;
 			
 			if (themap.getTile(tileX - 1, tileY) != 0 && _mcHero.x < x && this.velocity.y == 0)//if stuck against tile
 			{
 				this.y -= 1;
 				this.velocity.y = -350;
 			}
-			else if (themap.getTile(tileX + 1, tileY) != 0 && _mcHero.x > x && this.velocity.y == 0)//if stuck against tile
+			else if (themap.getTile(tileX + 2, tileY) != 0 && _mcHero.x > x && this.velocity.y == 0)//if stuck against tile
+			{
+				this.y -= 1;
+				this.velocity.y = -350;
+			}	
+			else if (themap.getTile(tileX - 1, tileY2) != 0 && _mcHero.x < x && this.velocity.y == 0)//if stuck against tile
+			{
+				this.y -= 1;
+				this.velocity.y = -350;
+			}
+			else if (themap.getTile(tileX + 2, tileY2) != 0 && _mcHero.x > x && this.velocity.y == 0)//if stuck against tile
 			{
 				this.y -= 1;
 				this.velocity.y = -350;
@@ -158,7 +183,10 @@ package com.gauntlet.objects.enemies
 		 */
 		private function timerHandler(e:TimerEvent):void
 		{
-		FlxG.play(Step,0.5);
+			if (FlxG.paused == false)
+			{
+			FlxG.play(Step, 0.5);
+			}
         }
 		/**
 		 * kill enemy

@@ -29,9 +29,9 @@ package com.gauntlet.objects.enemies
 		protected var	_nDegree: int = 0;
 		/** Attack damage. Different from contact damage. */
 		protected var	_nAttackDamage	:int;
-		/**every 10-15s change moves */
-		protected var _nMaxMoveValue: int = int((Math.random() * 300) + 600);
-		/** Stores a random number from 0-100, used for bat movement. */
+		/**every 5-10s change moves */
+		protected var _nMaxMoveValue: int = int((Math.random() * 300) + 300);
+		/** Stores a random number from 0-100, used for movement. */
 		protected var	_nMoveValue: int = int(Math.random() * 100);
 		/**checks to see if currently doing an action */
 		protected var _bNotBusy: Boolean = true;
@@ -43,6 +43,12 @@ package com.gauntlet.objects.enemies
 		protected var _nYdiff: Number = 0;
 		/** the attack angle used to target hero. */
 		protected var _nAttackAngle: Number = 0;
+		/** random number for ghost phasing every 2-3 seconds*/
+		protected var _nPhase: int = int((Math.random() * 60) + 120);
+		/** Counts the number of phasing frames. */
+		protected var	_nPhaseFrames: int = 0;
+		/** Keeps the timer frame so pause doesnt mess up attack. */
+		protected var	_nAttackFrame: int = 0;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -54,10 +60,10 @@ package com.gauntlet.objects.enemies
 		 */
 		public function Ghost(X:Number=0,Y:Number=0)
 		{
-			super(X, Y, 280, 25, 11);
+			super(X, Y, 480, 25, 11);
 			
 			this._nAttackDamage = 50;
-			this.alpha = .5;
+			this.alpha = .15;
 			_tTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 			_tTimer.addEventListener(TimerEvent.TIMER_COMPLETE, completeHandler);
 			
@@ -90,14 +96,17 @@ package com.gauntlet.objects.enemies
 		{
 			super.update();
 			
+			if (FlxG.paused == false)
+			{
 			_nFrames++;
+			_nPhaseFrames++;
 			if ((_nFrames >= _nMaxMoveValue) && !_bNotBusy)
 			{
 				_nFrames = 0;
 			}
 			if ((_nFrames > _nMaxMoveValue) && _bNotBusy)
 			{
-				_nMaxMoveValue = int((Math.random() * 300) + 600);
+				_nMaxMoveValue = int((Math.random() * 300) + 300);
 				_nFrames = 0;
 				_bNotBusy = false;
 				_tTimer.reset();
@@ -109,14 +118,31 @@ package com.gauntlet.objects.enemies
 				this.acceleration.y = 0;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
+				if (_nPhaseFrames >= _nPhase)
+				{
+					if (this.alpha == 1)
+					{
+						this.alpha = .15;
+					}
+					else
+					{
+						this.alpha = 1;
+					}
+					_nPhaseFrames = 0;
+					_nPhase = int((Math.random() * 60) + 120);
+				}
 			
-				if (_nMoveValue >= 0 && _nMoveValue < 50)
+			
+				if (_nMoveValue >= 0 && _nMoveValue < 50)//circle
 				{
 					this.play("idle");
 					_nDegree++;
 					if (_nDegree >= 360)
 					{
-					FlxG.play(GhostLong,0.5);
+						if (FlxG.paused == false)
+						{
+						FlxG.play(GhostLong, 0.5);
+						}
 					_nDegree = 0;
 					}
 					if (_nDegree >=0 && _nDegree < 180)
@@ -130,27 +156,31 @@ package com.gauntlet.objects.enemies
 					this.x = (FlxG.width / 2) + 192 * Math.cos((_nDegree * Math.PI / 180));
 					this.y = (FlxG.height / 2) + 192 * Math.sin((_nDegree * Math.PI / 180));
 				}
-				if (_nMoveValue >= 50 && _nMoveValue < 100)
+				if (_nMoveValue >= 50 && _nMoveValue < 100)//strafe
 				{
 					this.play("float");
 					if (_nFrames == 300 || _nFrames == 600)
 					{
 					this.y += FlxG.height / 4;
-					FlxG.play(GhostShort,0.5);
+					if (FlxG.paused == false)
+					{
+					FlxG.play(GhostShort, 0.5);
+					}
 					}
 					if (_nFrames >= 300 && _nFrames < 600)
 					{
-					this.facing = FlxObject.RIGHT;
-					this.x -= FlxG.width / 300;	
+					this.facing = FlxObject.LEFT;
+					this.x += FlxG.width / 300;	
 					}
 					else
 					{
-					this.facing = FlxObject.LEFT;
-					this.x += FlxG.width / 300;
+					this.facing = FlxObject.RIGHT;
+					this.x -= FlxG.width / 300;
 					}
 				}
 			}
 			
+			}
 
 		}
 		/* ---------------------------------------------------------------------------------------- */
@@ -176,7 +206,10 @@ package com.gauntlet.objects.enemies
 			_nYdiff = _mcHero.y - this.y;
 			_nAttackAngle = Math.atan2(_nYdiff , _nXdiff);
 			setContact(_nAttackDamage);
-			FlxG.play(Whoosh,0.5);
+			if (FlxG.paused == false)
+			{
+			FlxG.play(Whoosh, 0.5);
+			}
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		/**
@@ -185,14 +218,23 @@ package com.gauntlet.objects.enemies
 		 */
 		private function timerHandler(e:TimerEvent):void
 		{
+			
 			this.play("attack");
-			if (_nAttackAngle >= (Math.PI/2) && _nAttackAngle < (3*Math.PI/2))
+			if (_nAttackAngle >= 0 && _nAttackAngle < (Math.PI/2))
+			{
+			this.facing = FlxObject.LEFT;	
+			}
+			if (_nAttackAngle >= (Math.PI/2) && _nAttackAngle < (Math.PI))
 			{
 			this.facing = FlxObject.RIGHT;	
 			}
-			if (_nAttackAngle >= (3* Math.PI/2) || _nAttackAngle < (Math.PI/2))
+			if (_nAttackAngle >= (Math.PI/-2) && _nAttackAngle < 0)
 			{
 			this.facing = FlxObject.LEFT;	
+			}
+			if (_nAttackAngle >= (Math.PI * -1) && _nAttackAngle < (Math.PI/-2))
+			{
+			this.facing = FlxObject.RIGHT;	
 			}
 			this.acceleration.x = Math.cos(_nAttackAngle) * 350;
 			this.acceleration.y = Math.sin(_nAttackAngle) * 350;
@@ -204,10 +246,10 @@ package com.gauntlet.objects.enemies
 		 */
 		private function completeHandler(e:TimerEvent):void 
 		{
-			this.alpha = .5;
+			this.alpha = .15;
 			_bNotBusy = true;
 			_nMoveValue = int(Math.random() * 100);
-			this.x = FlxG.width / 300;
+			this.x = FlxG.width;
 			this.y = FlxG.height / 4; 
 			this.acceleration.x = 0;
 			this.acceleration.y = 0;

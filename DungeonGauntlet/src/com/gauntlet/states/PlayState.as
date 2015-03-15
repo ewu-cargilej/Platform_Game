@@ -268,9 +268,12 @@ package com.gauntlet.states
 		
 		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
 		{
+			if ($enemy.alpha == 1)/////////////////////////////////////////////////////////////////////////////////////////////////enemy hurt now visible, and passes through ghost
+			{
 			$enemy.hurt($rune.Damage);
-			if($enemy.alpha == 1)
-				$rune.kill();
+			$enemy.flicker();
+			$rune.kill();
+			}
 			if (!$enemy.alive)
 			{
 				_iManager.spawnCollectible($enemy);
@@ -449,7 +452,7 @@ package com.gauntlet.states
 						FlxG.music.stop();
 						FlxG.playMusic(MusicBoss, .7);
 						
-						var mcGhost :Ghost = new Ghost(FlxG.width/300, FlxG.height/4);
+						var mcGhost :Ghost = new Ghost(FlxG.width, FlxG.height/4);///////////////////////////////////////////////////////changed spawn point
 						this._enemyGroupFly.add(mcGhost);
 						mcGhost.ID = 30;
 						add(mcGhost);
@@ -686,6 +689,7 @@ package com.gauntlet.states
 								this._enemyGroupFly.add(mcBat);
 								mcBat.ID = 1;
 								add(mcBat);
+								mcBat.acquireTarget(mcHero);/////////////////////////////////////////////////////////////////////////////bat now needs to move toward player
 								enemyPoints -= 1;
 							}
 							
