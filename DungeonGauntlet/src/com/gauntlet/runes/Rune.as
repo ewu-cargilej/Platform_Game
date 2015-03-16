@@ -15,7 +15,6 @@ package com.gauntlet.runes
 	public class Rune extends FlxSprite
 	{
 		[Embed(source = "../../../../embeded_resources/Game_Screen/Runes/RuneAttacks_SpriteSheet.png")] public static var SpriteSheet:Class;
-		[Embed(source = '../../../../embeded_resources/Game_Screen/Upgrades/FPO_Rune.png')]public static var RuneUpgrade:Class;
 		[Embed(source = "../../../../embeded_resources/SFX/Shoot.mp3")] private static var SoundShoot:Class;
 		
 		/** how fast the bullet objects fly  */
@@ -258,7 +257,7 @@ package com.gauntlet.runes
 		
 		public function getUpgradeGraphic():Class
 		{
-			return RuneUpgrade;
+			return SpriteSheet;
 		}
 		
 		public function triggerAnimation():void

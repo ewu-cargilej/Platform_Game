@@ -459,7 +459,7 @@ package com.gauntlet.states
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width, FlxG.height/4);///////////////////////////////////////////////////////changed spawn point
 						this._enemyGroupFly.add(mcGhost);
-						mcGhost.ID = 30;
+						mcGhost.ID = 20;
 						add(mcGhost);
 						mcGhost.acquireTarget(mcHero);
 					}
