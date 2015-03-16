@@ -8,6 +8,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.player.Hero;
 	import flash.display.BlendMode;
 	import org.flixel.*;
+	import treefortress.sound.SoundAS;
 
 	/**
 	 * Title Scree/Level 0
@@ -24,7 +25,6 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Title_Screen/Icon_MoveRight.png')]private static var ImgRight:Class;
 		[Embed(source = '../../../../embeded_resources/Title_Screen/Icon_Pause.png')]private static var ImgPause:Class;
 		
-		[Embed(source = '../../../../embeded_resources/Music/Title.mp3')]private static var MusicTitle:Class;
 		[Embed(source = '../../../../embeded_resources/SFX/Button_Click.mp3')]private static var ButtonClick:Class;
 		
 		/** Holder for Title components */
@@ -35,7 +35,8 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicTitle, .7);
+			SoundAS.stopAll();
+			SoundAS.playLoop("Title", .7, 0, true);
 			
 			FlxG.mouse.show();
 			
