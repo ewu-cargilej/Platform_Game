@@ -4,6 +4,7 @@ package com.gauntlet.runes
 	import flash.display.Sprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
+	import org.flixel.FlxSave;
 	import org.flixel.FlxSprite;
 	import org.osflash.signals.Signal;
 
@@ -44,6 +45,11 @@ package com.gauntlet.runes
 		public var removeButtonSignal	:Signal = new Signal;
 		public var upgradeHealthSignal	:Signal = new Signal;
 		public var newRuneSignal		:Signal = new Signal;
+		
+		/** saves the current score of the game*/
+		protected var	_saveData	:FlxSave;
+		private var 	unlocked 	:Number = 0;
+		private var 	totalSecret	:Number = 0;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -54,6 +60,17 @@ package com.gauntlet.runes
 			super();			
 			runeUpgrade.ID = 10101;
 			healthUpgrade.ID = 20202;
+			
+			this._saveData = new FlxSave();
+			this._saveData.bind("scoreData");
+			if (this._saveData.data.unlockedRunes == null)
+				this._saveData.data.unlockedRunes = 0;
+				
+			if (this._saveData.data.unlockedRunes > totalSecret)
+			{
+				this._saveData.data.unlockedRunes = totalSecret;
+			}
+			this.unlocked = this._saveData.data.unlockedRunes;
 		}
 		
 		public function spawnUpgrade($level:Number, $currRune:Rune, $X:Number, $Y:Number):void
@@ -159,6 +176,10 @@ package com.gauntlet.runes
 			else if( 4 > runeType && runeType > 3)
 			{
 				this.newRune = new LightningRune($level, 0, 0, $currRune, false);
+			}
+			else if (4.5 > runeType && runeType > 4)
+			{
+				this.newRune = new SharkRune($level, 0, 0, $currRune);
 			}
 			else
 			{

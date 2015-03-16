@@ -1,5 +1,6 @@
 package com.gauntlet.objects.items 
 {
+	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxTimer;
 	
@@ -11,7 +12,9 @@ package com.gauntlet.objects.items
 	{
 		[Embed(source = '../../../../../embeded_resources/Game_Screen/Upgrades/Coin.png')]private static var CoinGraphic:Class;
 		public var LifeTimer	:FlxTimer;
+		public var PopTimer		:FlxTimer;
 		private var lifeTime	:Number = 3;
+		public var tileCollision	:Number = 0;
 		//coin graphic
 		public function Coin($enemy:FlxSprite, $isBoss:Boolean = false) 
 		{
@@ -41,12 +44,32 @@ package com.gauntlet.objects.items
 		override public function update():void 
 		{
 			super.update();
-			//this.health = this.health * LifeTimer.timeLeft;
+			this.alpha = (LifeTimer.timeLeft / lifeTime);
+			this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
+			
+			//this.health = this.health * (LifeTimer.timeLeft / lifeTime);
+		}
+		
+		public function collideCount():void
+		{
+			this.tileCollision++;
+			if (tileCollision > 3)
+			{
+				this.y -= 40;
+				this.tileCollision = 0;
+			}
+			PopTimer.stop();
+			PopTimer.start(.3, 1, collideReset);
 		}
 		
 		public function timeEnd(Timer:FlxTimer):void
 		{
 			this.kill();
+		}
+		
+		public function collideReset(Timer:FlxTimer):void
+		{
+			this.tileCollision = 0;
 		}
 	}
 

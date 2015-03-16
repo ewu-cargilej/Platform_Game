@@ -125,6 +125,15 @@ package com.gauntlet.objects.items
 		{
 			this.upgradeHealthSignal.dispatch(runeUpgrade,healthUpgrade);
 		}
+		
+		public function count(Object1:FlxObject,Object2:FlxObject):void 
+		{
+			if (Object1 is Coin)
+			{
+				var item:Coin = Coin(Object1);
+				item.collideCount();
+			}
+		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 	}

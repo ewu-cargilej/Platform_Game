@@ -22,7 +22,7 @@ package com.gauntlet.runes
 		 */
 		public function SharkRune($level:Number, X:Number, Y:Number, $parent:Rune = null, SimpleGraphic:Class=null)
 		{
-			super(X,Y);
+			super($level, X,Y);
 			this.starting = new FlxPoint(X, Y);
 			this.loadGraphic(SharkAttack, true, true, 64,22);
 			

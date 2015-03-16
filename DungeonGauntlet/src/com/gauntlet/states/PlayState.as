@@ -227,6 +227,15 @@ package com.gauntlet.states
 				this.levelMap.setTile(levelMap.widthInTiles - 1, this._nExitHeight, 0);
 			}
 			
+			collisions();
+			
+			alignArm();
+			
+			wrap();
+		}
+		
+		private function collisions():void
+		{
 			FlxG.collide(mcHero, levelMap);
 			
 			FlxG.collide(_enemyGroup, levelMap)
@@ -243,11 +252,7 @@ package com.gauntlet.states
 			
 			FlxG.overlap(mcHero, _collectibleGroup, _iManager.collect);
 			
-			FlxG.collide(_collectibleGroup, levelMap);
-			
-			alignArm();
-			
-			wrap();
+			FlxG.collide(_collectibleGroup, levelMap, _iManager.count);
 		}
 		
 		/**
