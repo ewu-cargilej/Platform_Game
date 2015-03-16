@@ -91,8 +91,7 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			
-			
+			SoundAS.stopAll();			
 			SoundAS.playLoop("Play", .7, 0, true);
 			
 			FlxG.mouse.show();
@@ -449,7 +448,7 @@ package com.gauntlet.states
 						this.generateRoomTiles(true);
 						this.clearGroups();
 						
-						FlxG.music.stop();
+						SoundAS.stopAll();
 						SoundAS.playLoop("Boss", .7, 0, true);
 						
 						var mcGhost :Ghost = new Ghost(FlxG.width, FlxG.height/4);

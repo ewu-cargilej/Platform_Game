@@ -35,6 +35,7 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
+			SoundAS.stopAll();
 			SoundAS.playLoop("Title", .7, 0, true);
 			
 			FlxG.mouse.show();
