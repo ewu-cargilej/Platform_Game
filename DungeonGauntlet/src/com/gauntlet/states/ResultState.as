@@ -2,6 +2,7 @@ package com.gauntlet.states
 {
 	import com.gauntlet.states.PlayState;
 	import org.flixel.*;
+	import treefortress.sound.SoundAS;
 
 	/**
 	 * Show results and high scores.
@@ -17,9 +18,6 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Results_Screen/ResultsScreen_PlayAgain_Button.png')]private static var ImgPlayAgain:Class;
 		[Embed(source = '../../../../embeded_resources/Results_Screen/ResultsScreen_TopScores_Text.png')]private static var ImgTopScores:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/GameScreen_Background.png')]private static var ImgBackground:Class;
-		
-		[Embed(source = '../../../../embeded_resources/Music/Victory.mp3')]private static var MusicVictory:Class;
-		[Embed(source = '../../../../embeded_resources/Music/Defeat.mp3')]private static var MusicDefeat:Class;
 		
 		/** Whether or not the player won or lost. */
 		protected var	_bWin	:Boolean;
@@ -57,7 +55,7 @@ package com.gauntlet.states
 			
 			if (this._bWin)
 			{
-				FlxG.playMusic(MusicVictory, .8);
+				SoundAS.playLoop("Victory", .8, 0, true);
 				
 				tmpSprite = new FlxSprite(0, 0, ImgTreasure);
 				add(tmpSprite);
@@ -67,7 +65,7 @@ package com.gauntlet.states
 			}
 			else
 			{
-				FlxG.playMusic(MusicDefeat, .7);
+				SoundAS.playLoop("Defeat", .7, 0, true);
 				
 				tmpSprite = new FlxSprite(0, 0, ImgBones);
 				add(tmpSprite);

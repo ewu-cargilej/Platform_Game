@@ -10,6 +10,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.player.Hero;
 	import com.gauntlet.runes.Rune;
 	import org.flixel.*;
+	import treefortress.sound.SoundAS;
 
 	/**
 	 * Play state.
@@ -22,9 +23,6 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/Tiles.png')]private static var Tiles:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/GameScreen_Background.png')]protected static var ImgBackground:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Maps/empty_map.txt', mimeType = 'application/octet-stream')]private static var EmptyMap:Class;
-		
-		[Embed(source = '../../../../embeded_resources/Music/Play.mp3')]private static var MusicPlay:Class;
-		[Embed(source = '../../../../embeded_resources/Music/Boss.mp3')]private static var MusicBoss:Class;
 		
 		[Embed(source = '../../../../embeded_resources/SFX/EnemiesDefeated.mp3')]private static var EnemiesDefeated:Class;
 		
@@ -93,7 +91,9 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
-			FlxG.playMusic(MusicPlay, .7);
+			
+			
+			SoundAS.playLoop("Play", .7, 0, true);
 			
 			FlxG.mouse.show();
 			
@@ -268,7 +268,7 @@ package com.gauntlet.states
 		
 		private function enemyDamage($rune:Rune, $enemy:BaseEnemy):void 
 		{
-			if ($enemy.alpha == 1)/////////////////////////////////////////////////////////////////////////////////////////////////enemy hurt now visible, and passes through ghost
+			if ($enemy.alpha == 1)
 			{
 			$enemy.hurt($rune.Damage);
 			$enemy.flicker();
@@ -450,9 +450,9 @@ package com.gauntlet.states
 						this.clearGroups();
 						
 						FlxG.music.stop();
-						FlxG.playMusic(MusicBoss, .7);
+						SoundAS.playLoop("Boss", .7, 0, true);
 						
-						var mcGhost :Ghost = new Ghost(FlxG.width, FlxG.height/4);///////////////////////////////////////////////////////changed spawn point
+						var mcGhost :Ghost = new Ghost(FlxG.width, FlxG.height/4);
 						this._enemyGroupFly.add(mcGhost);
 						mcGhost.ID = 30;
 						add(mcGhost);
@@ -689,7 +689,7 @@ package com.gauntlet.states
 								this._enemyGroupFly.add(mcBat);
 								mcBat.ID = 1;
 								add(mcBat);
-								mcBat.acquireTarget(mcHero);/////////////////////////////////////////////////////////////////////////////bat now needs to move toward player
+								mcBat.acquireTarget(mcHero);
 								enemyPoints -= 1;
 							}
 							
