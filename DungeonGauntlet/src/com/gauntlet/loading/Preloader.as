@@ -1,6 +1,7 @@
 package com.gauntlet.loading
 {
 	import org.flixel.system.FlxPreloader;
+	import treefortress.sound.SoundAS;
 
 	/**
 	 * The hero for the game.
@@ -15,6 +16,7 @@ package com.gauntlet.loading
 		public function Preloader()
 		{
 			className = "Main";
+			
 			super();
 		}
 	}

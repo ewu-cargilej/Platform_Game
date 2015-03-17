@@ -2,6 +2,7 @@ package com.gauntlet.states
 {
 	import com.gauntlet.states.PlayState;
 	import org.flixel.*;
+	import treefortress.sound.SoundAS;
 
 	/**
 	 * Show results and high scores.
@@ -17,9 +18,6 @@ package com.gauntlet.states
 		[Embed(source = '../../../../embeded_resources/Results_Screen/ResultsScreen_PlayAgain_Button.png')]private static var ImgPlayAgain:Class;
 		[Embed(source = '../../../../embeded_resources/Results_Screen/ResultsScreen_TopScores_Text.png')]private static var ImgTopScores:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Level_Building/GameScreen_Background.png')]private static var ImgBackground:Class;
-		
-		[Embed(source = '../../../../embeded_resources/Music/Victory.mp3')]private static var MusicVictory:Class;
-		[Embed(source = '../../../../embeded_resources/Music/Defeat.mp3')]private static var MusicDefeat:Class;
 		
 		/** Whether or not the player won or lost. */
 		protected var	_bWin	:Boolean;
@@ -42,6 +40,8 @@ package com.gauntlet.states
 		 */
 		override public function create():void
 		{
+			SoundAS.stopAll();
+			
 			this._saveData = new FlxSave();
 			this._saveData.bind("scoreData");
 			
@@ -57,7 +57,7 @@ package com.gauntlet.states
 			
 			if (this._bWin)
 			{
-				FlxG.playMusic(MusicVictory, .8);
+				SoundAS.playLoop("Victory", .8, 0, true);
 				
 				tmpSprite = new FlxSprite(0, 0, ImgTreasure);
 				add(tmpSprite);
@@ -67,7 +67,7 @@ package com.gauntlet.states
 			}
 			else
 			{
-				FlxG.playMusic(MusicDefeat, .7);
+				SoundAS.playLoop("Defeat", .7, 0, true);
 				
 				tmpSprite = new FlxSprite(0, 0, ImgBones);
 				add(tmpSprite);
@@ -107,6 +107,7 @@ package com.gauntlet.states
 			var scores :Vector.<int> = new Vector.<int>();
 			var tempText :FlxText;
 			var tempInt :int;
+			var thisRunMarked :Boolean = false;
 			
 			if (_saveData.data.score1 == null)
 				_saveData.data.score1 = 130000;
@@ -133,11 +134,12 @@ package com.gauntlet.states
 			_saveData.data.score1 = tempInt;
 			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 150, 300, "" + tempInt);
 			tempText.size = 20;
-			if (tempInt == currentScore)
+			if (tempInt == currentScore && !thisRunMarked)
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
 				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
+				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
 			add(tempText);
@@ -147,11 +149,12 @@ package com.gauntlet.states
 			_saveData.data.score2 = tempInt;
 			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 200, 300, "" + tempInt);
 			tempText.size = 20;
-			if (tempInt == currentScore)
+			if (tempInt == currentScore && !thisRunMarked)
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
 				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
+				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
 			add(tempText);
@@ -161,11 +164,12 @@ package com.gauntlet.states
 			_saveData.data.score3 = tempInt;
 			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 250, 300, "" + tempInt);
 			tempText.size = 20;
-			if (tempInt == currentScore)
+			if (tempInt == currentScore && !thisRunMarked)
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
 				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
+				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
 			add(tempText);
@@ -175,11 +179,12 @@ package com.gauntlet.states
 			_saveData.data.score4 = tempInt;
 			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 300, 300, "" + tempInt);
 			tempText.size = 20;
-			if (tempInt == currentScore)
+			if (tempInt == currentScore && !thisRunMarked)
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
 				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
+				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
 			add(tempText);
@@ -189,11 +194,12 @@ package com.gauntlet.states
 			_saveData.data.score5 = tempInt;
 			tempText = new FlxText(FlxG.width / 4 * 3 - 150, 350, 300, "" + tempInt);
 			tempText.size = 20;
-			if (tempInt == currentScore)
+			if (tempInt == currentScore && !thisRunMarked)
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
 				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
+				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
 			add(tempText);
