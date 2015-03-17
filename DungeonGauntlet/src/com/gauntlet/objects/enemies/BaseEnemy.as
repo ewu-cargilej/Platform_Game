@@ -43,6 +43,8 @@ package com.gauntlet.objects.enemies
 		 */
 		override public function update():void
 		{
+			super.update();
+			
 			if(this is Lumberer || this is Spider)//walking enemies will vertically wrap
 				this.y = (this.y + this.height / 2) % FlxG.height - this.height / 2;
 		}
@@ -55,11 +57,6 @@ package com.gauntlet.objects.enemies
 		override public function hurt(Damage:Number):void
 		{
 			super.hurt(Damage);
-			
-			if (this.health <= 0)
-			{
-				//die stuff
-			}
 		}
 		/**
 		 * 
