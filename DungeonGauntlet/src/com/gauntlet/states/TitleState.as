@@ -122,6 +122,8 @@ package com.gauntlet.states
 		 */
 		protected function removeTitle():void
 		{
+			this._enemyGroup.kill();
+			this._enemyGroup.clear();
 			FlxG.play(ButtonClick, 1, false);
 			
 			this._bLevelComplete = true;

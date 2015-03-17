@@ -108,8 +108,8 @@ package com.gauntlet.states
 			
 			establishGroups();
 			
-			add(_enemyGroup);
-			add(_enemyGroupFly);
+			//add(_enemyGroup);
+			//add(_enemyGroupFly);
 			
 			setupPlayer(32, 640);
 			
@@ -201,6 +201,9 @@ package com.gauntlet.states
 			if ((_enemyGroupFly.length == 0 || _enemyGroupFly.countLiving() == 0 ) && (_enemyGroup.length == 0 || _enemyGroup.countLiving() == 0) && !this._bLevelComplete && !(this is TitleState))
 			{
 				FlxG.play(EnemiesDefeated, 1, false);
+				
+				//this._enemyGroup.kill();
+				//this._enemyGroupFly.kill();
 				
 				this._enemyGroup.clear();
 				this._enemyGroupFly.clear();
