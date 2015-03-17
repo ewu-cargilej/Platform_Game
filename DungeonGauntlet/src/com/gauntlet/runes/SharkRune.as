@@ -13,6 +13,7 @@ package com.gauntlet.runes
 	public class SharkRune extends Rune
 	{
 		[Embed(source = "../../../../embeded_resources/Game_Screen/Runes/Shark_Rune_Attack.png")] private static var SharkAttack:Class;
+		[Embed(source = "../../../../embeded_resources/Game_Screen/Runes/Shark_Rune_AttackLeft.png")] private static var SharkAttackLeft:Class;
 		[Embed(source = '../../../../embeded_resources/Game_Screen/Runes/Shark_Upgrade.png')]public static var SharkUpgrade:Class;
 		[Embed(source = "../../../../embeded_resources/SFX/Shark_Bite.mp3")] private static var SharkShoot:Class;
 		/* ---------------------------------------------------------------------------------------- */
@@ -54,7 +55,8 @@ package com.gauntlet.runes
 			nMyHealth = 15000;
 			this.nVelocity = 400 + (Math.random() * 300);
 			
-			calcDamage($curLevel);
+			this.nDamage = 40;
+			//calcDamage($curLevel);
 			this.sName = "Shark Rune";
 		}
 		
@@ -83,7 +85,11 @@ package com.gauntlet.runes
 		
 		override public function triggerAnimation():void
 		{
-			//this.play("Magic");
+			if (this.angle < -90)
+			{
+				this.loadGraphic(SharkAttackLeft, true, true, 64, 22);
+				this.height = 7;
+			}
 		}
 		
 		override public function kill():void

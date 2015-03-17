@@ -138,6 +138,7 @@ package com.gauntlet.states
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
+				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
 				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
@@ -152,6 +153,7 @@ package com.gauntlet.states
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
+				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
 				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
@@ -166,6 +168,7 @@ package com.gauntlet.states
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
+				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
 				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
@@ -180,6 +183,7 @@ package com.gauntlet.states
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
+				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
 				thisRunMarked = true;
 			}
 			tempText.alignment = "right";
@@ -194,6 +198,7 @@ package com.gauntlet.states
 			{
 				tempText.text = "This Run ->  " + tempText.text;
 				tempText.color = uint(0xFF0000);
+				this._saveData.data.unlockedRunes = .5 + this._saveData.data.unlockedRunes;
 				thisRunMarked = true;
 			}
 			tempText.alignment = "right";

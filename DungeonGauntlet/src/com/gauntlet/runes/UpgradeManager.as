@@ -49,7 +49,7 @@ package com.gauntlet.runes
 		/** saves the current score of the game*/
 		protected var	_saveData	:FlxSave;
 		private var 	unlocked 	:Number = 0;
-		private var 	totalSecret	:Number = 0;
+		private var 	totalSecret	:Number = .5;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -63,6 +63,7 @@ package com.gauntlet.runes
 			
 			this._saveData = new FlxSave();
 			this._saveData.bind("scoreData");
+			
 			if (this._saveData.data.unlockedRunes == null)
 				this._saveData.data.unlockedRunes = 0;
 				
@@ -70,6 +71,7 @@ package com.gauntlet.runes
 			{
 				this._saveData.data.unlockedRunes = totalSecret;
 			}
+			
 			this.unlocked = this._saveData.data.unlockedRunes;
 		}
 		
@@ -157,34 +159,34 @@ package com.gauntlet.runes
 		private function generateRune($level:Number, $currRune:Rune):void
 		{
 			var runeType:Number;
-			runeType = Math.random() * 4;
+			runeType = Math.random() * (4 + this.unlocked);
 			
 			//this.newRune = new RupeeRune(0, 0);
 		
-			if( 1 > runeType && runeType > 0)
+			if( 1 >= runeType && runeType > 0)
 			{
 				this.newRune = new MagicRune($level, 0, 0, $currRune, false);
 			}
-			else if( 2 > runeType && runeType > 1)
+			else if( 2 >= runeType && runeType > 1)
 			{
 				this.newRune = new FireRune($level, 0, 0, $currRune, false);
 			}
-			else if( 3 > runeType && runeType > 2)
+			else if( 3 >= runeType && runeType > 2)
 			{
 				this.newRune = new IceRune($level, 0, 0, $currRune, false);
 			}
-			else if( 4 > runeType && runeType > 3)
+			else if( 4 >= runeType && runeType > 3)
 			{
 				this.newRune = new LightningRune($level, 0, 0, $currRune, false);
 			}
-			else if (4.5 > runeType && runeType > 4)
+			else if (4.5 >= runeType && runeType > 4)
 			{
 				this.newRune = new SharkRune($level, 0, 0, $currRune);
 			}
 			else
 			{
 				this.newRune = new Rune(0, 0, 0);
-			}	
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		

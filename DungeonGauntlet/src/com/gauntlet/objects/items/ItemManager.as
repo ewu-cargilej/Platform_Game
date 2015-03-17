@@ -51,7 +51,7 @@ package com.gauntlet.objects.items
 		{
 			for (var i:int = 0; i < $enemy.ID; i++)
 			{
-				var tempCoin:Coin = new Coin($enemy, $enemy.ID == 30);
+				var tempCoin:Coin = new Coin($enemy, $enemy.ID == 20);
 				addItem(tempCoin);
 			}
 			

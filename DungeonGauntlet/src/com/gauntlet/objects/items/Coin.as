@@ -39,6 +39,7 @@ package com.gauntlet.objects.items
 				this.velocity.x = 80 - Math.random() * 160;
 				this.elasticity = .55;
 			}
+			this.maxVelocity.y = 750;
 		}
 		
 		override public function update():void 

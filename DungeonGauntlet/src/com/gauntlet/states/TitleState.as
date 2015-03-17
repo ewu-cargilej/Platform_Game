@@ -4,6 +4,7 @@ package com.gauntlet.states
 	import com.gauntlet.objects.enemies.Bat;
 	import com.gauntlet.objects.enemies.Ghost;
 	import com.gauntlet.objects.enemies.Lumberer;
+	import com.gauntlet.objects.enemies.PlayButtonEnemy;
 	import com.gauntlet.objects.enemies.Spider;
 	import com.gauntlet.objects.player.Hero;
 	import flash.display.BlendMode;
@@ -104,12 +105,12 @@ package com.gauntlet.states
 			this._aTitleStuff.push(tmpSprite);
 			add(tmpSprite);
 			
-			var tmpButton :FlxButton = new FlxButton(FlxG.width - 350, FlxG.height / 2, "", removeTitle);
-			tmpButton.loadGraphic(PlayButton);
-			this._aTitleStuff.push(tmpButton);
-			add(tmpButton);
+			var tempEnemy :PlayButtonEnemy = new PlayButtonEnemy();
+			super._enemyGroup.add(tempEnemy);
+			tempEnemy.playGameSignal.add(removeTitle);
+			add(tempEnemy);
 			
-			tmpButton = new FlxButton(60, FlxG.height / 2, "", goToCredits);
+			var tmpButton:FlxButton = new FlxButton(60, FlxG.height / 2, "", goToCredits);
 			tmpButton.loadGraphic(CreditsButton);
 			this._aTitleStuff.push(tmpButton);
 			add(tmpButton);
