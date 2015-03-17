@@ -22,7 +22,7 @@ package com.gauntlet.states
 			var tmpSprite :FlxSprite = new FlxSprite(0, 0, ImgCredits);
 			add(tmpSprite);
 			
-			tmpSprite = new FlxSprite(FlxG.width / 2 - 141, FlxG.height - 150, ImgReturnButton);
+			tmpSprite = new FlxSprite(FlxG.width / 2 - 141, FlxG.height - 100, ImgReturnButton);
 			add(tmpSprite);
 			
 			FlxG.mouse.show();
